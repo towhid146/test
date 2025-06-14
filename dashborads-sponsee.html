@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - SponzoBD</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gray-50">
+<!-- Navigation -->
+<nav class="bg-white shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between h-16 items-center">
+      <div class="flex-shrink-0">
+        <a th:href="@{/}" class="text-2xl font-bold text-blue-600">SponzoBD</a>
+      </div>
+      <div class="hidden md:block">
+        <div class="ml-10 flex items-center space-x-4">
+          <a th:href="@{/dashboard}" class="text-gray-900 font-medium">Dashboard</a>
+          <a th:href="@{/profile}" class="text-gray-700 hover:text-gray-900">Profile</a>
+          <form th:action="@{/logout}" method="post" class="inline">
+            <button type="submit" class="text-gray-700 hover:text-gray-900">Logout</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="bg-white shadow rounded-lg p-6">
+    <h1 class="text-2xl font-bold text-gray-900 mb-4">Welcome to your Dashboard</h1>
+    <p class="text-gray-600">This is your personal dashboard where you can manage your sponsorships and profile.</p>
+    
+    <!-- Dashboard Content -->
+    <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <!-- Quick Stats -->
+      <div class="bg-blue-50 p-4 rounded-lg">
+        <h3 class="text-lg font-medium text-blue-900">Active Sponsorships</h3>
+        <p class="text-3xl font-bold text-blue-600">0</p>
+      </div>
+      
+      <div class="bg-green-50 p-4 rounded-lg">
+        <h3 class="text-lg font-medium text-green-900">Pending Requests</h3>
+        <p class="text-3xl font-bold text-green-600">0</p>
+      </div>
+      
+      <div class="bg-purple-50 p-4 rounded-lg">
+        <h3 class="text-lg font-medium text-purple-900">Total Investment</h3>
+        <p class="text-3xl font-bold text-purple-600">$0</p>
+      </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="mt-8">
+      <h2 class="text-xl font-semibold text-gray-900 mb-4">Recent Activity</h2>
+      <div class="bg-gray-50 rounded-lg p-4">
+        <p class="text-gray-600">No recent activity to display.</p>
+      </div>
+    </div>
+  </div>
+</main>
+</body>
+</html>
