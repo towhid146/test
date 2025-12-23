@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - SponzoBD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      /* Navigation Styles */
+      .navbar {
+        background: #ffffff;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 1rem 0;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .nav-logo {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+
+      .nav-logo i {
+        margin-right: 10px;
+        font-size: 1.8rem;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+      }
+
+      .nav-link {
+        text-decoration: none;
+        color: #333;
+        font-weight: 500;
+        transition: color 0.3s ease;
+        position: relative;
+      }
+
+      .nav-link:hover {
+        background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);\n        -webkit-background-clip: text;\n        -webkit-text-fill-color: transparent;\n        background-clip: text;
+      }
+
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: -5px;
+        left: 0;
+        background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        transition: width 0.3s ease;
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      .nav-buttons {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+      }
+
+      .nav-button {
+        padding: 0.5rem 1.2rem;
+        border-radius: 5px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+
+      .nav-button.login {
+        color: #8b5cf6;
+        border: 2px solid #8b5cf6;
+      }
+
+      .nav-button.login:hover {
+        background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+        color: white;
+      }
+
+      .nav-button.signup {
+        background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+        color: white;
+      }
+
+      .nav-button.signup:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+      }
+
+      .mobile-menu {
+        display: none;
+        font-size: 1.5rem;
+        color: #333;
+        cursor: pointer;
+      }
+
+      @media (max-width: 768px) {
+        .nav-links {
+          display: none;
+        }
+
+        .mobile-menu {
+          display: block;
+        }
+
+        .nav-buttons {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body class="min-h-screen bg-gray-50">
+    <!-- Navigation (Loaded Dynamically) -->
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="bg-white shadow rounded-lg p-6">
+        <h1 class="text-2xl font-bold text-gray-900 mb-4">
+          Welcome to your Dashboard
+        </h1>
+        <p class="text-gray-600">
+          This is your personal dashboard where you can manage your sponsorships
+          and profile.
+        </p>
+
+        <!-- Dashboard Content -->
+        <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <!-- Quick Stats -->
+          <div class="bg-blue-50 p-4 rounded-lg">
+            <h3 class="text-lg font-medium text-blue-900">
+              Active Sponsorships
+            </h3>
+            <p class="text-3xl font-bold text-purple-600">0</p>
+          </div>
+
+          <div class="bg-green-50 p-4 rounded-lg">
+            <h3 class="text-lg font-medium text-green-900">Pending Requests</h3>
+            <p class="text-3xl font-bold text-green-600">0</p>
+          </div>
+
+          <div class="bg-purple-50 p-4 rounded-lg">
+            <h3 class="text-lg font-medium text-purple-900">
+              Total Investment
+            </h3>
+            <p class="text-3xl font-bold text-purple-600">$0</p>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="mt-8">
+          <h2 class="text-xl font-semibold text-gray-900 mb-4">
+            Recent Activity
+          </h2>
+          <div class="bg-gray-50 rounded-lg p-4">
+            <p class="text-gray-600">No recent activity to display.</p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Mobile menu functionality
+      document.addEventListener("DOMContentLoaded", function () {
+        const mobileMenu = document.querySelector(".mobile-menu");
+        const navLinks = document.querySelector(".nav-links");
+        const navButtons = document.querySelector(".nav-buttons");
+
+        mobileMenu.addEventListener("click", function () {
+          // Create mobile menu overlay
+          const overlay = document.createElement("div");
+          overlay.style.position = "fixed";
+          overlay.style.top = "0";
+          overlay.style.left = "0";
+          overlay.style.width = "100%";
+          overlay.style.height = "100%";
+          overlay.style.background = "rgba(0, 0, 0, 0.5)";
+          overlay.style.zIndex = "999";
+          document.body.appendChild(overlay);
+
+          // Create mobile menu container
+          const mobileNav = document.createElement("div");
+          mobileNav.style.position = "fixed";
+          mobileNav.style.top = "0";
+          mobileNav.style.right = "0";
+          mobileNav.style.width = "250px";
+          mobileNav.style.height = "100%";
+          mobileNav.style.background = "white";
+          mobileNav.style.padding = "20px";
+          mobileNav.style.zIndex = "1000";
+          mobileNav.style.boxShadow = "-2px 0 10px rgba(0, 0, 0, 0.1)";
+
+          // Clone navigation links
+          const mobileLinks = navLinks.cloneNode(true);
+          mobileLinks.style.display = "flex";
+          mobileLinks.style.flexDirection = "column";
+          mobileLinks.style.gap = "1rem";
+          mobileLinks.style.marginTop = "2rem";
+
+          // Clone navigation buttons
+          const mobileButtons = navButtons.cloneNode(true);
+          mobileButtons.style.display = "flex";
+          mobileButtons.style.flexDirection = "column";
+          mobileButtons.style.gap = "1rem";
+          mobileButtons.style.marginTop = "2rem";
+
+          // Add close button
+          const closeButton = document.createElement("button");
+          closeButton.innerHTML = '<i class="fas fa-times"></i>';
+          closeButton.style.background = "none";
+          closeButton.style.border = "none";
+          closeButton.style.fontSize = "1.5rem";
+          closeButton.style.cursor = "pointer";
+          closeButton.style.alignSelf = "flex-end";
+
+          // Append elements to mobile menu
+          mobileNav.appendChild(closeButton);
+          mobileNav.appendChild(mobileLinks);
+          mobileNav.appendChild(mobileButtons);
+          document.body.appendChild(mobileNav);
+
+          // Close mobile menu
+          function closeMenu() {
+            overlay.remove();
+            mobileNav.remove();
+          }
+
+          closeButton.addEventListener("click", closeMenu);
+          overlay.addEventListener("click", closeMenu);
+        });
+      });
+    </script>
+    <script src="navbar.js"></script>
+  </body>
+</html>
