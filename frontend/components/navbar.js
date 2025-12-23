@@ -1,7 +1,18 @@
 // Dynamic Navbar Loader
 document.addEventListener("DOMContentLoaded", function () {
+  // Determine the correct path to navbar.html based on current location
+  const currentPath = window.location.pathname;
+  let navbarPath = "components/navbar.html";
+
+  // Adjust path if we're in a subdirectory
+  if (currentPath.includes("/pages/")) {
+    navbarPath = "../../components/navbar.html";
+  } else if (currentPath.includes("/components/")) {
+    navbarPath = "navbar.html";
+  }
+
   // Load navbar HTML
-  fetch("navbar.html")
+  fetch(navbarPath)
     .then((response) => response.text())
     .then((data) => {
       // Insert navbar at the beginning of body
@@ -257,48 +268,55 @@ function updateNavbarForUser() {
 
   if (!navLinksContainer || !navButtonsContainer) return;
 
+  // Determine base path based on current location
+  const currentPath = window.location.pathname;
+  let basePath = "";
+  if (currentPath.includes("/pages/")) {
+    basePath = "../../";
+  }
+
   // Define navigation links based on role
   let navLinks = "";
 
   if (!userRole) {
     // Not logged in - show basic links
     navLinks = `
-      <a href="index.html" class="nav-link">Home</a>
-      <a href="about.html" class="nav-link">About</a>
+      <a href="${basePath}index.html" class="nav-link">Home</a>
+      <a href="${basePath}about.html" class="nav-link">About</a>
       <a href="#" class="nav-link">Contact</a>
     `;
 
     // Show login and signup buttons
     navButtonsContainer.innerHTML = `
-      <a href="login.html" class="nav-button login">Login</a>
-      <a href="signup-choice.html" class="nav-button signup sponsor-btn">Sign Up</a>
+      <a href="${basePath}pages/auth/login.html" class="nav-button login">Login</a>
+      <a href="${basePath}pages/auth/signup-choice.html" class="nav-button signup sponsor-btn">Sign Up</a>
     `;
   } else if (userRole === "sponsor") {
     // Sponsor logged in - show sponsors page
     navLinks = `
-      <a href="index.html" class="nav-link">Home</a>
-      <a href="sponsors.html" class="nav-link">Sponsors</a>
-      <a href="about.html" class="nav-link">About</a>
+      <a href="${basePath}index.html" class="nav-link">Home</a>
+      <a href="${basePath}pages/events/sponsors.html" class="nav-link">Sponsors</a>
+      <a href="${basePath}about.html" class="nav-link">About</a>
       <a href="#" class="nav-link">Contact</a>
     `;
 
     // Show profile and logout buttons
     navButtonsContainer.innerHTML = `
-      <a href="sponsor-profile.html" class="nav-button login">Profile</a>
+      <a href="${basePath}pages/profiles/sponsor-profile.html" class="nav-button login">Profile</a>
       <a href="#" class="nav-button signup sponsor-btn" onclick="logout()">Logout</a>
     `;
   } else if (userRole === "sponsee") {
     // Sponsee logged in - show events page
     navLinks = `
-      <a href="index.html" class="nav-link">Home</a>
-      <a href="sponsors.html" class="nav-link">Events</a>
-      <a href="about.html" class="nav-link">About</a>
+      <a href="${basePath}index.html" class="nav-link">Home</a>
+      <a href="${basePath}pages/events/sponsors.html" class="nav-link">Events</a>
+      <a href="${basePath}about.html" class="nav-link">About</a>
       <a href="#" class="nav-link">Contact</a>
     `;
 
     // Show profile and logout buttons
     navButtonsContainer.innerHTML = `
-      <a href="sponsee-profile.html" class="nav-button login">Profile</a>
+      <a href="${basePath}pages/profiles/sponsee-profile.html" class="nav-button login">Profile</a>
       <a href="#" class="nav-button signup sponsor-btn" onclick="logout()">Logout</a>
     `;
   }
