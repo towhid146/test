@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sponsee Details - SponzoBD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+      }
+    </style>
+  </head>
+  <body
+    class="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50"
+  >
+    <div id="navbar"></div>
+
+    <main class="pt-24 pb-16 px-4">
+      <div id="content" class="max-w-5xl mx-auto">
+        <div id="loading" class="text-center text-gray-600">
+          <i class="fas fa-spinner fa-spin mr-2"></i> Loading event details...
+        </div>
+        <div id="error" class="hidden"></div>
+        <div id="details" class="hidden"></div>
+      </div>
+    </main>
+
+    <script>
+      const API_BASE = "http://localhost:5000/api";
+
+      function getQueryParam(name) {
+        const params = new URLSearchParams(window.location.search);
+        return params.get(name);
+      }
+
+      function renderError(message) {
+        document.getElementById("loading").classList.add("hidden");
+        const el = document.getElementById("error");
+        el.className =
+          "block max-w-2xl mx-auto bg-red-50 border border-red-200 text-red-700 rounded-lg p-6 text-center";
+        el.innerHTML = `
+          <p class="font-semibold mb-2">⚠️ Unable to load event</p>
+          <p class="text-sm mb-4">${message}</p>
+          <div class="flex gap-3 justify-center">
+            <a href="sponsors.html" class="px-4 py-2 rounded-lg bg-purple-600 text-white">Back to Browse</a>
+            <button class="px-4 py-2 rounded-lg border" onclick="location.reload()">Retry</button>
+          </div>
+        `;
+      }
+
+      function formatPill(text, bg, fg) {
+        return `<span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${bg} ${fg}">${text}</span>`;
+      }
+
+      function renderDetails(data) {
+        document.getElementById("loading").classList.add("hidden");
+        const el = document.getElementById("details");
+        el.classList.remove("hidden");
+
+        const cover =
+          data.coverPhoto ||
+          "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1200&q=80";
+        const logo =
+          data.logo ||
+          "https://ui-avatars.com/api/?name=" +
+            encodeURIComponent(data.eventName || "Event") +
+            "&background=6d28d9&color=fff&bold=true";
+
+        el.innerHTML = `
+          <div class="bg-white/90 backdrop-blur-lg border border-purple-100 rounded-2xl shadow-xl overflow-hidden">
+            <div class="relative h-56 sm:h-72 md:h-80 w-full">
+              <img src="${cover}" alt="Cover" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1200&q=80'"/>
+              <img src="${logo}" alt="Logo" class="absolute -bottom-8 left-6 w-20 h-20 rounded-xl border-4 border-white object-cover bg-white"/>
+            </div>
+            <div class="p-6 pt-12">
+              <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                  <h1 class="text-2xl font-semibold text-gray-900">${
+                    data.eventName || "Untitled Event"
+                  }</h1>
+                  <p class="text-gray-600">${data.organization || "N/A"} • ${
+          data.location || "N/A"
+        }</p>
+                </div>
+                <div class="text-right">
+                  <p class="text-sm text-gray-500">Budget Required</p>
+                  <p class="text-xl font-semibold text-purple-700">৳${(
+                    data.budget || 0
+                  ).toLocaleString()}</p>
+                </div>
+              </div>
+
+              <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-purple-50 rounded-xl p-4">
+                  <p class="text-xs text-gray-500 mb-1">Contact</p>
+                  <p class="text-gray-800 font-medium">${
+                    data.contactPerson || "N/A"
+                  }</p>
+                  <p class="text-gray-600 text-sm">${data.email || ""}</p>
+                  <p class="text-gray-600 text-sm">${data.phone || ""}</p>
+                </div>
+                <div class="bg-pink-50 rounded-xl p-4">
+                  <p class="text-xs text-gray-500 mb-1">Expected Attendees</p>
+                  <p class="text-gray-800 font-medium">${
+                    data.expectedAttendees?.toLocaleString() || "N/A"
+                  }</p>
+                </div>
+                <div class="bg-orange-50 rounded-xl p-4">
+                  <p class="text-xs text-gray-500 mb-2">Website</p>
+                  ${
+                    data.website
+                      ? `<a href="${data.website}" target="_blank" class="text-purple-700 underline break-all">${data.website}</a>`
+                      : '<span class="text-gray-600">N/A</span>'
+                  }
+                </div>
+              </div>
+
+              ${
+                data.eventType && data.eventType.length
+                  ? `<div class="mt-6 flex flex-wrap gap-2">${(Array.isArray(
+                      data.eventType
+                    )
+                      ? data.eventType
+                      : [data.eventType]
+                    )
+                      .map((t) =>
+                        formatPill(t, "bg-purple-100", "text-purple-700")
+                      )
+                      .join("")}</div>`
+                  : ""
+              }
+              ${
+                data.categories && data.categories.length
+                  ? `<div class="mt-3 flex flex-wrap gap-2">${(Array.isArray(
+                      data.categories
+                    )
+                      ? data.categories
+                      : [data.categories]
+                    )
+                      .map((c) => formatPill(c, "bg-pink-100", "text-pink-700"))
+                      .join("")}</div>`
+                  : ""
+              }
+
+              ${
+                data.description
+                  ? `<div class="mt-6"><h2 class="font-semibold text-gray-900 mb-2">About the Event</h2><p class="text-gray-700 leading-relaxed">${data.description}</p></div>`
+                  : ""
+              }
+
+              <div class="mt-8 flex gap-3">
+                <a href="mailto:${
+                  data.email || ""
+                }" class="px-5 py-2 rounded-lg bg-purple-600 text-white hover:bg-purple-700">Contact</a>
+                <a href="sponsors.html" class="px-5 py-2 rounded-lg border border-purple-200 text-purple-700 bg-purple-50 hover:bg-purple-100">Back</a>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      async function init() {
+        const id = getQueryParam("id");
+        if (!id) {
+          renderError("Missing event id in URL.");
+          return;
+        }
+        try {
+          const res = await fetch(`${API_BASE}/auth/sponsee/${id}`);
+          if (!res.ok) {
+            const msg = `Server responded ${res.status}`;
+            renderError(msg);
+            return;
+          }
+          const json = await res.json();
+          if (!json.success || !json.data) {
+            renderError("Invalid response from server");
+            return;
+          }
+          renderDetails(json.data);
+        } catch (e) {
+          renderError(e.message || "Network error");
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", init);
+    </script>
+
+    <script src="navbar.js"></script>
+  </body>
+</html>

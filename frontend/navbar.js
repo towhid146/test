@@ -291,7 +291,7 @@ function updateNavbarForUser() {
     // Sponsee logged in - show events page
     navLinks = `
       <a href="index.html" class="nav-link">Home</a>
-      <a href="sponsees.html" class="nav-link">Events</a>
+      <a href="sponsors.html" class="nav-link">Events</a>
       <a href="about.html" class="nav-link">About</a>
       <a href="#" class="nav-link">Contact</a>
     `;
