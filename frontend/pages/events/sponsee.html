@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sponsee Details - SponzoBD</title>
+    <title>Browse Events & Sponsees - SponzoBD</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -27,174 +27,320 @@
     <div id="navbar"></div>
 
     <main class="pt-24 pb-16 px-4">
-      <div id="content" class="max-w-5xl mx-auto">
-        <div id="loading" class="text-center text-gray-600">
-          <i class="fas fa-spinner fa-spin mr-2"></i> Loading event details...
+      <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="mb-12">
+          <h1 class="text-4xl font-bold text-gray-900 mb-3">
+            Sponsorship Opportunities
+          </h1>
+          <p class="text-gray-600 text-lg">
+            Find events and projects that need your sponsorship support
+          </p>
         </div>
-        <div id="error" class="hidden"></div>
-        <div id="details" class="hidden"></div>
+
+        <!-- Filters -->
+        <div
+          class="bg-white/90 backdrop-blur-lg border border-purple-100 rounded-xl shadow-lg p-6 mb-8"
+        >
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">
+                <i class="fas fa-map-marker-alt mr-2 text-purple-600"></i
+                >Location
+              </label>
+              <select
+                id="location-filter"
+                onchange="applyFilters()"
+                class="w-full p-2.5 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              >
+                <option value="all">All Locations</option>
+                <option value="dhaka">Dhaka</option>
+                <option value="chittagong">Chittagong</option>
+                <option value="sylhet">Sylhet</option>
+                <option value="rajshahi">Rajshahi</option>
+                <option value="gazipur">Gazipur</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">
+                <i class="fas fa-tag mr-2 text-purple-600"></i>Category
+              </label>
+              <select
+                id="category-filter"
+                onchange="applyFilters()"
+                class="w-full p-2.5 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              >
+                <option value="all">All Categories</option>
+                <option value="tech">Technology</option>
+                <option value="sports">Sports</option>
+                <option value="education">Education</option>
+                <option value="health">Health</option>
+                <option value="charity">Charity</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">
+                <i class="fas fa-money-bill-wave mr-2 text-purple-600"></i
+                >Budget Range (৳)
+              </label>
+              <select
+                id="budget-filter"
+                onchange="applyFilters()"
+                class="w-full p-2.5 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              >
+                <option value="all">All Budgets</option>
+                <option value="0-50000">৳0 - ৳50,000</option>
+                <option value="50000-100000">৳50,000 - ৳100,000</option>
+                <option value="100000-500000">৳100,000 - ৳500,000</option>
+                <option value="500000+">৳500,000+</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">
+                <i class="fas fa-sort mr-2 text-purple-600"></i>Sort By
+              </label>
+              <select
+                id="sort-by"
+                onchange="applyFilters()"
+                class="w-full p-2.5 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              >
+                <option value="newest">Newest First</option>
+                <option value="budget-high">Budget: High to Low</option>
+                <option value="budget-low">Budget: Low to High</option>
+                <option value="attendees">Most Attendees</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loading" class="text-center py-16">
+          <div class="inline-flex flex-col items-center">
+            <i class="fas fa-spinner fa-spin text-4xl text-purple-600 mb-4"></i>
+            <p class="text-gray-600 text-lg">Loading events...</p>
+          </div>
+        </div>
+
+        <!-- Sponsees Grid -->
+        <div
+          id="sponsees-grid"
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
+          <!-- Sponsee cards will be inserted here -->
+        </div>
+
+        <!-- No Results -->
+        <div id="no-results" class="hidden text-center py-16">
+          <i class="fas fa-search text-5xl text-gray-300 mb-4 block"></i>
+          <p class="text-gray-500 text-lg">
+            No events found matching your criteria.
+          </p>
+        </div>
       </div>
     </main>
 
     <script>
       const API_BASE = "http://localhost:5000/api";
+      let allSponsees = [];
 
-      function getQueryParam(name) {
-        const params = new URLSearchParams(window.location.search);
-        return params.get(name);
-      }
-
-      function renderError(message) {
-        document.getElementById("loading").classList.add("hidden");
-        const el = document.getElementById("error");
-        el.className =
-          "block max-w-2xl mx-auto bg-red-50 border border-red-200 text-red-700 rounded-lg p-6 text-center";
-        el.innerHTML = `
-          <p class="font-semibold mb-2">⚠️ Unable to load event</p>
-          <p class="text-sm mb-4">${message}</p>
-          <div class="flex gap-3 justify-center">
-            <a href="sponsors.html" class="px-4 py-2 rounded-lg bg-purple-600 text-white">Back to Browse</a>
-            <button class="px-4 py-2 rounded-lg border" onclick="location.reload()">Retry</button>
-          </div>
-        `;
-      }
-
-      function formatPill(text, bg, fg) {
-        return `<span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${bg} ${fg}">${text}</span>`;
-      }
-
-      function renderDetails(data) {
-        document.getElementById("loading").classList.add("hidden");
-        const el = document.getElementById("details");
-        el.classList.remove("hidden");
-
+      function createSponseeCard(sponsee) {
         const cover =
-          data.coverPhoto ||
-          "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1200&q=80";
-        const logo =
-          data.logo ||
-          "https://ui-avatars.com/api/?name=" +
-            encodeURIComponent(data.eventName || "Event") +
-            "&background=6d28d9&color=fff&bold=true";
+          sponsee.coverPhoto ||
+          "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=800&h=400&q=80";
 
-        el.innerHTML = `
-          <div class="bg-white/90 backdrop-blur-lg border border-purple-100 rounded-2xl shadow-xl overflow-hidden">
-            <div class="relative h-56 sm:h-72 md:h-80 w-full">
-              <img src="${cover}" alt="Cover" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1200&q=80'"/>
-              <img src="${logo}" alt="Logo" class="absolute -bottom-8 left-6 w-20 h-20 rounded-xl border-4 border-white object-cover bg-white"/>
+        return `
+          <div class="bg-white/90 backdrop-blur-lg border border-purple-100 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group">
+            <div class="relative h-40 overflow-hidden bg-gray-200">
+              <img src="${cover}" alt="${
+          sponsee.eventName
+        }" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" onerror="this.src='https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=800&h=400&q=80'"/>
             </div>
-            <div class="p-6 pt-12">
-              <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                <div>
-                  <h1 class="text-2xl font-semibold text-gray-900">${
-                    data.eventName || "Untitled Event"
-                  }</h1>
-                  <p class="text-gray-600">${data.organization || "N/A"} • ${
-          data.location || "N/A"
-        }</p>
+            <div class="p-6">
+              <h3 class="text-xl font-semibold text-gray-900 mb-2 truncate">${
+                sponsee.eventName || "N/A"
+              }</h3>
+              <p class="text-sm text-purple-600 font-medium mb-4">${
+                sponsee.organization || "N/A"
+              }</p>
+              
+              <div class="space-y-3 mb-4 text-sm text-gray-600">
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-map-marker-alt text-purple-600 w-4"></i>
+                  <span>${sponsee.location || "N/A"}</span>
                 </div>
-                <div class="text-right">
-                  <p class="text-sm text-gray-500">Budget Required</p>
-                  <p class="text-xl font-semibold text-purple-700">৳${(
-                    data.budget || 0
-                  ).toLocaleString()}</p>
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-users text-purple-600 w-4"></i>
+                  <span>${(
+                    sponsee.expectedAttendees || 0
+                  ).toLocaleString()} attendees</span>
                 </div>
-              </div>
-
-              <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="bg-purple-50 rounded-xl p-4">
-                  <p class="text-xs text-gray-500 mb-1">Contact</p>
-                  <p class="text-gray-800 font-medium">${
-                    data.contactPerson || "N/A"
-                  }</p>
-                  <p class="text-gray-600 text-sm">${data.email || ""}</p>
-                  <p class="text-gray-600 text-sm">${data.phone || ""}</p>
-                </div>
-                <div class="bg-pink-50 rounded-xl p-4">
-                  <p class="text-xs text-gray-500 mb-1">Expected Attendees</p>
-                  <p class="text-gray-800 font-medium">${
-                    data.expectedAttendees?.toLocaleString() || "N/A"
-                  }</p>
-                </div>
-                <div class="bg-orange-50 rounded-xl p-4">
-                  <p class="text-xs text-gray-500 mb-2">Website</p>
-                  ${
-                    data.website
-                      ? `<a href="${data.website}" target="_blank" class="text-purple-700 underline break-all">${data.website}</a>`
-                      : '<span class="text-gray-600">N/A</span>'
-                  }
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-envelope text-purple-600 w-4"></i>
+                  <span class="truncate">${sponsee.email || "N/A"}</span>
                 </div>
               </div>
 
+              <div class="border-t border-purple-100 pt-4 mb-4">
+                <p class="text-xs text-gray-500 mb-1">Budget Required</p>
+                <p class="text-lg font-semibold text-purple-700">৳${(
+                  sponsee.budget || 0
+                ).toLocaleString()}</p>
+              </div>
+
               ${
-                data.eventType && data.eventType.length
-                  ? `<div class="mt-6 flex flex-wrap gap-2">${(Array.isArray(
-                      data.eventType
-                    )
-                      ? data.eventType
-                      : [data.eventType]
-                    )
-                      .map((t) =>
-                        formatPill(t, "bg-purple-100", "text-purple-700")
-                      )
-                      .join("")}</div>`
-                  : ""
-              }
-              ${
-                data.categories && data.categories.length
-                  ? `<div class="mt-3 flex flex-wrap gap-2">${(Array.isArray(
-                      data.categories
-                    )
-                      ? data.categories
-                      : [data.categories]
-                    )
-                      .map((c) => formatPill(c, "bg-pink-100", "text-pink-700"))
-                      .join("")}</div>`
+                sponsee.eventType && sponsee.eventType.length
+                  ? `<div class="mb-4">
+                      <p class="text-xs text-gray-500 mb-2">Event Types</p>
+                      <div class="flex flex-wrap gap-2">
+                        ${sponsee.eventType
+                          .slice(0, 2)
+                          .map(
+                            (type) =>
+                              `<span class="inline-block px-2 py-1 bg-pink-100 text-pink-700 text-xs rounded-full">${type}</span>`
+                          )
+                          .join("")}
+                      </div>
+                    </div>`
                   : ""
               }
 
               ${
-                data.description
-                  ? `<div class="mt-6"><h2 class="font-semibold text-gray-900 mb-2">About the Event</h2><p class="text-gray-700 leading-relaxed">${data.description}</p></div>`
+                sponsee.description
+                  ? `<p class="text-sm text-gray-600 mb-4 line-clamp-2">${sponsee.description}</p>`
                   : ""
               }
 
-              <div class="mt-8 flex gap-3">
+              <div class="flex gap-3">
+                <a href="events/sponsee.html?id=${
+                  sponsee._id
+                }" class="flex-1 px-4 py-2 rounded-lg bg-purple-600 text-white text-center hover:bg-purple-700 transition font-medium text-sm">
+                  <i class="fas fa-eye mr-2"></i>View Details
+                </a>
                 <a href="mailto:${
-                  data.email || ""
-                }" class="px-5 py-2 rounded-lg bg-purple-600 text-white hover:bg-purple-700">Contact</a>
-                <a href="sponsors.html" class="px-5 py-2 rounded-lg border border-purple-200 text-purple-700 bg-purple-50 hover:bg-purple-100">Back</a>
+                  sponsee.email
+                }" class="flex-1 px-4 py-2 rounded-lg border border-purple-200 text-purple-700 text-center hover:bg-purple-50 transition font-medium text-sm">
+                  <i class="fas fa-envelope mr-2"></i>Contact
+                </a>
               </div>
             </div>
           </div>
         `;
       }
 
-      async function init() {
-        const id = getQueryParam("id");
-        if (!id) {
-          renderError("Missing event id in URL.");
-          return;
-        }
+      async function loadSponsees() {
         try {
-          const res = await fetch(`${API_BASE}/auth/sponsee/${id}`);
-          if (!res.ok) {
-            const msg = `Server responded ${res.status}`;
-            renderError(msg);
+          const response = await fetch(`${API_BASE}/auth/sponsees`);
+          if (!response.ok) throw new Error(`Server error ${response.status}`);
+
+          const data = await response.json();
+          allSponsees = data.data || data;
+
+          if (!allSponsees || allSponsees.length === 0) {
+            document.getElementById("loading").classList.add("hidden");
+            document.getElementById("no-results").classList.remove("hidden");
             return;
           }
-          const json = await res.json();
-          if (!json.success || !json.data) {
-            renderError("Invalid response from server");
-            return;
-          }
-          renderDetails(json.data);
-        } catch (e) {
-          renderError(e.message || "Network error");
+
+          applyFilters();
+          document.getElementById("loading").classList.add("hidden");
+        } catch (error) {
+          console.error("Error loading sponsees:", error);
+          document.getElementById("loading").innerHTML = `
+            <div class="max-w-md mx-auto bg-red-50 border border-red-200 rounded-xl p-8 text-center">
+              <i class="fas fa-exclamation-circle text-4xl text-red-600 mb-4 block"></i>
+              <p class="text-red-700 font-semibold mb-2">Failed to Load Events</p>
+              <p class="text-gray-600 text-sm mb-4">${error.message}</p>
+              <button onclick="location.reload()" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-medium">
+                <i class="fas fa-redo mr-2"></i>Retry
+              </button>
+            </div>
+          `;
         }
       }
 
-      document.addEventListener("DOMContentLoaded", init);
+      function applyFilters() {
+        let filtered = [...allSponsees];
+
+        const locationFilter =
+          document.getElementById("location-filter")?.value || "all";
+        const categoryFilter =
+          document.getElementById("category-filter")?.value || "all";
+        const budgetFilter =
+          document.getElementById("budget-filter")?.value || "all";
+        const sortBy = document.getElementById("sort-by")?.value || "newest";
+
+        // Apply filters
+        if (locationFilter !== "all") {
+          filtered = filtered.filter(
+            (sponsee) =>
+              sponsee.location?.toLowerCase() === locationFilter.toLowerCase()
+          );
+        }
+
+        if (categoryFilter !== "all") {
+          filtered = filtered.filter((sponsee) => {
+            if (!sponsee.categories) return false;
+            const categories = Array.isArray(sponsee.categories)
+              ? sponsee.categories
+              : [sponsee.categories];
+            return categories.some(
+              (cat) => cat.toLowerCase() === categoryFilter.toLowerCase()
+            );
+          });
+        }
+
+        if (budgetFilter !== "all") {
+          const budgetRanges = {
+            "0-50000": [0, 50000],
+            "50000-100000": [50000, 100000],
+            "100000-500000": [100000, 500000],
+            "500000+": [500000, Infinity],
+          };
+
+          const [min, max] = budgetRanges[budgetFilter] || [0, Infinity];
+          filtered = filtered.filter((sponsee) => {
+            const budget = sponsee.budget || 0;
+            return budget >= min && budget <= max;
+          });
+        }
+
+        // Apply sorting
+        switch (sortBy) {
+          case "budget-high":
+            filtered.sort((a, b) => (b.budget || 0) - (a.budget || 0));
+            break;
+          case "budget-low":
+            filtered.sort((a, b) => (a.budget || 0) - (b.budget || 0));
+            break;
+          case "attendees":
+            filtered.sort(
+              (a, b) => (b.expectedAttendees || 0) - (a.expectedAttendees || 0)
+            );
+            break;
+          case "newest":
+          default:
+            filtered.sort(
+              (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+            );
+        }
+
+        // Display results
+        const grid = document.getElementById("sponsees-grid");
+        const noResults = document.getElementById("no-results");
+
+        if (filtered.length === 0) {
+          grid.classList.add("hidden");
+          noResults.classList.remove("hidden");
+        } else {
+          grid.innerHTML = filtered
+            .map((sponsee) => createSponseeCard(sponsee))
+            .join("");
+          grid.classList.remove("hidden");
+          noResults.classList.add("hidden");
+        }
+      }
+
+      window.addEventListener("DOMContentLoaded", loadSponsees);
     </script>
 
     <script src="../../components/navbar.js"></script>

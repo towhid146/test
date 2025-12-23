@@ -1280,13 +1280,32 @@
         }
 
         // Load profile
-        const userId = localStorage.getItem("userId");
+        const urlId = new URLSearchParams(window.location.search).get("id");
+        const loggedInId = localStorage.getItem("userId");
         const userRole = localStorage.getItem("userRole");
-        if (!userId || userRole !== "sponsor") {
-          alert("Please log in as sponsor first");
-          window.location.href = "login.html";
-          return;
+        const canEdit = urlId
+          ? loggedInId && urlId === loggedInId
+          : loggedInId && userRole === "sponsor";
+
+        // Hide edit controls if viewing another user's profile
+        if (!canEdit) {
+          const editButtons = document.querySelectorAll(
+            'button[onclick^="openEditModal"], button[onclick^="openImageUploadModal"]'
+          );
+          editButtons.forEach((btn) => (btn.style.display = "none"));
         }
+
+        let userId = urlId;
+        // If no ID in URL, use logged-in user's ID
+        if (!userId) {
+          userId = loggedInId;
+          if (!userId || userRole !== "sponsor") {
+            alert("Please log in as sponsor first");
+            window.location.href = "../../pages/auth/login.html";
+            return;
+          }
+        }
+
         loadSponsorProfile(userId);
 
         const editForm = document.getElementById("editForm");

@@ -3,275 +3,257 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sponsor Dashboard - SponzoBD</title>
+    <title>Browse Sponsors - SponzoBD</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
     <style>
-      /* Navigation Styles */
-      .navbar {
-          background: #ffffff;
-          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-          padding: 1rem 0;
-          position: sticky;
-          top: 0;
-          z-index: 1000;
-      }
-
-      .nav-container {
-          max-width: 1200px;
-          margin: 0 auto;
-          padding: 0 20px;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-      }
-
-      .nav-logo {
-          display: flex;
-          align-items: center;
-          text-decoration: none;
-          background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          font-size: 1.5rem;
-          font-weight: 700;
-      }
-
-      .nav-logo i {
-          margin-right: 10px;
-          font-size: 1.8rem;
-      }
-
-      .nav-links {
-          display: flex;
-          gap: 2rem;
-          align-items: center;
-      }
-
-      .nav-link {
-          text-decoration: none;
-          color: #333;
-          font-weight: 500;
-          transition: color 0.3s ease;
-          position: relative;
-      }
-
-      .nav-link:hover {
-          background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-      }
-
-      .nav-link::after {
-          content: '';
-          position: absolute;
-          width: 0;
-          height: 2px;
-          bottom: -5px;
-          left: 0;
-          background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
-          transition: width 0.3s ease;
-      }
-
-      .nav-link:hover::after {
-          width: 100%;
-      }
-
-      .nav-buttons {
-          display: flex;
-          gap: 1rem;
-          align-items: center;
-      }
-
-      .nav-button {
-          padding: 0.5rem 1.2rem;
-          border-radius: 5px;
-          font-weight: 500;
-          text-decoration: none;
-          transition: all 0.3s ease;
-      }8b5cf6;
-          border: 2px solid #8b5cf6;
-      }
-
-      .nav-button.login:hover {
-          background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%)
-
-      .nav-button.login:hover {
-          background: #4a90e2;
-          color: white;
-      }
-
-      .nav-button.signup {
-          background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
-          color: white;
-      }
-
-      .nav-button.signup:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
-      }
-
-      .mobile-menu {
-          display: none;
-          font-size: 1.5rem;
-          color: #333;
-          cursor: pointer;
-      }
-
-      @media (max-width: 768px) {
-          .nav-links {
-              display: none;
-          }
-
-          .mobile-menu {
-              display: block;
-          }
-
-          .nav-buttons {
-              display: none;
-          }
+      body {
+        font-family: "Poppins", sans-serif;
       }
     </style>
   </head>
-  <body class="min-h-screen bg-gray-50">
-    <!-- Navigation Bar (Loaded Dynamically) -->
+  <body
+    class="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50"
+  >
+    <div id="navbar"></div>
 
-    <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <!-- Header -->
-      <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-900">
-          Find Sponsorship Opportunities
-        </h1>
-        <p class="mt-2 text-gray-600">
-          Discover and connect with projects, events, and individuals seeking
-          sponsorship
-        </p>
-      </div>
+    <main class="pt-24 pb-16 px-4">
+      <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="mb-12">
+          <h1 class="text-4xl font-bold text-gray-900 mb-3">
+            Discover Sponsors
+          </h1>
+          <p class="text-gray-600 text-lg">
+            Find funding partners and support for your events and projects
+          </p>
+        </div>
 
-      <!-- Filters -->
-      <div class="bg-white p-6 rounded-lg shadow mb-8">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2"
-              >Location</label
-            >
-            <select
-              id="location-filter"
-              onchange="applyFilters()"
-              class="w-full p-2 border rounded-md"
-            >
-              <option value="all">All Locations</option>
-              <option value="dhaka">Dhaka</option>
-              <option value="chittagong">Chittagong</option>
-              <option value="sylhet">Sylhet</option>
-              <option value="rajshahi">Rajshahi</option>
-              <option value="gazipur">Gazipur</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2"
-              >Budget Range (৳)</label
-            >
-            <select
-              id="budget-filter"
-              onchange="applyFilters()"
-              class="w-full p-2 border rounded-md"
-            >
-              <option value="all">All Budgets</option>
-              <option value="0-1000">৳0 - ৳1,000</option>
-              <option value="1000-5000">৳1,000 - ৳5,000</option>
-              <option value="5000-10000">৳5,000 - ৳10,000</option>
-              <option value="10000+">৳10,000+</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2"
-              >Sort By</label
-            >
-            <select
-              id="sort-by"
-              onchange="applyFilters()"
-              class="w-full p-2 border rounded-md"
-            >
-              <option value="relevance">Relevance (Attendees)</option>
-              <option value="newest">Newest First</option>
-              <option value="budget-high">Budget: High to Low</option>
-              <option value="budget-low">Budget: Low to High</option>
-            </select>
+        <!-- Filters -->
+        <div
+          class="bg-white/90 backdrop-blur-lg border border-purple-100 rounded-xl shadow-lg p-6 mb-8"
+        >
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">
+                <i class="fas fa-map-marker-alt mr-2 text-purple-600"></i
+                >Location
+              </label>
+              <select
+                id="location-filter"
+                onchange="applyFilters()"
+                class="w-full p-2.5 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              >
+                <option value="all">All Locations</option>
+                <option value="dhaka">Dhaka</option>
+                <option value="chittagong">Chittagong</option>
+                <option value="sylhet">Sylhet</option>
+                <option value="rajshahi">Rajshahi</option>
+                <option value="gazipur">Gazipur</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">
+                <i class="fas fa-bullseye mr-2 text-purple-600"></i>Focus Area
+              </label>
+              <select
+                id="focusarea-filter"
+                onchange="applyFilters()"
+                class="w-full p-2.5 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              >
+                <option value="all">All Focus Areas</option>
+                <option value="education">Education</option>
+                <option value="healthcare">Healthcare</option>
+                <option value="environment">Environment</option>
+                <option value="technology">Technology</option>
+                <option value="community">Community</option>
+                <option value="sports">Sports</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">
+                <i class="fas fa-money-bill-wave mr-2 text-purple-600"></i
+                >Budget Range (৳)
+              </label>
+              <select
+                id="budget-filter"
+                onchange="applyFilters()"
+                class="w-full p-2.5 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              >
+                <option value="all">All Budgets</option>
+                <option value="0-10000">৳0 - ৳10,000</option>
+                <option value="10000-50000">৳10,000 - ৳50,000</option>
+                <option value="50000-100000">৳50,000 - ৳100,000</option>
+                <option value="100000+">৳100,000+</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">
+                <i class="fas fa-sort mr-2 text-purple-600"></i>Sort By
+              </label>
+              <select
+                id="sort-by"
+                onchange="applyFilters()"
+                class="w-full p-2.5 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              >
+                <option value="newest">Newest First</option>
+                <option value="budget-high">Budget: High to Low</option>
+                <option value="budget-low">Budget: Low to High</option>
+                <option value="name">Name: A to Z</option>
+              </select>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Sponsees Grid -->
-      <div id="loading" class="text-center py-8">
-        <p class="text-gray-600">Loading sponsees...</p>
-      </div>
-      <div
-        id="sponsees-grid"
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-      >
-        <!-- Sponsee cards will be dynamically inserted here -->
+        <!-- Loading State -->
+        <div id="loading" class="text-center py-16">
+          <div class="inline-flex flex-col items-center">
+            <i class="fas fa-spinner fa-spin text-4xl text-purple-600 mb-4"></i>
+            <p class="text-gray-600 text-lg">Loading sponsors...</p>
+          </div>
+        </div>
+
+        <!-- Sponsors Grid -->
+        <div
+          id="sponsors-grid"
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
+          <!-- Sponsor cards will be inserted here -->
+        </div>
+
+        <!-- No Results -->
+        <div id="no-results" class="hidden text-center py-16">
+          <i class="fas fa-search text-5xl text-gray-300 mb-4 block"></i>
+          <p class="text-gray-500 text-lg">
+            No sponsors found matching your criteria.
+          </p>
+        </div>
       </div>
     </main>
 
     <script>
       const API_BASE = "http://localhost:5000/api";
-      let allSponsees = []; // Store all sponsees for filtering
+      let allSponsors = [];
 
-      // Fetch and display sponsees
-      async function loadSponsees() {
+      function createSponsorCard(sponsor) {
+        const logo =
+          sponsor.logo ||
+          `https://ui-avatars.com/api/?name=${encodeURIComponent(
+            sponsor.companyName
+          )}&background=6d28d9&color=fff&bold=true&size=200`;
+
+        return `
+          <div class="bg-white/90 backdrop-blur-lg border border-purple-100 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group">
+            <div class="relative h-40 bg-gradient-to-br from-purple-100 to-pink-100 overflow-hidden">
+              <img src="${logo}" alt="${
+          sponsor.companyName
+        }" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(
+          sponsor.companyName
+        )}&background=6d28d9&color=fff&bold=true&size=200'"/>
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-semibold text-gray-900 mb-2 truncate">${
+                sponsor.companyName
+              }</h3>
+              <p class="text-sm text-purple-600 font-medium mb-4">${
+                sponsor.industry || "N/A"
+              }</p>
+              
+              <div class="space-y-3 mb-4 text-sm text-gray-600">
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-map-marker-alt text-purple-600 w-4"></i>
+                  <span>${sponsor.location || "N/A"}</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-envelope text-purple-600 w-4"></i>
+                  <span class="truncate">${sponsor.email || "N/A"}</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-phone text-purple-600 w-4"></i>
+                  <span>${sponsor.phone || "N/A"}</span>
+                </div>
+              </div>
+
+              <div class="border-t border-purple-100 pt-4 mb-4">
+                <p class="text-xs text-gray-500 mb-1">Budget</p>
+                <p class="text-lg font-semibold text-purple-700">৳${(
+                  sponsor.budget || 0
+                ).toLocaleString()}</p>
+              </div>
+
+              ${
+                sponsor.focusAreas && sponsor.focusAreas.length
+                  ? `<div class="mb-4">
+                      <p class="text-xs text-gray-500 mb-2">Focus Areas</p>
+                      <div class="flex flex-wrap gap-2">
+                        ${sponsor.focusAreas
+                          .slice(0, 3)
+                          .map(
+                            (area) =>
+                              `<span class="inline-block px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded-full">${area}</span>`
+                          )
+                          .join("")}
+                      </div>
+                    </div>`
+                  : ""
+              }
+
+              ${
+                sponsor.description
+                  ? `<p class="text-sm text-gray-600 mb-4 line-clamp-2">${sponsor.description}</p>`
+                  : ""
+              }
+
+              <div class="flex gap-3">
+                <a href="mailto:${
+                  sponsor.email
+                }" class="flex-1 px-4 py-2 rounded-lg bg-purple-600 text-white text-center hover:bg-purple-700 transition font-medium text-sm">
+                  <i class="fas fa-envelope mr-2"></i>Contact
+                </a>
+                <a href="../profiles/sponsor-profile.html?id=${
+                  sponsor._id
+                }" class="flex-1 px-4 py-2 rounded-lg border border-purple-200 text-purple-700 text-center hover:bg-purple-50 transition font-medium text-sm">
+                  <i class="fas fa-eye mr-2"></i>View
+                </a>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      async function loadSponsors() {
         try {
-          document.getElementById("loading").innerHTML =
-            '<p class="text-gray-600"><i class="fas fa-spinner fa-spin mr-2"></i>Loading sponsees...</p>';
-          document.getElementById("loading").style.display = "block";
-
-          const response = await fetch(`${API_BASE}/auth/sponsees`, {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-          });
-
-          if (!response.ok) {
-            throw new Error(`Server Error ${response.status}`);
-          }
+          const response = await fetch(`${API_BASE}/auth/sponsors`);
+          if (!response.ok) throw new Error(`Server error ${response.status}`);
 
           const data = await response.json();
-          allSponsees = data.data || data;
+          allSponsors = data.data || data;
 
-          if (!allSponsees || allSponsees.length === 0) {
-            throw new Error("No sponsees found in database");
+          if (!allSponsors || allSponsors.length === 0) {
+            document.getElementById("loading").classList.add("hidden");
+            document.getElementById("no-results").classList.remove("hidden");
+            return;
           }
 
-          // Ensure filter elements exist, then apply filters
-          setTimeout(() => {
-            const filtersExist =
-              document.getElementById("location-filter") &&
-              document.getElementById("budget-filter") &&
-              document.getElementById("sort-by");
-            if (filtersExist) {
-              applyFilters();
-            } else {
-              displaySponsees(allSponsees);
-            }
-            document.getElementById("loading").style.display = "none";
-          }, 0);
+          applyFilters();
+          document.getElementById("loading").classList.add("hidden");
         } catch (error) {
-          console.error("Error loading sponsees:", error);
+          console.error("Error loading sponsors:", error);
           document.getElementById("loading").innerHTML = `
-            <div class="text-center py-8 bg-red-50 border border-red-200 rounded-lg mx-auto max-w-md">
-              <p class="text-red-600 font-semibold mb-2">⚠️ Unable to Load Sponsees</p>
+            <div class="max-w-md mx-auto bg-red-50 border border-red-200 rounded-xl p-8 text-center">
+              <i class="fas fa-exclamation-circle text-4xl text-red-600 mb-4 block"></i>
+              <p class="text-red-700 font-semibold mb-2">Failed to Load Sponsors</p>
               <p class="text-gray-600 text-sm mb-4">${error.message}</p>
-              <p class="text-xs text-gray-500 mb-4">Ensure backend server is running at http://localhost:5000</p>
-              <button onclick="loadSponsees()" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition font-medium">
+              <button onclick="location.reload()" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-medium">
                 <i class="fas fa-redo mr-2"></i>Retry
               </button>
             </div>
@@ -279,125 +261,48 @@
         }
       }
 
-      function createSponsoreeCard(sponsee) {
-        const imageUrl =
-          sponsee.coverPhoto ||
-          `https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400&q=80`;
-
-        return `
-          <div class="bg-white rounded-lg shadow overflow-hidden hover:shadow-lg transition-shadow duration-300">
-            <div class="w-full h-48 overflow-hidden bg-gray-200">
-              <img src="${imageUrl}" alt="${
-          sponsee.eventName
-        }" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400&q=80'">
-            </div>
-            <div class="p-6">
-              <h3 class="text-lg font-semibold text-gray-900 mb-2">${
-                sponsee.eventName || "N/A"
-              }</h3>
-              <div class="space-y-2 text-sm text-gray-600 mb-4">
-                <p><strong>Contact:</strong> ${
-                  sponsee.contactPerson || "N/A"
-                }</p>
-                <p><strong>Organization:</strong> ${
-                  sponsee.organization || "N/A"
-                }</p>
-                <p><strong>Location:</strong> ${sponsee.location || "N/A"}</p>
-                <p><strong>Email:</strong> ${sponsee.email || "N/A"}</p>
-              </div>
-              <div class="border-t pt-4 mb-4">
-                <p class="text-sm text-gray-700"><strong>Budget Required:</strong> $${
-                  sponsee.budget?.toLocaleString() || "0"
-                }</p>
-                <p class="text-sm text-gray-700"><strong>Expected Attendees:</strong> ${
-                  sponsee.expectedAttendees?.toLocaleString() || "N/A"
-                }</p>
-                ${
-                  sponsee.eventType
-                    ? `<p class="text-sm text-gray-700"><strong>Event Type:</strong> ${
-                        Array.isArray(sponsee.eventType)
-                          ? sponsee.eventType.join(", ")
-                          : sponsee.eventType
-                      }</p>`
-                    : ""
-                }
-                ${
-                  sponsee.categories
-                    ? `<p class="text-sm text-gray-700"><strong>Categories:</strong> ${
-                        Array.isArray(sponsee.categories)
-                          ? sponsee.categories.join(", ")
-                          : sponsee.categories
-                      }</p>`
-                    : ""
-                }
-              </div>
-              ${
-                sponsee.description
-                  ? `<p class="text-sm text-gray-600 mb-4 line-clamp-2">${sponsee.description}</p>`
-                  : ""
-              }
-              <div class="flex gap-2">
-                <a href="sponsee.html?id=${
-                  sponsee._id
-                }" class="flex-1 bg-gradient-to-r from-purple-600 to-pink-500 text-white py-2 px-4 rounded-lg text-center font-medium hover:shadow-lg transition">View Profile</a>
-                <button class="flex-1 border-2 border-purple-600 text-purple-600 py-2 px-4 rounded-lg font-medium hover:bg-purple-50 transition" onclick="contactSponsee('${
-                  sponsee._id
-                }', '${sponsee.eventName}')">Contact</button>
-              </div>
-            </div>
-          </div>
-        `;
-      }
-
-      function displaySponsees(sponsees) {
-        const grid = document.getElementById("sponsees-grid");
-        grid.innerHTML = "";
-
-        if (!sponsees || sponsees.length === 0) {
-          grid.innerHTML =
-            '<p class="col-span-full text-center text-gray-600">No sponsees available at the moment.</p>';
-          return;
-        }
-
-        sponsees.forEach((sponsee) => {
-          grid.innerHTML += createSponsoreeCard(sponsee);
-        });
-      }
-
       function applyFilters() {
-        if (allSponsees.length === 0) return;
+        let filtered = [...allSponsors];
 
-        // Get filter elements safely
-        const locationFilterEl = document.getElementById("location-filter");
-        const budgetFilterEl = document.getElementById("budget-filter");
-        const sortByEl = document.getElementById("sort-by");
+        const locationFilter =
+          document.getElementById("location-filter")?.value || "all";
+        const focusAreaFilter =
+          document.getElementById("focusarea-filter")?.value || "all";
+        const budgetFilter =
+          document.getElementById("budget-filter")?.value || "all";
+        const sortBy = document.getElementById("sort-by")?.value || "newest";
 
-        // Use safe defaults if elements don't exist
-        const locationFilter = locationFilterEl?.value || "all";
-        const budgetFilter = budgetFilterEl?.value || "all";
-        const sortBy = sortByEl?.value || "relevance";
-
-        let filtered = [...allSponsees];
-
-        // Apply location filter
+        // Apply filters
         if (locationFilter !== "all") {
           filtered = filtered.filter(
-            (sponsee) => sponsee.location?.toLowerCase() === locationFilter
+            (sponsor) =>
+              sponsor.location?.toLowerCase() === locationFilter.toLowerCase()
           );
         }
 
-        // Apply budget filter (in taka)
+        if (focusAreaFilter !== "all") {
+          filtered = filtered.filter((sponsor) => {
+            if (!sponsor.focusAreas) return false;
+            const focusAreas = Array.isArray(sponsor.focusAreas)
+              ? sponsor.focusAreas
+              : [sponsor.focusAreas];
+            return focusAreas.some(
+              (area) => area.toLowerCase() === focusAreaFilter.toLowerCase()
+            );
+          });
+        }
+
         if (budgetFilter !== "all") {
           const budgetRanges = {
-            "0-1000": [0, 1000],
-            "1000-5000": [1000, 5000],
-            "5000-10000": [5000, 10000],
-            "10000+": [10000, Infinity],
+            "0-10000": [0, 10000],
+            "10000-50000": [10000, 50000],
+            "50000-100000": [50000, 100000],
+            "100000+": [100000, Infinity],
           };
 
           const [min, max] = budgetRanges[budgetFilter] || [0, Infinity];
-          filtered = filtered.filter((sponsee) => {
-            const budget = sponsee.budget || 0;
+          filtered = filtered.filter((sponsor) => {
+            const budget = sponsor.budget || 0;
             return budget >= min && budget <= max;
           });
         }
@@ -410,259 +315,37 @@
           case "budget-low":
             filtered.sort((a, b) => (a.budget || 0) - (b.budget || 0));
             break;
+          case "name":
+            filtered.sort((a, b) =>
+              (a.companyName || "").localeCompare(b.companyName || "")
+            );
+            break;
           case "newest":
+          default:
             filtered.sort(
               (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
             );
-            break;
-          case "relevance":
-          default:
-            filtered.sort(
-              (a, b) => (b.expectedAttendees || 0) - (a.expectedAttendees || 0)
-            );
         }
 
-        displaySponsees(filtered);
-      }
+        // Display results
+        const grid = document.getElementById("sponsors-grid");
+        const noResults = document.getElementById("no-results");
 
-      function contactSponsee(sponseeId, eventName) {
-        alert(`Contact request for "${eventName}" will be implemented soon!`);
-        // TODO: Implement contact/messaging feature
-      }
-
-      // Load sponsees on page load
-      window.addEventListener("DOMContentLoaded", loadSponsees);
-
-      // Mock data for demonstration (fallback if API fails)
-      const opportunities = [
-        {
-          id: 1,
-          title: "Tech Innovation Summit 2025",
-          category: "events",
-          location: "Dhaka",
-          budget: 80000,
-          description:
-            "Annual technology conference bringing together innovators and industry leaders",
-          image:
-            "https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=400&q=80",
-          date: "2025-06-15",
-          organizer: "TechHub Bangladesh",
-          attendees: 500,
-          matchScore: 95,
-        },
-        {
-          id: 2,
-          title: "Green Energy Project",
-          category: "projects",
-          location: "Chittagong",
-          budget: 150000,
-          description: "Sustainable energy initiative for rural communities",
-          image:
-            "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=400&q=80",
-          duration: "6 months",
-          organization: "Green Energy Solutions",
-          impact: "5000 households",
-          matchScore: 88,
-        },
-        {
-          id: 3,
-          title: "Youth Sports Program",
-          category: "organizations",
-          location: "Sylhet",
-          budget: 30000,
-          description:
-            "Training and mentoring young athletes in various sports",
-          image:
-            "https://images.unsplash.com/photo-1526232761682-d26e03ac148e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=400&q=80",
-          beneficiaries: "200 youth",
-          duration: "12 months",
-          organization: "Sports Development BD",
-          matchScore: 92,
-        },
-      ];
-
-      function createOpportunityCard(opportunity) {
-        return `
-                <div class="bg-white rounded-lg shadow overflow-hidden hover:shadow-lg transition-shadow duration-300">
-                    <img src="${opportunity.image}" alt="${
-          opportunity.title
-        }" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <div class="flex justify-between items-start mb-4">
-                            <div>
-                                <h3 class="text-lg font-semibold text-gray-900">${
-                                  opportunity.title
-                                }</h3>
-                                <p class="text-sm text-gray-500">${
-                                  opportunity.location
-                                }</p>
-                            </div>
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                                ${opportunity.category}
-                            </span>
-                        </div>
-                        <p class="text-gray-600 mb-4">${
-                          opportunity.description
-                        }</p>
-                        <div class="border-t border-gray-200 pt-4">
-                            <div class="flex justify-between items-center mb-4">
-                                <div class="text-sm text-gray-500">
-                                    Budget: <span class="font-semibold text-gray-900">৳${opportunity.budget.toLocaleString()}</span>
-                                </div>
-                                <div class="flex items-center">
-                                    <span class="text-sm font-medium text-gray-500">Match:</span>
-                                    <span class="ml-2 text-lg font-semibold text-purple-600">${
-                                      opportunity.matchScore
-                                    }%</span>
-                                </div>
-                            </div>
-                            <button
-                                onclick="viewDetails(${opportunity.id})"
-                                class="w-full bg-purple-600 text-white py-2 rounded-md hover:bg-purple-700 transition-colors duration-300"
-                            >
-                                View Details
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-      }
-
-      function renderOpportunities(filteredOpportunities = opportunities) {
-        const container = document.getElementById("opportunities-grid");
-        container.innerHTML = filteredOpportunities
-          .map((opp) => createOpportunityCard(opp))
-          .join("");
-      }
-
-      function applyFilters() {
-        const category = document.getElementById("category-filter").value;
-        const location = document.getElementById("location-filter").value;
-        const budget = document.getElementById("budget-filter").value;
-        const sortBy = document.getElementById("sort-by").value;
-
-        let filtered = [...opportunities];
-
-        // Apply category filter
-        if (category !== "all") {
-          filtered = filtered.filter((opp) => opp.category === category);
+        if (filtered.length === 0) {
+          grid.classList.add("hidden");
+          noResults.classList.remove("hidden");
+        } else {
+          grid.innerHTML = filtered
+            .map((sponsor) => createSponsorCard(sponsor))
+            .join("");
+          grid.classList.remove("hidden");
+          noResults.classList.add("hidden");
         }
-
-        // Apply location filter
-        if (location !== "all") {
-          filtered = filtered.filter(
-            (opp) => opp.location.toLowerCase() === location
-          );
-        }
-
-        // Apply budget filter
-        if (budget !== "all") {
-          const [min, max] = budget.split("-").map(Number);
-          filtered = filtered.filter((opp) => {
-            if (budget === "10000+") return opp.budget >= 10000;
-            return opp.budget >= min && opp.budget <= (max || Infinity);
-          });
-        }
-
-        // Apply sorting
-        switch (sortBy) {
-          case "newest":
-            filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
-            break;
-          case "budget-high":
-            filtered.sort((a, b) => b.budget - a.budget);
-            break;
-          case "budget-low":
-            filtered.sort((a, b) => a.budget - b.budget);
-            break;
-          default:
-            filtered.sort((a, b) => b.matchScore - a.matchScore);
-        }
-
-        renderOpportunities(filtered);
       }
 
-      function viewDetails(id) {
-        // Here you would typically navigate to a detailed view page
-        alert(`Viewing details for opportunity ${id}`);
-      }
-
-      // Initial render
-      renderOpportunities();
-
-      // Mobile menu functionality
-      document.addEventListener("DOMContentLoaded", function () {
-        const mobileMenu = document.querySelector(".mobile-menu");
-        const navLinks = document.querySelector(".nav-links");
-        const navButtons = document.querySelector(".nav-buttons");
-
-        mobileMenu.addEventListener("click", function () {
-          // Create mobile menu overlay
-          const overlay = document.createElement("div");
-          overlay.style.position = "fixed";
-          overlay.style.top = "0";
-          overlay.style.left = "0";
-          overlay.style.width = "100%";
-          overlay.style.height = "100%";
-          overlay.style.background = "rgba(0, 0, 0, 0.5)";
-          overlay.style.zIndex = "999";
-          document.body.appendChild(overlay);
-
-          // Create mobile menu container
-          const mobileNav = document.createElement("div");
-          mobileNav.style.position = "fixed";
-          mobileNav.style.top = "0";
-          mobileNav.style.right = "0";
-          mobileNav.style.width = "250px";
-          mobileNav.style.height = "100%";
-          mobileNav.style.background = "white";
-          mobileNav.style.padding = "20px";
-          mobileNav.style.zIndex = "1000";
-          mobileNav.style.boxShadow = "-2px 0 10px rgba(0, 0, 0, 0.1)";
-
-          // Clone navigation links
-          const mobileLinks = navLinks.cloneNode(true);
-          mobileLinks.style.display = "flex";
-          mobileLinks.style.flexDirection = "column";
-          mobileLinks.style.gap = "1rem";
-          mobileLinks.style.marginTop = "2rem";
-
-          // Clone navigation buttons
-          const mobileButtons = navButtons.cloneNode(true);
-          mobileButtons.style.display = "flex";
-          mobileButtons.style.flexDirection = "column";
-          mobileButtons.style.gap = "1rem";
-          mobileButtons.style.marginTop = "2rem";
-
-          // Add close button
-          const closeButton = document.createElement("button");
-          closeButton.innerHTML = '<i class="fas fa-times"></i>';
-          closeButton.style.background = "none";
-          closeButton.style.border = "none";
-          closeButton.style.fontSize = "1.5rem";
-          closeButton.style.cursor = "pointer";
-          closeButton.style.alignSelf = "flex-end";
-
-          // Append elements to mobile menu
-          mobileNav.appendChild(closeButton);
-          mobileNav.appendChild(mobileLinks);
-          mobileNav.appendChild(mobileButtons);
-          document.body.appendChild(mobileNav);
-
-          // Close mobile menu
-          function closeMenu() {
-            overlay.remove();
-            mobileNav.remove();
-          }
-
-          closeButton.addEventListener("click", closeMenu);
-          overlay.addEventListener("click", closeMenu);
-        });
-      });
-
-      // Load sponsees when page loads
-      document.addEventListener("DOMContentLoaded", loadSponsees);
+      window.addEventListener("DOMContentLoaded", loadSponsors);
     </script>
+
     <script src="../../components/navbar.js"></script>
   </body>
 </html>

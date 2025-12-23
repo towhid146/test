@@ -295,7 +295,7 @@ function updateNavbarForUser() {
     // Sponsor logged in - show sponsors page
     navLinks = `
       <a href="${basePath}index.html" class="nav-link">Home</a>
-      <a href="${basePath}pages/events/sponsors.html" class="nav-link">Sponsors</a>
+      <a href="${basePath}pages/events/sponsee.html" class="nav-link">Sponsors</a>
       <a href="${basePath}about.html" class="nav-link">About</a>
       <a href="#" class="nav-link">Contact</a>
     `;
@@ -328,7 +328,7 @@ function updateNavbarForUser() {
 function logout() {
   localStorage.removeItem("userRole");
   localStorage.removeItem("userName");
-  window.location.href = "index.html";
+  window.location.href = "/index.html";
 }
 
 // Function to set active nav link based on current page

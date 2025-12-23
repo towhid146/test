@@ -1465,13 +1465,31 @@
           });
         }
 
-        // Load sponsee profile
-        const userId = localStorage.getItem("userId");
-        if (userId) {
-          loadSponseeProfile(userId);
+        // Load sponsee profile by URL id if present; else fallback to logged-in user
+        const params = new URLSearchParams(window.location.search);
+        const idParam = params.get("id");
+        const loggedInId = localStorage.getItem("userId");
+        const canEdit = idParam
+          ? loggedInId && idParam === loggedInId
+          : !!loggedInId;
+
+        // Hide edit controls if viewing another user's profile
+        if (!canEdit) {
+          const editButtons = document.querySelectorAll(
+            'button[onclick^="openEditModal"], button[onclick^="openImageUploadModal"]'
+          );
+          editButtons.forEach((btn) => (btn.style.display = "none"));
+        }
+
+        if (idParam) {
+          loadSponseeProfile(idParam);
         } else {
-          alert("Please log in first");
-          window.location.href = "index.html";
+          if (loggedInId) {
+            loadSponseeProfile(loggedInId);
+          } else {
+            alert("Please log in first");
+            window.location.href = "/index.html";
+          }
         }
 
         // Attach form submission handler

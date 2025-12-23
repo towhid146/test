@@ -3,263 +3,138 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>About Us - Sponsorship Connect</title>
-    <link rel="stylesheet" href="styles.css" />
+    <title>About - SponzoBD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
     <style>
-      .about-section {
-        padding: 8rem 5% 5rem;
-      }
-
-      .about-content {
-        max-width: 1200px;
-        margin: 0 auto;
-      }
-
-      .about-header {
-        text-align: center;
-        margin-bottom: 4rem;
-      }
-
-      .about-header h1 {
-        font-size: 3rem;
-        color: #1e293b;
-        margin-bottom: 1rem;
-      }
-
-      .about-header p {
-        font-size: 1.2rem;
-        color: #64748b;
-        max-width: 800px;
-        margin: 0 auto;
-      }
-
-      .mission-vision {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 2rem;
-        margin-bottom: 4rem;
-      }
-
-      .mission-card,
-      .vision-card {
-        background: white;
-        padding: 2rem;
-        border-radius: 10px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      }
-
-      .mission-card h2,
-      .vision-card h2 {
-        color: #1e293b;
-        margin-bottom: 1rem;
-        font-size: 1.8rem;
-      }
-
-      .mission-card p,
-      .vision-card p {
-        color: #64748b;
-        line-height: 1.8;
-      }
-
-      .team-section {
-        margin-bottom: 4rem;
-      }
-
-      .team-section h2 {
-        text-align: center;
-        margin-bottom: 2rem;
-        font-size: 2.5rem;
-        color: #1e293b;
-      }
-
-      .team-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 2rem;
-      }
-
-      .team-member {
-        text-align: center;
-      }
-
-      .team-member img {
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
-        margin-bottom: 1rem;
-        object-fit: cover;
-      }
-
-      .team-member h3 {
-        color: #1e293b;
-        margin-bottom: 0.5rem;
-      }
-
-      .team-member p {
-        color: #64748b;
-      }
-
-      .contact-section {
-        background: #f8fafc;
-        padding: 4rem 5%;
-        border-radius: 10px;
-      }
-
-      .contact-section h2 {
-        text-align: center;
-        margin-bottom: 2rem;
-        font-size: 2.5rem;
-        color: #1e293b;
-      }
-
-      .contact-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 2rem;
-        max-width: 1200px;
-        margin: 0 auto;
-      }
-
-      .contact-card {
-        text-align: center;
-        padding: 2rem;
-      }
-
-      .contact-card i {
-        font-size: 2rem;
-        color: #2563eb;
-        margin-bottom: 1rem;
-      }
-
-      .contact-card h3 {
-        color: #1e293b;
-        margin-bottom: 0.5rem;
-      }
-
-      .contact-card p {
-        color: #64748b;
-      }
-
-      @media (max-width: 768px) {
-        .mission-vision {
-          grid-template-columns: 1fr;
-        }
-
-        .about-header h1 {
-          font-size: 2rem;
-        }
+      body {
+        font-family: "Poppins", sans-serif;
       }
     </style>
   </head>
-  <body>
-    <!-- Navigation Bar (Loaded Dynamically) -->
+  <body
+    class="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50"
+  >
+    <div id="navbar"></div>
 
-    <section class="about-section">
-      <div class="about-content">
-        <div class="about-header">
-          <h1>About Sponsorship Connect</h1>
-          <p>
-            We're on a mission to revolutionize how sponsors and projects
-            connect, making sponsorship opportunities accessible to everyone.
+    <main class="pt-24 pb-16 px-4">
+      <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="mb-12 text-center">
+          <h1 class="text-4xl font-bold text-gray-900 mb-3">About SponzoBD</h1>
+          <p class="text-gray-600 text-lg max-w-3xl mx-auto">
+            We're on a mission to connect sponsors with impactful events and
+            projects, making sponsorship opportunities accessible to everyone.
           </p>
         </div>
 
-        <div class="mission-vision">
-          <div class="mission-card">
-            <h2>Our Mission</h2>
-            <p>
+        <!-- Mission & Vision -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+          <div
+            class="bg-white/90 backdrop-blur-lg border border-purple-100 rounded-xl shadow-lg p-6"
+          >
+            <h2 class="text-xl font-semibold text-gray-900 mb-2">
+              Our Mission
+            </h2>
+            <p class="text-gray-600 leading-7">
               To create a transparent and efficient platform that connects
               sponsors with meaningful projects, fostering growth and innovation
               across various industries.
             </p>
           </div>
-          <div class="vision-card">
-            <h2>Our Vision</h2>
-            <p>
-              To become the world's leading platform for sponsorship
-              connections, empowering both sponsors and sponsees to achieve
-              their goals through meaningful partnerships.
+          <div
+            class="bg-white/90 backdrop-blur-lg border border-purple-100 rounded-xl shadow-lg p-6"
+          >
+            <h2 class="text-xl font-semibold text-gray-900 mb-2">Our Vision</h2>
+            <p class="text-gray-600 leading-7">
+              To become the leading platform for sponsorship connections,
+              empowering both sponsors and sponsees to achieve their goals
+              through meaningful partnerships.
             </p>
           </div>
         </div>
 
-        <div class="team-section">
-          <h2>Our Team</h2>
-          <div class="team-grid">
-            <div class="team-member">
-              <img src="https://via.placeholder.com/150" alt="Team Member" />
-              <h3>John Doe</h3>
-              <p>Founder & CEO</p>
+        <!-- Team -->
+        <div class="mb-12">
+          <h2 class="text-2xl font-semibold text-gray-900 mb-6 text-center">
+            Our Team
+          </h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div
+              class="bg-white/90 backdrop-blur-lg border border-purple-100 rounded-xl shadow p-6 text-center"
+            >
+              <img
+                class="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
+                src="https://via.placeholder.com/150"
+                alt="Team Member"
+              />
+              <h3 class="text-lg font-semibold text-gray-900">John Doe</h3>
+              <p class="text-gray-600">Founder & CEO</p>
             </div>
-            <div class="team-member">
-              <img src="https://via.placeholder.com/150" alt="Team Member" />
-              <h3>Jane Smith</h3>
-              <p>Head of Operations</p>
+            <div
+              class="bg-white/90 backdrop-blur-lg border border-purple-100 rounded-xl shadow p-6 text-center"
+            >
+              <img
+                class="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
+                src="https://via.placeholder.com/150"
+                alt="Team Member"
+              />
+              <h3 class="text-lg font-semibold text-gray-900">Jane Smith</h3>
+              <p class="text-gray-600">Head of Operations</p>
             </div>
-            <div class="team-member">
-              <img src="https://via.placeholder.com/150" alt="Team Member" />
-              <h3>Mike Johnson</h3>
-              <p>Lead Developer</p>
+            <div
+              class="bg-white/90 backdrop-blur-lg border border-purple-100 rounded-xl shadow p-6 text-center"
+            >
+              <img
+                class="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
+                src="https://via.placeholder.com/150"
+                alt="Team Member"
+              />
+              <h3 class="text-lg font-semibold text-gray-900">Mike Johnson</h3>
+              <p class="text-gray-600">Lead Developer</p>
             </div>
           </div>
         </div>
 
-        <div class="contact-section">
-          <h2>Get in Touch</h2>
-          <div class="contact-grid">
-            <div class="contact-card">
-              <i class="fas fa-envelope"></i>
-              <h3>Email Us</h3>
-              <p>info@sponsorshipconnect.com</p>
+        <!-- Contact -->
+        <div
+          class="bg-white/90 backdrop-blur-lg border border-purple-100 rounded-xl shadow-lg p-6"
+        >
+          <h2 class="text-2xl font-semibold text-gray-900 mb-6 text-center">
+            Get in Touch
+          </h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="text-center p-4">
+              <i class="fas fa-envelope text-2xl text-purple-600 mb-2"></i>
+              <h3 class="text-lg font-medium text-gray-900">Email Us</h3>
+              <p class="text-gray-600">info@sponzobd.com</p>
             </div>
-            <div class="contact-card">
-              <i class="fas fa-phone"></i>
-              <h3>Call Us</h3>
-              <p>+1 (555) 123-4567</p>
+            <div class="text-center p-4">
+              <i class="fas fa-phone text-2xl text-purple-600 mb-2"></i>
+              <h3 class="text-lg font-medium text-gray-900">Call Us</h3>
+              <p class="text-gray-600">+880 1234 567 890</p>
             </div>
-            <div class="contact-card">
-              <i class="fas fa-map-marker-alt"></i>
-              <h3>Visit Us</h3>
-              <p>123 Business Street, City, Country</p>
+            <div class="text-center p-4">
+              <i
+                class="fas fa-map-marker-alt text-2xl text-purple-600 mb-2"
+              ></i>
+              <h3 class="text-lg font-medium text-gray-900">Visit Us</h3>
+              <p class="text-gray-600">Dhaka, Bangladesh</p>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </main>
 
-    <footer>
-      <div class="footer-content">
-        <div class="footer-section">
-          <h4>About Us</h4>
-          <p>Connecting sponsors with amazing opportunities since 2024</p>
-        </div>
-        <div class="footer-section">
-          <h4>Quick Links</h4>
-          <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">For Sponsors</a></li>
-            <li><a href="#">For Sponsees</a></li>
-            <li><a href="#">About</a></li>
-          </ul>
-        </div>
-        <div class="footer-section">
-          <h4>Contact Us</h4>
-          <p>Email: info@sponsorshipconnect.com</p>
-          <div class="social-links">
-            <a href="#"><i class="fab fa-facebook"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
-            <a href="#"><i class="fab fa-linkedin"></i></a>
-          </div>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>&copy; 2024 Sponsorship Connect. All rights reserved.</p>
-      </div>
-    </footer>
     <script src="components/navbar.js"></script>
   </body>
 </html>
