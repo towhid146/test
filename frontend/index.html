@@ -264,15 +264,16 @@
       }
 
       .outline-button {
-        padding: 16px 40px;
+        padding: 16px 32px;
         font-weight: 600;
-        font-size: 1rem;
+        font-size: 0.95rem;
         color: white;
         background: transparent;
         border: 2px solid rgba(255, 255, 255, 0.3);
         border-radius: 50px;
         cursor: pointer;
         transition: all 0.3s ease;
+        min-width: 220px;
       }
 
       .outline-button:hover {
@@ -865,7 +866,7 @@
             <div class="flex flex-col sm:flex-row gap-4 mb-12">
               <a
                 href="/pages/auth/sponsor-signup.html"
-                class="glow-button text-center"
+                class="glow-button text-center min-w-[220px]"
               >
                 <i class="fas fa-building mr-2"></i>I'm a Sponsor
               </a>
@@ -873,7 +874,8 @@
                 href="/pages/auth/sponsee-signup.html"
                 class="outline-button text-center"
               >
-                <i class="fas fa-rocket mr-2"></i>I'm a Sponsee
+                <i class="fas fa-rocket mr-2"></i>I'm a Sponsee /
+                Micro-Influencer
               </a>
             </div>
 
