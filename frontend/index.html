@@ -1609,6 +1609,16 @@
         offset: 100,
       });
 
+      // Update navbar immediately when DOM is ready
+      document.addEventListener("DOMContentLoaded", function () {
+        updateNavbarForUser();
+      });
+
+      // Also update when page fully loads (for cache/refresh scenarios)
+      window.addEventListener("load", function () {
+        updateNavbarForUser();
+      });
+
       // Navbar scroll effect
       window.addEventListener("scroll", function () {
         const navbar = document.getElementById("navbar");
