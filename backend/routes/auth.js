@@ -14,6 +14,8 @@ const {
   forgotPassword,
   verifyResetCode,
   resetPassword,
+  googleAuth,
+  facebookAuth,
 } = require("../controllers/authController");
 
 // Sponsor routes
@@ -34,5 +36,9 @@ router.get("/sponsees", getAllSponsees);
 router.post("/forgot-password", forgotPassword);
 router.post("/verify-reset-code", verifyResetCode);
 router.post("/reset-password", resetPassword);
+
+// Social auth routes
+router.post("/google", googleAuth);
+router.post("/facebook", facebookAuth);
 
 module.exports = router;

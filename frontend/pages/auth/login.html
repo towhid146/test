@@ -348,14 +348,50 @@
       </div>
 
       <div class="grid grid-cols-2 gap-4 mb-6">
-        <button class="social-btn">
+        <button type="button" id="googleBtn" class="social-btn">
           <i class="fab fa-google text-lg"></i>
           Google
         </button>
-        <button class="social-btn">
+        <button type="button" id="facebookBtn" class="social-btn">
           <i class="fab fa-facebook text-lg"></i>
           Facebook
         </button>
+      </div>
+
+      <!-- User Type Selection Modal for Social Auth -->
+      <div
+        id="userTypeModal"
+        style="display: none"
+        class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center"
+      >
+        <div class="glass-card p-8 max-w-sm w-full mx-4">
+          <h3 class="text-xl font-bold text-white mb-4 text-center">
+            Choose Account Type
+          </h3>
+          <p class="text-gray-400 text-center mb-6">
+            Select how you want to use SponzoBD
+          </p>
+          <div class="space-y-3">
+            <button
+              id="selectSponsor"
+              class="w-full py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-xl font-semibold hover:shadow-lg transition"
+            >
+              <i class="fas fa-building mr-2"></i>I'm a Sponsor
+            </button>
+            <button
+              id="selectSponsee"
+              class="w-full py-3 bg-gradient-to-r from-pink-600 to-pink-700 text-white rounded-xl font-semibold hover:shadow-lg transition"
+            >
+              <i class="fas fa-calendar-alt mr-2"></i>I'm a Sponsee
+            </button>
+          </div>
+          <button
+            id="cancelTypeSelect"
+            class="w-full mt-4 py-2 text-gray-400 hover:text-white transition"
+          >
+            Cancel
+          </button>
+        </div>
       </div>
 
       <p class="text-center text-gray-400">
@@ -504,6 +540,187 @@
           errorMessage.style.display = "block";
         }
       });
+
+      // Social Auth Variables
+      let pendingSocialAuth = null;
+      const userTypeModal = document.getElementById("userTypeModal");
+      const googleBtn = document.getElementById("googleBtn");
+      const facebookBtn = document.getElementById("facebookBtn");
+      const selectSponsor = document.getElementById("selectSponsor");
+      const selectSponsee = document.getElementById("selectSponsee");
+      const cancelTypeSelect = document.getElementById("cancelTypeSelect");
+
+      // Google Sign-In
+      googleBtn.addEventListener("click", function () {
+        // Initialize Google Sign-In
+        const clientId = "YOUR_GOOGLE_CLIENT_ID"; // Replace with actual Google Client ID
+
+        // For demo purposes, we'll simulate Google auth
+        // In production, you would use the Google Identity Services library
+        pendingSocialAuth = { provider: "google" };
+        userTypeModal.style.display = "flex";
+      });
+
+      // Facebook Sign-In
+      facebookBtn.addEventListener("click", function () {
+        pendingSocialAuth = { provider: "facebook" };
+        userTypeModal.style.display = "flex";
+      });
+
+      // Cancel type selection
+      cancelTypeSelect.addEventListener("click", function () {
+        userTypeModal.style.display = "none";
+        pendingSocialAuth = null;
+      });
+
+      // Select Sponsor
+      selectSponsor.addEventListener("click", async function () {
+        await processSocialAuth("sponsor");
+      });
+
+      // Select Sponsee
+      selectSponsee.addEventListener("click", async function () {
+        await processSocialAuth("sponsee");
+      });
+
+      async function processSocialAuth(userType) {
+        if (!pendingSocialAuth) return;
+
+        userTypeModal.style.display = "none";
+
+        try {
+          // For demo/testing, create a simulated social auth response
+          // In production, this would be real OAuth data from Google/Facebook
+          const mockSocialData = {
+            provider: pendingSocialAuth.provider,
+            userType: userType,
+            // Simulated user data - in production this comes from OAuth provider
+            credential: btoa(
+              JSON.stringify({
+                sub: `${pendingSocialAuth.provider}_${Date.now()}`,
+                email: `demo_${Date.now()}@example.com`,
+                name: "Demo User",
+                picture:
+                  "https://ui-avatars.com/api/?name=Demo+User&background=7c3aed&color=fff",
+              })
+            ),
+          };
+
+          if (pendingSocialAuth.provider === "google") {
+            await handleGoogleAuth(mockSocialData, userType);
+          } else if (pendingSocialAuth.provider === "facebook") {
+            await handleFacebookAuth(mockSocialData, userType);
+          }
+        } catch (error) {
+          console.error("Social auth error:", error);
+          errorMessage.textContent =
+            "Social authentication failed. Please try again.";
+          errorMessage.style.display = "block";
+        }
+
+        pendingSocialAuth = null;
+      }
+
+      async function handleGoogleAuth(data, userType) {
+        try {
+          const response = await fetch(`${API_URL}/auth/google`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              credential: data.credential,
+              userType: userType,
+            }),
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            // Store auth data
+            localStorage.setItem("authToken", result.token);
+            localStorage.setItem("userRole", userType);
+            localStorage.setItem("userId", result.user.id);
+            localStorage.setItem(
+              "userName",
+              result.user.companyName ||
+                result.user.eventName ||
+                result.user.email
+            );
+
+            successMessage.textContent = result.message + " Redirecting...";
+            successMessage.style.display = "block";
+
+            setTimeout(() => {
+              if (userType === "sponsor") {
+                window.location.href = result.isNewUser
+                  ? "../profiles/sponsor-profile.html"
+                  : "../profiles/sponsor-profile.html";
+              } else {
+                window.location.href = result.isNewUser
+                  ? "../profiles/sponsee-profile.html"
+                  : "../profiles/sponsee-profile.html";
+              }
+            }, 1500);
+          } else {
+            throw new Error(result.message);
+          }
+        } catch (error) {
+          throw error;
+        }
+      }
+
+      async function handleFacebookAuth(data, userType) {
+        try {
+          // Parse the mock credential
+          const userData = JSON.parse(atob(data.credential));
+
+          const response = await fetch(`${API_URL}/auth/facebook`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              accessToken: "mock_token",
+              userID: userData.sub,
+              name: userData.name,
+              email: userData.email,
+              picture: userData.picture,
+              userType: userType,
+            }),
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            // Store auth data
+            localStorage.setItem("authToken", result.token);
+            localStorage.setItem("userRole", userType);
+            localStorage.setItem("userId", result.user.id);
+            localStorage.setItem(
+              "userName",
+              result.user.companyName ||
+                result.user.eventName ||
+                result.user.email
+            );
+
+            successMessage.textContent = result.message + " Redirecting...";
+            successMessage.style.display = "block";
+
+            setTimeout(() => {
+              if (userType === "sponsor") {
+                window.location.href = "../profiles/sponsor-profile.html";
+              } else {
+                window.location.href = "../profiles/sponsee-profile.html";
+              }
+            }, 1500);
+          } else {
+            throw new Error(result.message);
+          }
+        } catch (error) {
+          throw error;
+        }
+      }
     </script>
   </body>
 </html>

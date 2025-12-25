@@ -77,6 +77,28 @@ const sponseeSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    // Social Auth Fields
+    socialAuth: {
+      google: {
+        id: { type: String, default: null },
+        email: { type: String, default: null },
+        name: { type: String, default: null },
+        picture: { type: String, default: null },
+      },
+      facebook: {
+        id: { type: String, default: null },
+        email: { type: String, default: null },
+        name: { type: String, default: null },
+        picture: { type: String, default: null },
+      },
+    },
+    // Social Links
+    socialLinks: {
+      linkedin: { type: String, default: "" },
+      twitter: { type: String, default: "" },
+      facebook: { type: String, default: "" },
+      instagram: { type: String, default: "" },
+    },
     createdAt: {
       type: Date,
       default: Date.now,
@@ -105,4 +127,58 @@ sponseeSchema.methods.comparePassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
+// Method to calculate profile completion percentage
+sponseeSchema.methods.getProfileCompletion = function () {
+  const fields = [
+    { name: "eventName", weight: 10 },
+    { name: "email", weight: 10 },
+    { name: "contactPerson", weight: 10 },
+    { name: "phone", weight: 10 },
+    { name: "organization", weight: 10 },
+    { name: "location", weight: 10 },
+    { name: "description", weight: 10 },
+    { name: "expectedAttendees", weight: 5 },
+    { name: "eventType", weight: 5, isArray: true },
+    { name: "categories", weight: 5, isArray: true },
+    { name: "budget", weight: 5 },
+    { name: "website", weight: 3 },
+    { name: "logo", weight: 3 },
+    { name: "coverPhoto", weight: 2 },
+    { name: "socialLinks.linkedin", weight: 1 },
+    { name: "socialLinks.twitter", weight: 1 },
+  ];
+
+  let totalWeight = 0;
+  let completedWeight = 0;
+  const missingFields = [];
+
+  fields.forEach((field) => {
+    totalWeight += field.weight;
+    let value;
+
+    if (field.name.includes(".")) {
+      const parts = field.name.split(".");
+      value = this[parts[0]] ? this[parts[0]][parts[1]] : null;
+    } else {
+      value = this[field.name];
+    }
+
+    const isCompleted = field.isArray
+      ? Array.isArray(value) && value.length > 0
+      : value && value !== "" && value !== 0;
+
+    if (isCompleted) {
+      completedWeight += field.weight;
+    } else {
+      missingFields.push(field.name);
+    }
+  });
+
+  return {
+    percentage: Math.round((completedWeight / totalWeight) * 100),
+    missingFields,
+    completedFields: fields.length - missingFields.length,
+    totalFields: fields.length,
+  };
+};
 module.exports = mongoose.model("Sponsee", sponseeSchema);

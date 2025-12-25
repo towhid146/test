@@ -298,9 +298,14 @@ const getSponsor = async (req, res) => {
         message: "Sponsor not found",
       });
     }
+
+    // Get profile completion
+    const profileCompletion = sponsor.getProfileCompletion();
+
     res.status(200).json({
       success: true,
       data: sponsor,
+      profileCompletion,
     });
   } catch (error) {
     res.status(500).json({
@@ -320,9 +325,14 @@ const getSponsee = async (req, res) => {
         message: "Sponsee not found",
       });
     }
+
+    // Get profile completion
+    const profileCompletion = sponsee.getProfileCompletion();
+
     res.status(200).json({
       success: true,
       data: sponsee,
+      profileCompletion,
     });
   } catch (error) {
     res.status(500).json({
@@ -350,6 +360,7 @@ const updateSponsee = async (req, res) => {
       website,
       logo,
       coverPhoto,
+      socialLinks,
     } = req.body;
 
     const sponsee = await Sponsee.findById(id);
@@ -378,13 +389,23 @@ const updateSponsee = async (req, res) => {
     if (website) sponsee.website = website;
     if (logo) sponsee.logo = logo;
     if (coverPhoto) sponsee.coverPhoto = coverPhoto;
+    if (socialLinks) {
+      sponsee.socialLinks = {
+        ...sponsee.socialLinks,
+        ...socialLinks,
+      };
+    }
 
     await sponsee.save();
+
+    // Get updated profile completion
+    const profileCompletion = sponsee.getProfileCompletion();
 
     res.status(200).json({
       success: true,
       message: "Sponsee profile updated successfully",
       data: sponsee,
+      profileCompletion,
     });
   } catch (error) {
     console.error("Update error:", error);
@@ -411,6 +432,7 @@ const updateSponsor = async (req, res) => {
       website,
       logo,
       coverPhoto,
+      socialLinks,
     } = req.body;
 
     const sponsor = await Sponsor.findById(id);
@@ -436,13 +458,23 @@ const updateSponsor = async (req, res) => {
     if (website) sponsor.website = website;
     if (logo) sponsor.logo = logo;
     if (coverPhoto) sponsor.coverPhoto = coverPhoto;
+    if (socialLinks) {
+      sponsor.socialLinks = {
+        ...sponsor.socialLinks,
+        ...socialLinks,
+      };
+    }
 
     await sponsor.save();
+
+    // Get updated profile completion
+    const profileCompletion = sponsor.getProfileCompletion();
 
     res.status(200).json({
       success: true,
       message: "Sponsor profile updated successfully",
       data: sponsor,
+      profileCompletion,
     });
   } catch (error) {
     console.error("Update error:", error);
@@ -655,6 +687,306 @@ const resetPassword = async (req, res) => {
   }
 };
 
+// Google Social Auth
+const googleAuth = async (req, res) => {
+  try {
+    const { credential, userType } = req.body;
+
+    if (!credential || !userType) {
+      return res.status(400).json({
+        success: false,
+        message: "Google credential and user type are required",
+      });
+    }
+
+    // Decode Google JWT token (in production, verify with Google API)
+    const base64Payload = credential.split(".")[1];
+    const payload = JSON.parse(Buffer.from(base64Payload, "base64").toString());
+
+    const { sub: googleId, email, name, picture } = payload;
+
+    let user;
+    let isNewUser = false;
+
+    if (userType === "sponsor") {
+      // Check if user exists with this Google ID or email
+      user = await Sponsor.findOne({
+        $or: [{ "socialAuth.google.id": googleId }, { email: email }],
+      });
+
+      if (!user) {
+        // Create new sponsor with Google data
+        user = new Sponsor({
+          companyName: name,
+          email: email,
+          password: require("crypto").randomBytes(32).toString("hex"), // Random password for social auth
+          phone: "Not provided",
+          industry: "Not specified",
+          location: "Not specified",
+          budget: 0,
+          focusAreas: ["General"],
+          logo: picture,
+          socialAuth: {
+            google: {
+              id: googleId,
+              email: email,
+              name: name,
+              picture: picture,
+            },
+          },
+        });
+        await user.save();
+        isNewUser = true;
+      } else if (!user.socialAuth?.google?.id) {
+        // Link Google account to existing user
+        user.socialAuth = user.socialAuth || {};
+        user.socialAuth.google = {
+          id: googleId,
+          email: email,
+          name: name,
+          picture: picture,
+        };
+        await user.save();
+      }
+
+      const token = generateToken(user._id, "sponsor");
+      const profileCompletion = user.getProfileCompletion();
+
+      return res.status(200).json({
+        success: true,
+        message: isNewUser ? "Account created with Google" : "Login successful",
+        token,
+        isNewUser,
+        user: {
+          id: user._id,
+          companyName: user.companyName,
+          email: user.email,
+          userType: "sponsor",
+        },
+        profileCompletion,
+      });
+    } else if (userType === "sponsee") {
+      // Check if user exists with this Google ID or email
+      user = await Sponsee.findOne({
+        $or: [{ "socialAuth.google.id": googleId }, { email: email }],
+      });
+
+      if (!user) {
+        // Create new sponsee with Google data
+        user = new Sponsee({
+          eventName: name + "'s Event",
+          email: email,
+          password: require("crypto").randomBytes(32).toString("hex"),
+          contactPerson: name,
+          phone: "Not provided",
+          organization: "Not specified",
+          location: "Not specified",
+          expectedAttendees: 0,
+          eventType: ["General"],
+          categories: ["General"],
+          budget: 0,
+          logo: picture,
+          socialAuth: {
+            google: {
+              id: googleId,
+              email: email,
+              name: name,
+              picture: picture,
+            },
+          },
+        });
+        await user.save();
+        isNewUser = true;
+      } else if (!user.socialAuth?.google?.id) {
+        // Link Google account to existing user
+        user.socialAuth = user.socialAuth || {};
+        user.socialAuth.google = {
+          id: googleId,
+          email: email,
+          name: name,
+          picture: picture,
+        };
+        await user.save();
+      }
+
+      const token = generateToken(user._id, "sponsee");
+      const profileCompletion = user.getProfileCompletion();
+
+      return res.status(200).json({
+        success: true,
+        message: isNewUser ? "Account created with Google" : "Login successful",
+        token,
+        isNewUser,
+        user: {
+          id: user._id,
+          eventName: user.eventName,
+          email: user.email,
+          userType: "sponsee",
+        },
+        profileCompletion,
+      });
+    }
+  } catch (error) {
+    console.error("Google auth error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Social authentication failed",
+    });
+  }
+};
+
+// Facebook Social Auth
+const facebookAuth = async (req, res) => {
+  try {
+    const { accessToken, userID, name, email, picture, userType } = req.body;
+
+    if (!accessToken || !userID || !userType) {
+      return res.status(400).json({
+        success: false,
+        message: "Facebook credentials and user type are required",
+      });
+    }
+
+    let user;
+    let isNewUser = false;
+
+    if (userType === "sponsor") {
+      // Check if user exists with this Facebook ID or email
+      user = await Sponsor.findOne({
+        $or: [
+          { "socialAuth.facebook.id": userID },
+          ...(email ? [{ email: email }] : []),
+        ],
+      });
+
+      if (!user) {
+        // Create new sponsor with Facebook data
+        user = new Sponsor({
+          companyName: name,
+          email: email || `fb_${userID}@placeholder.com`,
+          password: require("crypto").randomBytes(32).toString("hex"),
+          phone: "Not provided",
+          industry: "Not specified",
+          location: "Not specified",
+          budget: 0,
+          focusAreas: ["General"],
+          logo: picture,
+          socialAuth: {
+            facebook: {
+              id: userID,
+              email: email,
+              name: name,
+              picture: picture,
+            },
+          },
+        });
+        await user.save();
+        isNewUser = true;
+      } else if (!user.socialAuth?.facebook?.id) {
+        // Link Facebook account to existing user
+        user.socialAuth = user.socialAuth || {};
+        user.socialAuth.facebook = {
+          id: userID,
+          email: email,
+          name: name,
+          picture: picture,
+        };
+        await user.save();
+      }
+
+      const token = generateToken(user._id, "sponsor");
+      const profileCompletion = user.getProfileCompletion();
+
+      return res.status(200).json({
+        success: true,
+        message: isNewUser
+          ? "Account created with Facebook"
+          : "Login successful",
+        token,
+        isNewUser,
+        user: {
+          id: user._id,
+          companyName: user.companyName,
+          email: user.email,
+          userType: "sponsor",
+        },
+        profileCompletion,
+      });
+    } else if (userType === "sponsee") {
+      // Check if user exists with this Facebook ID or email
+      user = await Sponsee.findOne({
+        $or: [
+          { "socialAuth.facebook.id": userID },
+          ...(email ? [{ email: email }] : []),
+        ],
+      });
+
+      if (!user) {
+        // Create new sponsee with Facebook data
+        user = new Sponsee({
+          eventName: name + "'s Event",
+          email: email || `fb_${userID}@placeholder.com`,
+          password: require("crypto").randomBytes(32).toString("hex"),
+          contactPerson: name,
+          phone: "Not provided",
+          organization: "Not specified",
+          location: "Not specified",
+          expectedAttendees: 0,
+          eventType: ["General"],
+          categories: ["General"],
+          budget: 0,
+          logo: picture,
+          socialAuth: {
+            facebook: {
+              id: userID,
+              email: email,
+              name: name,
+              picture: picture,
+            },
+          },
+        });
+        await user.save();
+        isNewUser = true;
+      } else if (!user.socialAuth?.facebook?.id) {
+        // Link Facebook account to existing user
+        user.socialAuth = user.socialAuth || {};
+        user.socialAuth.facebook = {
+          id: userID,
+          email: email,
+          name: name,
+          picture: picture,
+        };
+        await user.save();
+      }
+
+      const token = generateToken(user._id, "sponsee");
+      const profileCompletion = user.getProfileCompletion();
+
+      return res.status(200).json({
+        success: true,
+        message: isNewUser
+          ? "Account created with Facebook"
+          : "Login successful",
+        token,
+        isNewUser,
+        user: {
+          id: user._id,
+          eventName: user.eventName,
+          email: user.email,
+          userType: "sponsee",
+        },
+        profileCompletion,
+      });
+    }
+  } catch (error) {
+    console.error("Facebook auth error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Social authentication failed",
+    });
+  }
+};
+
 module.exports = {
   sponsorRegister,
   sponsorLogin,
@@ -669,4 +1001,6 @@ module.exports = {
   forgotPassword,
   verifyResetCode,
   resetPassword,
+  googleAuth,
+  facebookAuth,
 };
