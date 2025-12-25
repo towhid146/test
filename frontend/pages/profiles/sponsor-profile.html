@@ -5,165 +5,161 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sponsor Profile - SponzoBD</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <style>
-      /* Navigation Styles */
-      .navbar {
-        background: #ffffff;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        padding: 1rem 0;
-        position: sticky;
-        top: 0;
-        z-index: 1000;
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font-family: "Inter", sans-serif; overflow-x: hidden; }
+      ::-webkit-scrollbar { width: 8px; }
+      ::-webkit-scrollbar-track { background: #1a1a2e; }
+      ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #7c3aed, #a855f7); border-radius: 10px; }
+      .page-bg {
+        background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #1a1a2e);
+        background-size: 400% 400%;
+        animation: gradientShift 15s ease infinite;
+        min-height: 100vh;
       }
-
-      .nav-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+      @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
       }
-
-      .nav-logo {
-        display: flex;
-        align-items: center;
-        text-decoration: none;
-        color: #4a90e2;
-        font-size: 1.5rem;
-        font-weight: 700;
+      .particles { position: fixed; width: 100%; height: 100%; overflow: hidden; top: 0; left: 0; pointer-events: none; z-index: 0; }
+      .particle { position: absolute; width: 6px; height: 6px; background: rgba(124, 58, 237, 0.4); border-radius: 50%; animation: floatParticle 20s infinite; }
+      .particle:nth-child(1) { left: 10%; animation-delay: 0s; }
+      .particle:nth-child(2) { left: 30%; animation-delay: 2s; }
+      .particle:nth-child(3) { left: 50%; animation-delay: 4s; }
+      .particle:nth-child(4) { left: 70%; animation-delay: 1s; }
+      .particle:nth-child(5) { left: 90%; animation-delay: 3s; }
+      @keyframes floatParticle {
+        0% { transform: translateY(100vh) scale(0); opacity: 0; }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% { transform: translateY(-100vh) scale(1); opacity: 0; }
       }
-
-      .nav-logo i {
-        margin-right: 10px;
-        font-size: 1.8rem;
+      .glass-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        transition: all 0.4s ease;
       }
-
-      .nav-links {
-        display: flex;
-        gap: 2rem;
-        align-items: center;
+      .glass-card:hover {
+        border-color: rgba(124, 58, 237, 0.3);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
       }
-
-      .nav-link {
-        text-decoration: none;
-        color: #333;
-        font-weight: 500;
-        transition: color 0.3s ease;
-        position: relative;
+      .gradient-text {
+        background: linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #ec4899 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
       }
-
-      .nav-link:hover {
-        color: #4a90e2;
+      .orb { position: fixed; border-radius: 50%; filter: blur(80px); opacity: 0.3; animation: orbFloat 8s ease-in-out infinite; pointer-events: none; z-index: 0; }
+      .orb-1 { width: 350px; height: 350px; background: linear-gradient(135deg, #7c3aed, #a855f7); top: -100px; right: -100px; }
+      .orb-2 { width: 280px; height: 280px; background: linear-gradient(135deg, #ec4899, #f97316); bottom: -80px; left: -80px; animation-delay: 2s; }
+      @keyframes orbFloat { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(30px, 30px) scale(1.1); } }
+      .profile-section {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 1.5rem;
       }
-
-      .nav-link::after {
-        content: "";
-        position: absolute;
-        width: 0;
-        height: 2px;
-        bottom: -5px;
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        z-index: 2000;
         left: 0;
-        background-color: #4a90e2;
-        transition: width 0.3s ease;
-      }
-
-      .nav-link:hover::after {
+        top: 0;
         width: 100%;
-      }
-
-      .nav-buttons {
-        display: flex;
-        gap: 1rem;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(5px);
+        overflow: auto;
+        justify-content: center;
         align-items: center;
       }
-
-      .nav-button {
-        padding: 0.5rem 1.2rem;
-        border-radius: 5px;
-        font-weight: 500;
-        text-decoration: none;
+      .modal-content {
+        background: linear-gradient(145deg, #1a1a2e, #16162a);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 30px;
+        border-radius: 20px;
+        width: 90%;
+        max-width: 500px;
+        position: relative;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+      }
+      .modal-input {
+        width: 100%;
+        padding: 12px 16px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        color: white;
+        font-size: 0.95rem;
         transition: all 0.3s ease;
       }
-
-      .nav-button.login {
-        color: #4a90e2;
-        border: 2px solid #4a90e2;
+      .modal-input:focus {
+        outline: none;
+        border-color: rgba(124, 58, 237, 0.5);
+        box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
       }
-
-      .nav-button.login:hover {
-        background: #4a90e2;
+      .modal-input::placeholder { color: rgba(255, 255, 255, 0.4); }
+      .modal-label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #d1d5db;
+        margin-bottom: 0.5rem;
+      }
+      .btn-gradient {
+        background: linear-gradient(135deg, #7c3aed, #a855f7);
         color: white;
-      }
-
-      .nav-button.signup {
-        background: #4a90e2;
-        color: white;
-      }
-
-      .nav-button.signup:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(74, 144, 226, 0.2);
-      }
-
-      .mobile-menu {
-        display: none;
-        font-size: 1.5rem;
-        color: #333;
+        padding: 12px 24px;
+        border-radius: 12px;
+        font-weight: 600;
+        border: none;
         cursor: pointer;
+        transition: all 0.3s ease;
+        width: 100%;
       }
-
-      @media (max-width: 768px) {
-        .nav-links {
-          display: none;
-        }
-
-        .mobile-menu {
-          display: block;
-        }
-
-        .nav-buttons {
-          display: none;
-        }
+      .btn-gradient:hover {
+        box-shadow: 0 10px 20px rgba(124, 58, 237, 0.3);
+        transform: translateY(-2px);
       }
     </style>
   </head>
-  <body class="min-h-screen bg-gray-50">
-    <!-- Navigation Bar (Loaded Dynamically) -->
+  <body class="page-bg">
+    <div class="particles">
+      <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+      <div class="particle"></div><div class="particle"></div>
+    </div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <div id="navbar"></div>
 
     <!-- Main Content -->
-    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-28">
       <!-- Profile Header -->
-      <div class="bg-white rounded-lg shadow overflow-hidden mb-6">
-        <div class="relative h-48 bg-blue-600">
+      <div class="glass-card overflow-hidden mb-6" data-aos="fade-up">
+        <div class="relative h-48 bg-gradient-to-br from-purple-900/50 to-pink-900/50">
           <img
             id="coverPhoto"
             src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&h=400&q=80"
             alt="Cover Image"
-            class="w-full h-full object-cover"
+            class="w-full h-full object-cover opacity-80"
           />
           <button
             type="button"
             onclick="openImageUploadModal('cover')"
-            class="absolute bottom-4 right-4 bg-white p-2 rounded-full shadow hover:bg-gray-100"
+            class="absolute bottom-4 right-4 bg-white/10 backdrop-blur-md p-2 rounded-full border border-white/20 hover:bg-white/20 transition"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5 text-gray-600"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"
-              />
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
             </svg>
           </button>
         </div>
@@ -174,111 +170,73 @@
                 id="profilePicture"
                 src="https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&w=128&h=128&q=80"
                 alt="Company Logo"
-                class="w-32 h-32 rounded-lg border-4 border-white shadow-lg bg-white object-cover"
+                class="w-32 h-32 rounded-xl border-4 border-[#1a1a2e] shadow-xl bg-[#1a1a2e] object-cover"
               />
               <button
                 type="button"
                 onclick="openImageUploadModal('profile')"
-                class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                class="absolute inset-0 flex items-center justify-center bg-black/60 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"
               >
                 <i class="fas fa-camera text-white text-2xl"></i>
               </button>
             </div>
           </div>
           <div class="mt-16">
-            <h1 id="companyName" class="text-2xl font-bold text-gray-900">
-              Loading...
-            </h1>
-            <p id="industry" class="text-gray-600">Loading...</p>
+            <h1 id="companyName" class="text-2xl font-bold text-white font-space">Loading...</h1>
+            <p id="industry" class="text-purple-400">Loading...</p>
           </div>
         </div>
       </div>
 
       <!-- Profile Content -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div id="profile-container" class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <!-- Left Column -->
         <div class="md:col-span-1 space-y-6">
           <!-- Contact Information -->
-          <div class="bg-white rounded-lg shadow p-6">
+          <div class="profile-section" data-aos="fade-up" data-aos-delay="100">
             <div class="flex justify-between items-center mb-4">
-              <h2 class="text-lg font-semibold text-gray-900 mb-0">
-                Contact Information
-              </h2>
-              <button
-                type="button"
-                onclick="openEditModal('contact')"
-                class="text-purple-600 hover:text-purple-800"
-              >
+              <h2 class="text-lg font-semibold text-white">Contact Information</h2>
+              <button type="button" onclick="openEditModal('contact')" class="text-purple-400 hover:text-purple-300 transition">
                 <i class="fas fa-edit"></i>
               </button>
             </div>
             <div class="space-y-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700"
-                  >Email</label
-                >
-                <p id="email" class="mt-1 text-gray-900">Loading...</p>
+                <label class="block text-sm font-medium text-gray-500">Email</label>
+                <p id="email" class="mt-1 text-gray-200">Loading...</p>
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700"
-                  >Phone</label
-                >
-                <p id="phone" class="mt-1 text-gray-900">Loading...</p>
+                <label class="block text-sm font-medium text-gray-500">Phone</label>
+                <p id="phone" class="mt-1 text-gray-200">Loading...</p>
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700"
-                  >Contact Person</label
-                >
-                <p id="contactPerson" class="mt-1 text-gray-900">Loading...</p>
+                <label class="block text-sm font-medium text-gray-500">Contact Person</label>
+                <p id="contactPerson" class="mt-1 text-gray-200">Loading...</p>
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700"
-                  >Location</label
-                >
-                <p id="location" class="mt-1 text-gray-900">Loading...</p>
+                <label class="block text-sm font-medium text-gray-500">Location</label>
+                <p id="location" class="mt-1 text-gray-200">Loading...</p>
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700"
-                  >Website</label
-                >
-                <p id="website" class="mt-1 text-purple-600">Loading...</p>
+                <label class="block text-sm font-medium text-gray-500">Website</label>
+                <p id="website" class="mt-1 text-purple-400">Loading...</p>
               </div>
             </div>
           </div>
 
           <!-- Professional Links -->
-          <div class="bg-white rounded-lg shadow p-6">
-            <h2 class="text-lg font-semibold text-gray-900 mb-4">
-              Professional Links
-            </h2>
+          <div class="profile-section" data-aos="fade-up" data-aos-delay="200">
+            <h2 class="text-lg font-semibold text-white mb-4">Professional Links</h2>
             <div class="space-y-4">
-              <a
-                href="#"
-                class="flex items-center text-purple-600 hover:text-purple-800"
-              >
-                <svg
-                  class="h-5 w-5 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"
-                  />
+              <a href="#" class="flex items-center text-purple-400 hover:text-purple-300 transition">
+                <svg class="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
                 </svg>
                 LinkedIn Profile
               </a>
-              <a
-                href="#"
-                class="flex items-center text-purple-600 hover:text-purple-800"
-              >
-                <svg
-                  class="h-5 w-5 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
-                  />
+              <a href="#" class="flex items-center text-purple-400 hover:text-purple-300 transition">
+                <svg class="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                 </svg>
                 Company Website
               </a>
@@ -289,72 +247,55 @@
         <!-- Right Column -->
         <div class="md:col-span-2 space-y-6">
           <!-- About -->
-          <div class="bg-white rounded-lg shadow p-6">
+          <div class="profile-section" data-aos="fade-up" data-aos-delay="100">
             <div class="flex justify-between items-center mb-4">
-              <h2 class="text-lg font-semibold text-gray-900">About</h2>
-              <button
-                type="button"
-                onclick="openEditModal('about')"
-                class="text-purple-600 hover:text-purple-800"
-              >
+              <h2 class="text-lg font-semibold text-white">About</h2>
+              <button type="button" onclick="openEditModal('about')" class="text-purple-400 hover:text-purple-300 transition">
                 <i class="fas fa-edit"></i>
               </button>
             </div>
-            <p id="description" class="text-gray-600">Loading...</p>
+            <p id="description" class="text-gray-400">Loading...</p>
           </div>
 
           <!-- Sponsorship Preferences -->
-          <div class="bg-white rounded-lg shadow p-6">
+          <div class="profile-section" data-aos="fade-up" data-aos-delay="200">
             <div class="flex justify-between items-center mb-4">
-              <h2 class="text-lg font-semibold text-gray-900">
-                Sponsorship Preferences
-              </h2>
-              <button
-                type="button"
-                onclick="openEditModal('preferences')"
-                class="text-purple-600 hover:text-purple-800"
-              >
+              <h2 class="text-lg font-semibold text-white">Sponsorship Preferences</h2>
+              <button type="button" onclick="openEditModal('preferences')" class="text-purple-400 hover:text-purple-300 transition">
                 <i class="fas fa-edit"></i>
               </button>
             </div>
             <div class="space-y-4">
               <div>
-                <h3 class="text-sm font-medium text-gray-700">Focus Areas</h3>
+                <h3 class="text-sm font-medium text-gray-500">Focus Areas</h3>
                 <div id="focusAreasContainer" class="mt-2 flex flex-wrap gap-2">
-                  <span
-                    class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800"
-                    >Loading...</span
-                  >
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-500/20 text-purple-300 border border-purple-500/30">Loading...</span>
                 </div>
               </div>
               <div>
-                <h3 class="text-sm font-medium text-gray-700">Budget</h3>
-                <p id="budget" class="mt-1 text-gray-900">Loading...</p>
+                <h3 class="text-sm font-medium text-gray-500">Budget</h3>
+                <p id="budget" class="mt-1 text-2xl font-bold gradient-text font-space">Loading...</p>
               </div>
             </div>
           </div>
 
           <!-- Sponsorship History -->
-          <div class="bg-white rounded-lg shadow p-6">
-            <h2 class="text-lg font-semibold text-gray-900 mb-4">
-              Sponsorship History
-            </h2>
+          <div class="profile-section" data-aos="fade-up" data-aos-delay="300">
+            <h2 class="text-lg font-semibold text-white mb-4">Sponsorship History</h2>
             <div class="space-y-4">
-              <div class="border-l-4 border-blue-500 pl-4">
-                <h3 class="font-medium text-gray-900">Tech Summit 2024</h3>
-                <p class="text-sm text-gray-600">Budget: ৳200,000</p>
+              <div class="border-l-4 border-purple-500 pl-4 py-2 bg-white/5 rounded-r-lg">
+                <h3 class="font-medium text-white">Tech Summit 2024</h3>
+                <p class="text-sm text-purple-400">Budget: ৳200,000</p>
                 <p class="text-sm text-gray-500">March 15, 2024</p>
               </div>
-              <div class="border-l-4 border-blue-500 pl-4">
-                <h3 class="font-medium text-gray-900">
-                  Innovation Awards 2023
-                </h3>
-                <p class="text-sm text-gray-600">Budget: ৳150,000</p>
+              <div class="border-l-4 border-purple-500 pl-4 py-2 bg-white/5 rounded-r-lg">
+                <h3 class="font-medium text-white">Innovation Awards 2023</h3>
+                <p class="text-sm text-purple-400">Budget: ৳150,000</p>
                 <p class="text-sm text-gray-500">December 10, 2023</p>
               </div>
-              <div class="border-l-4 border-blue-500 pl-4">
-                <h3 class="font-medium text-gray-900">Startup Weekend</h3>
-                <p class="text-sm text-gray-600">Budget: ৳100,000</p>
+              <div class="border-l-4 border-purple-500 pl-4 py-2 bg-white/5 rounded-r-lg">
+                <h3 class="font-medium text-white">Startup Weekend</h3>
+                <p class="text-sm text-purple-400">Budget: ৳100,000</p>
                 <p class="text-sm text-gray-500">October 5, 2023</p>
               </div>
             </div>
@@ -364,240 +305,102 @@
     </main>
 
     <!-- Image Upload Modal -->
-    <div
-      id="imageUploadModal"
-      style="
-        display: none;
-        position: fixed;
-        z-index: 2000;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        overflow: auto;
-        justify-content: center;
-        align-items: center;
-      "
-    >
-      <div
-        style="
-          background-color: #fefcfb;
-          padding: 30px;
-          border-radius: 15px;
-          width: 90%;
-          max-width: 500px;
-          position: relative;
-        "
-      >
-        <span
-          class="close-btn"
-          onclick="closeImageUploadModal()"
-          style="
-            position: absolute;
-            right: 20px;
-            top: 20px;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            color: #666;
-          "
-          >&times;</span
-        >
-        <h2
-          id="imageModalTitle"
-          style="
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #111827;
-            margin-bottom: 1.5rem;
-          "
-        >
-          Update Image
-        </h2>
+    <div id="imageUploadModal" class="modal-overlay">
+      <div class="modal-content">
+        <span class="close-btn absolute right-5 top-5 text-2xl font-bold cursor-pointer text-gray-400 hover:text-white transition" onclick="closeImageUploadModal()">&times;</span>
+        <h2 id="imageModalTitle" class="text-xl font-bold text-white mb-6 font-space">Update Image</h2>
 
-        <div style="margin-bottom: 1.5rem">
-          <label
-            style="
-              display: block;
-              font-size: 0.875rem;
-              font-weight: 500;
-              color: #374151;
-              margin-bottom: 0.5rem;
-            "
-            >Choose Image</label
-          >
-          <input
-            type="file"
-            id="imageFileInput"
-            accept="image/*"
-            style="
-              width: 100%;
-              padding: 0.5rem;
-              border: 1px solid #d1d5db;
-              border-radius: 0.375rem;
-            "
-          />
+        <div class="mb-4">
+          <label class="modal-label">Choose Image</label>
+          <input type="file" id="imageFileInput" accept="image/*" class="modal-input" style="padding: 10px;" />
         </div>
 
-        <div style="margin-bottom: 1.5rem">
-          <label
-            style="
-              display: block;
-              font-size: 0.875rem;
-              font-weight: 500;
-              color: #374151;
-              margin-bottom: 0.5rem;
-            "
-            >Or paste image URL</label
-          >
-          <input
-            type="text"
-            id="imageUrlInput"
-            placeholder="https://example.com/image.jpg"
-            style="
-              width: 100%;
-              padding: 0.5rem;
-              border: 1px solid #d1d5db;
-              border-radius: 0.375rem;
-            "
-          />
+        <div class="mb-4">
+          <label class="modal-label">Or paste image URL</label>
+          <input type="text" id="imageUrlInput" placeholder="https://example.com/image.jpg" class="modal-input" />
         </div>
 
-        <div
-          id="imagePreviewContainer"
-          style="display: none; margin-bottom: 1.5rem; text-align: center"
-        >
-          <img
-            id="imagePreview"
-            style="
-              max-width: 100%;
-              max-height: 300px;
-              border-radius: 0.375rem;
-              border: 1px solid #d1d5db;
-            "
-          />
+        <div id="imagePreviewContainer" style="display: none;" class="mb-4 text-center">
+          <img id="imagePreview" class="max-w-full max-h-48 rounded-lg border border-white/20 mx-auto" />
         </div>
 
-        <button
-          onclick="saveImage()"
-          type="button"
-          style="
-            width: 100%;
-            background: #a855f7;
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 0.375rem;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-          "
-        >
-          Save Image
-        </button>
+        <button onclick="saveImage()" type="button" class="btn-gradient">Save Image</button>
 
-        <div
-          id="imageModalSuccess"
-          style="
-            display: none;
-            margin-top: 1rem;
-            background-color: #dcfce7;
-            border: 1px solid #86efac;
-            color: #166534;
-            padding: 1rem;
-            border-radius: 0.375rem;
-          "
-        >
+        <div id="imageModalSuccess" style="display: none;" class="mt-4 bg-green-500/20 border border-green-500/30 text-green-300 p-4 rounded-xl">
           Image updated successfully!
         </div>
-        <div
-          id="imageModalError"
-          style="
-            display: none;
-            margin-top: 1rem;
-            background-color: #fee2e2;
-            border: 1px solid #fca5a5;
-            color: #991b1b;
-            padding: 1rem;
-            border-radius: 0.375rem;
-          "
-        >
+        <div id="imageModalError" style="display: none;" class="mt-4 bg-red-500/20 border border-red-500/30 text-red-300 p-4 rounded-xl">
           <span id="imageModalErrorMessage">Error updating image</span>
         </div>
       </div>
     </div>
 
     <!-- Edit Modal -->
-    <div
-      id="editModal"
-      style="
-        display: none;
-        position: fixed;
-        z-index: 2000;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        overflow: auto;
-        justify-content: center;
-        align-items: center;
-      "
-    >
-      <div
-        style="
-          background-color: #fefcfb;
-          padding: 30px;
-          border-radius: 15px;
-          width: 90%;
-          max-width: 600px;
-          max-height: 90vh;
-          overflow-y: auto;
-          position: relative;
-        "
-      >
-        <span
-          class="close-btn"
-          onclick="closeEditModal()"
-          style="
-            position: absolute;
-            right: 20px;
-            top: 20px;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            color: #666;
-          "
-          >&times;</span
-        >
-        <h2
-          id="modalTitle"
-          style="
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #111827;
-            margin-bottom: 1.5rem;
-          "
-        >
-          Edit Profile
-        </h2>
+    <div id="editModal" class="modal-overlay">
+      <div class="modal-content" style="max-width: 600px; max-height: 90vh; overflow-y: auto;">
+        <span class="close-btn absolute right-5 top-5 text-2xl font-bold cursor-pointer text-gray-400 hover:text-white transition" onclick="closeEditModal()">&times;</span>
+        <h2 id="modalTitle" class="text-xl font-bold text-white mb-6 font-space">Edit Profile</h2>
 
-        <form id="editForm" style="display: contents">
+        <form id="editForm">
           <!-- Contact Fields -->
-          <div
-            id="contactFields"
-            style="
-              display: none;
-              gap: 1rem;
-              display: flex;
-              flex-direction: column;
-            "
-          >
+          <div id="contactFields" style="display: none;" class="space-y-4">
             <div>
-              <label
-                style="
-                  display: block;
-                  font-size: 0.875rem;
+              <label class="modal-label">Contact Person</label>
+              <input type="text" id="editContactPerson" class="modal-input" />
+            </div>
+            <div>
+              <label class="modal-label">Phone</label>
+              <input type="tel" id="editPhone" class="modal-input" />
+            </div>
+            <div>
+              <label class="modal-label">Location</label>
+              <input type="text" id="editLocation" class="modal-input" />
+            </div>
+            <div>
+              <label class="modal-label">Website</label>
+              <input type="text" id="editWebsite" class="modal-input" />
+            </div>
+          </div>
+
+          <!-- About Fields -->
+          <div id="aboutFields" style="display: none;" class="space-y-4">
+            <div>
+              <label class="modal-label">Company Name</label>
+              <input type="text" id="editCompanyName" class="modal-input" />
+            </div>
+            <div>
+              <label class="modal-label">Industry</label>
+              <input type="text" id="editIndustry" class="modal-input" />
+            </div>
+            <div>
+              <label class="modal-label">Description</label>
+              <textarea id="editDescription" rows="5" class="modal-input"></textarea>
+            </div>
+          </div>
+
+          <!-- Preferences Fields -->
+          <div id="preferencesFields" style="display: none;" class="space-y-4">
+            <div>
+              <label class="modal-label">Focus Areas (comma-separated)</label>
+              <input type="text" id="editFocusAreas" placeholder="e.g., Technology, Education" class="modal-input" />
+            </div>
+            <div>
+              <label class="modal-label">Budget (BDT)</label>
+              <input type="number" id="editBudget" class="modal-input" />
+            </div>
+          </div>
+
+          <button type="submit" class="btn-gradient mt-6">Save Changes</button>
+        </form>
+
+        <div id="modalSuccess" style="display: none;" class="mt-4 bg-green-500/20 border border-green-500/30 text-green-300 p-4 rounded-xl">
+          Profile updated successfully!
+        </div>
+        <div id="modalError" style="display: none;" class="mt-4 bg-red-500/20 border border-red-500/30 text-red-300 p-4 rounded-xl">
+          <span id="modalErrorMessage">Error updating profile</span>
+        </div>
+      </div>
+    </div>
                   font-weight: 500;
                   color: #374151;
                   margin-bottom: 0.5rem;
@@ -873,11 +676,11 @@
       let currentEditSection = null;
       let currentImageType = null;
 
-      // Image upload modal handlers
+      AOS.init({ duration: 800, easing: "ease-out-cubic", once: true });
+
       function openImageUploadModal(type) {
         currentImageType = type;
-        document.getElementById("imageModalTitle").textContent =
-          type === "profile" ? "Update Profile Picture" : "Update Cover Photo";
+        document.getElementById("imageModalTitle").textContent = type === "profile" ? "Update Profile Picture" : "Update Cover Photo";
         document.getElementById("imageFileInput").value = "";
         document.getElementById("imageUrlInput").value = "";
         document.getElementById("imagePreviewContainer").style.display = "none";
@@ -898,31 +701,14 @@
           img.onload = function () {
             const canvas = document.createElement("canvas");
             const ctx = canvas.getContext("2d");
-
             const maxWidth = currentImageType === "cover" ? 1200 : 400;
             const maxHeight = currentImageType === "cover" ? 400 : 400;
-
-            let width = img.width;
-            let height = img.height;
-
-            if (width > height) {
-              if (width > maxWidth) {
-                height = height * (maxWidth / width);
-                width = maxWidth;
-              }
-            } else {
-              if (height > maxHeight) {
-                width = width * (maxHeight / height);
-                height = maxHeight;
-              }
-            }
-
-            canvas.width = width;
-            canvas.height = height;
+            let width = img.width, height = img.height;
+            if (width > height) { if (width > maxWidth) { height = height * (maxWidth / width); width = maxWidth; } }
+            else { if (height > maxHeight) { width = width * (maxHeight / height); height = maxHeight; } }
+            canvas.width = width; canvas.height = height;
             ctx.drawImage(img, 0, 0, width, height);
-
-            const compressedBase64 = canvas.toDataURL("image/jpeg", 0.7);
-            callback(compressedBase64);
+            callback(canvas.toDataURL("image/jpeg", 0.7));
           };
           img.src = e.target.result;
         };
@@ -934,113 +720,59 @@
         const fileInput = document.getElementById("imageFileInput");
         const urlInput = document.getElementById("imageUrlInput");
         let imageUrl = urlInput.value.trim();
-
         if (fileInput.files && fileInput.files[0]) {
           const file = fileInput.files[0];
           if (file.size > 5 * 1024 * 1024) {
             document.getElementById("imageModalError").style.display = "block";
-            document.getElementById("imageModalErrorMessage").textContent =
-              "File size must be less than 5MB";
+            document.getElementById("imageModalErrorMessage").textContent = "File size must be less than 5MB";
             return;
           }
-          compressImage(file, async function (compressedBase64) {
-            imageUrl = compressedBase64;
-            await updateImageOnServer(userId, imageUrl);
-          });
-        } else if (imageUrl) {
-          await updateImageOnServer(userId, imageUrl);
-        } else {
+          compressImage(file, async function (compressedBase64) { await updateImageOnServer(userId, compressedBase64); });
+        } else if (imageUrl) { await updateImageOnServer(userId, imageUrl); }
+        else {
           document.getElementById("imageModalError").style.display = "block";
-          document.getElementById("imageModalErrorMessage").textContent =
-            "Please select a file or enter an image URL";
+          document.getElementById("imageModalErrorMessage").textContent = "Please select a file or enter an image URL";
         }
       }
 
       async function updateImageOnServer(userId, imageUrl) {
-        const payload = {};
-        if (currentImageType === "profile") {
-          payload.logo = imageUrl;
-        } else {
-          payload.coverPhoto = imageUrl;
-        }
-
+        const payload = currentImageType === "profile" ? { logo: imageUrl } : { coverPhoto: imageUrl };
         try {
-          const response = await fetch(`${API_BASE}/auth/sponsor/${userId}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-          });
+          const response = await fetch(`${API_BASE}/auth/sponsor/${userId}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
           const data = await response.json();
-          if (!response.ok)
-            throw new Error(data.message || "Failed to update image");
-
+          if (!response.ok) throw new Error(data.message || "Failed to update image");
           currentSponsorData = data.data;
           displayProfile();
-
           document.getElementById("imageModalSuccess").style.display = "block";
           document.getElementById("imageModalError").style.display = "none";
           setTimeout(() => closeImageUploadModal(), 2000);
         } catch (error) {
           document.getElementById("imageModalError").style.display = "block";
-          document.getElementById("imageModalErrorMessage").textContent =
-            error.message;
+          document.getElementById("imageModalErrorMessage").textContent = error.message;
         }
       }
 
-      // Profile loading
       async function loadSponsorProfile(userId) {
         try {
-          if (!userId) {
-            throw new Error("No userId provided. Please log in first.");
-          }
-
-          const url = `${API_BASE}/auth/sponsor/${userId}`;
-          const response = await fetch(url);
-
-          if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(
-              `Failed to load profile: ${response.status} - ${
-                errorData.message || "Unknown error"
-              }`
-            );
-          }
-
+          if (!userId) throw new Error("No userId provided. Please log in first.");
+          const response = await fetch(`${API_BASE}/auth/sponsor/${userId}`);
+          if (!response.ok) { const errorData = await response.json().catch(() => ({})); throw new Error(`Failed to load profile: ${response.status} - ${errorData.message || "Unknown error"}`); }
           const data = await response.json();
-          if (!data.success || !data.data) {
-            throw new Error("Invalid response format from server");
-          }
-
+          if (!data.success || !data.data) throw new Error("Invalid response format from server");
           currentSponsorData = data.data;
           displayProfile();
         } catch (error) {
           console.error("Error loading profile:", error);
           const profileContainer = document.getElementById("profile-container");
           if (profileContainer) {
-            profileContainer.innerHTML = `
-              <div class="text-center py-12">
-                <div class="bg-red-50 border border-red-200 rounded-lg p-6 max-w-md mx-auto">
-                  <p class="text-red-600 font-semibold mb-2">⚠️ Unable to Load Profile</p>
-                  <p class="text-gray-700 mb-4">${error.message}</p>
-                  <p class="text-sm text-gray-600 mb-4">API Base: ${API_BASE}</p>
-                  <button onclick="location.reload()" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700">
-                    <i class="fas fa-redo mr-2"></i>Retry
-                  </button>
-                </div>
-              </div>
-            `;
+            profileContainer.innerHTML = `<div class="col-span-3 text-center py-12"><div class="glass-card p-8 max-w-md mx-auto"><i class="fas fa-exclamation-circle text-4xl text-red-400 mb-4 block"></i><p class="text-white font-semibold mb-2">Unable to Load Profile</p><p class="text-gray-400 mb-4">${error.message}</p><button onclick="location.reload()" class="btn-gradient"><i class="fas fa-redo mr-2"></i>Retry</button></div></div>`;
           }
-          alert("Error loading profile: " + error.message);
         }
       }
 
       function displayProfile() {
         const data = currentSponsorData;
-        const safeSet = (id, value) => {
-          const el = document.getElementById(id);
-          if (el) el.textContent = value;
-        };
-
+        const safeSet = (id, value) => { const el = document.getElementById(id); if (el) el.textContent = value; };
         safeSet("companyName", data.companyName || "N/A");
         safeSet("industry", data.industry || "N/A");
         safeSet("description", data.description || "No description provided");
@@ -1050,18 +782,8 @@
         safeSet("location", data.location || "N/A");
         safeSet("website", data.website || "N/A");
         safeSet("budget", `৳${(data.budget || 0).toLocaleString()}`);
-
         const focusContainer = document.getElementById("focusAreasContainer");
-        if (focusContainer) {
-          focusContainer.innerHTML =
-            (data.focusAreas || [])
-              .map(
-                (f) =>
-                  `<span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800">${f}</span>`
-              )
-              .join("") || "N/A";
-        }
-
+        if (focusContainer) { focusContainer.innerHTML = (data.focusAreas || []).map(f => `<span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-500/20 text-purple-300 border border-purple-500/30">${f}</span>`).join("") || '<span class="text-gray-500">N/A</span>'; }
         const profilePicture = document.getElementById("profilePicture");
         if (profilePicture && data.logo) profilePicture.src = data.logo;
         const coverPhoto = document.getElementById("coverPhoto");
@@ -1075,92 +797,40 @@
         document.getElementById("preferencesFields").style.display = "none";
         document.getElementById("modalSuccess").style.display = "none";
         document.getElementById("modalError").style.display = "none";
-
         if (section === "contact") {
-          document.getElementById("modalTitle").textContent =
-            "Edit Contact Information";
-          document.getElementById("contactFields").style.display = "flex";
-          document.getElementById("editContactPerson").value =
-            currentSponsorData.contactPerson || "";
-          document.getElementById("editPhone").value =
-            currentSponsorData.phone || "";
-          document.getElementById("editLocation").value =
-            currentSponsorData.location || "";
-          document.getElementById("editWebsite").value =
-            currentSponsorData.website || "";
+          document.getElementById("modalTitle").textContent = "Edit Contact Information";
+          document.getElementById("contactFields").style.display = "block";
+          document.getElementById("editContactPerson").value = currentSponsorData.contactPerson || "";
+          document.getElementById("editPhone").value = currentSponsorData.phone || "";
+          document.getElementById("editLocation").value = currentSponsorData.location || "";
+          document.getElementById("editWebsite").value = currentSponsorData.website || "";
         } else if (section === "about") {
-          document.getElementById("modalTitle").textContent =
-            "Edit About Information";
-          document.getElementById("aboutFields").style.display = "flex";
-          document.getElementById("editCompanyName").value =
-            currentSponsorData.companyName || "";
-          document.getElementById("editIndustry").value =
-            currentSponsorData.industry || "";
-          document.getElementById("editDescription").value =
-            currentSponsorData.description || "";
+          document.getElementById("modalTitle").textContent = "Edit About Information";
+          document.getElementById("aboutFields").style.display = "block";
+          document.getElementById("editCompanyName").value = currentSponsorData.companyName || "";
+          document.getElementById("editIndustry").value = currentSponsorData.industry || "";
+          document.getElementById("editDescription").value = currentSponsorData.description || "";
         } else if (section === "preferences") {
-          document.getElementById("modalTitle").textContent =
-            "Edit Preferences";
-          document.getElementById("preferencesFields").style.display = "flex";
-          document.getElementById("editFocusAreas").value = (
-            currentSponsorData.focusAreas || []
-          ).join(", ");
-          document.getElementById("editBudget").value =
-            currentSponsorData.budget || "";
+          document.getElementById("modalTitle").textContent = "Edit Preferences";
+          document.getElementById("preferencesFields").style.display = "block";
+          document.getElementById("editFocusAreas").value = (currentSponsorData.focusAreas || []).join(", ");
+          document.getElementById("editBudget").value = currentSponsorData.budget || "";
         }
-
         document.getElementById("editModal").style.display = "flex";
       }
 
-      function closeEditModal() {
-        document.getElementById("editModal").style.display = "none";
-        currentEditSection = null;
-      }
+      function closeEditModal() { document.getElementById("editModal").style.display = "none"; currentEditSection = null; }
 
       async function submitEditForm() {
         const userId = localStorage.getItem("userId");
         let payload = {};
-
-        if (currentEditSection === "contact") {
-          payload = {
-            contactPerson: document
-              .getElementById("editContactPerson")
-              .value.trim(),
-            phone: document.getElementById("editPhone").value.trim(),
-            location: document.getElementById("editLocation").value.trim(),
-            website: document.getElementById("editWebsite").value.trim(),
-          };
-        } else if (currentEditSection === "about") {
-          payload = {
-            companyName: document
-              .getElementById("editCompanyName")
-              .value.trim(),
-            industry: document.getElementById("editIndustry").value.trim(),
-            description: document
-              .getElementById("editDescription")
-              .value.trim(),
-          };
-        } else if (currentEditSection === "preferences") {
-          payload = {
-            focusAreas: document
-              .getElementById("editFocusAreas")
-              .value.split(",")
-              .map((x) => x.trim())
-              .filter(Boolean),
-            budget: parseInt(document.getElementById("editBudget").value, 10),
-          };
-        }
-
+        if (currentEditSection === "contact") { payload = { contactPerson: document.getElementById("editContactPerson").value.trim(), phone: document.getElementById("editPhone").value.trim(), location: document.getElementById("editLocation").value.trim(), website: document.getElementById("editWebsite").value.trim() }; }
+        else if (currentEditSection === "about") { payload = { companyName: document.getElementById("editCompanyName").value.trim(), industry: document.getElementById("editIndustry").value.trim(), description: document.getElementById("editDescription").value.trim() }; }
+        else if (currentEditSection === "preferences") { payload = { focusAreas: document.getElementById("editFocusAreas").value.split(",").map(x => x.trim()).filter(Boolean), budget: parseInt(document.getElementById("editBudget").value, 10) }; }
         try {
-          const response = await fetch(`${API_BASE}/auth/sponsor/${userId}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-          });
+          const response = await fetch(`${API_BASE}/auth/sponsor/${userId}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
           const data = await response.json();
-          if (!response.ok)
-            throw new Error(data.message || "Failed to update profile");
-
+          if (!response.ok) throw new Error(data.message || "Failed to update profile");
           currentSponsorData = data.data;
           displayProfile();
           document.getElementById("modalSuccess").style.display = "block";
@@ -1168,153 +838,32 @@
           setTimeout(() => closeEditModal(), 2000);
         } catch (error) {
           document.getElementById("modalError").style.display = "block";
-          document.getElementById("modalErrorMessage").textContent =
-            error.message;
+          document.getElementById("modalErrorMessage").textContent = error.message;
         }
       }
 
-      // Modal close on outside click
       window.onclick = function (event) {
-        const modal = document.getElementById("editModal");
-        const imageModal = document.getElementById("imageUploadModal");
-        if (event.target === modal) closeEditModal();
-        if (event.target === imageModal) closeImageUploadModal();
+        if (event.target === document.getElementById("editModal")) closeEditModal();
+        if (event.target === document.getElementById("imageUploadModal")) closeImageUploadModal();
       };
 
       document.addEventListener("DOMContentLoaded", function () {
-        // Image preview handlers
         const fileInput = document.getElementById("imageFileInput");
         const urlInput = document.getElementById("imageUrlInput");
-        const previewContainer = document.getElementById(
-          "imagePreviewContainer"
-        );
+        const previewContainer = document.getElementById("imagePreviewContainer");
         const previewImg = document.getElementById("imagePreview");
-
-        if (fileInput) {
-          fileInput.addEventListener("change", function (e) {
-            if (e.target.files && e.target.files[0]) {
-              const reader = new FileReader();
-              reader.onload = function (event) {
-                previewImg.src = event.target.result;
-                previewContainer.style.display = "block";
-              };
-              reader.readAsDataURL(e.target.files[0]);
-              urlInput.value = "";
-            }
-          });
-        }
-
-        if (urlInput) {
-          urlInput.addEventListener("input", function (e) {
-            const url = e.target.value.trim();
-            if (url) {
-              previewImg.src = url;
-              previewContainer.style.display = "block";
-              fileInput.value = "";
-            } else {
-              previewContainer.style.display = "none";
-            }
-          });
-        }
-
-        // Mobile menu
-        const mobileMenu = document.querySelector(".mobile-menu");
-        const navLinks = document.querySelector(".nav-links");
-        const navButtons = document.querySelector(".nav-buttons");
-        if (mobileMenu && navLinks && navButtons) {
-          mobileMenu.addEventListener("click", function () {
-            const overlay = document.createElement("div");
-            overlay.style.position = "fixed";
-            overlay.style.top = "0";
-            overlay.style.left = "0";
-            overlay.style.width = "100%";
-            overlay.style.height = "100%";
-            overlay.style.background = "rgba(0, 0, 0, 0.5)";
-            overlay.style.zIndex = "999";
-            document.body.appendChild(overlay);
-
-            const mobileNav = document.createElement("div");
-            mobileNav.style.position = "fixed";
-            mobileNav.style.top = "0";
-            mobileNav.style.right = "0";
-            mobileNav.style.width = "250px";
-            mobileNav.style.height = "100%";
-            mobileNav.style.background = "white";
-            mobileNav.style.padding = "20px";
-            mobileNav.style.zIndex = "1000";
-            mobileNav.style.boxShadow = "-2px 0 10px rgba(0, 0, 0, 0.1)";
-
-            const mobileLinks = navLinks.cloneNode(true);
-            mobileLinks.style.display = "flex";
-            mobileLinks.style.flexDirection = "column";
-            mobileLinks.style.gap = "1rem";
-            mobileLinks.style.marginTop = "2rem";
-
-            const mobileButtons = navButtons.cloneNode(true);
-            mobileButtons.style.display = "flex";
-            mobileButtons.style.flexDirection = "column";
-            mobileButtons.style.gap = "1rem";
-            mobileButtons.style.marginTop = "2rem";
-
-            const closeButton = document.createElement("button");
-            closeButton.innerHTML = '<i class="fas fa-times"></i>';
-            closeButton.style.background = "none";
-            closeButton.style.border = "none";
-            closeButton.style.fontSize = "1.5rem";
-            closeButton.style.cursor = "pointer";
-            closeButton.style.alignSelf = "flex-end";
-
-            mobileNav.appendChild(closeButton);
-            mobileNav.appendChild(mobileLinks);
-            mobileNav.appendChild(mobileButtons);
-            document.body.appendChild(mobileNav);
-
-            const closeMenu = () => {
-              overlay.remove();
-              mobileNav.remove();
-            };
-
-            closeButton.addEventListener("click", closeMenu);
-            overlay.addEventListener("click", closeMenu);
-          });
-        }
-
-        // Load profile
+        if (fileInput) { fileInput.addEventListener("change", function (e) { if (e.target.files && e.target.files[0]) { const reader = new FileReader(); reader.onload = function (event) { previewImg.src = event.target.result; previewContainer.style.display = "block"; }; reader.readAsDataURL(e.target.files[0]); urlInput.value = ""; } }); }
+        if (urlInput) { urlInput.addEventListener("input", function (e) { const url = e.target.value.trim(); if (url) { previewImg.src = url; previewContainer.style.display = "block"; fileInput.value = ""; } else { previewContainer.style.display = "none"; } }); }
         const urlId = new URLSearchParams(window.location.search).get("id");
         const loggedInId = localStorage.getItem("userId");
         const userRole = localStorage.getItem("userRole");
-        const canEdit = urlId
-          ? loggedInId && urlId === loggedInId
-          : loggedInId && userRole === "sponsor";
-
-        // Hide edit controls if viewing another user's profile
-        if (!canEdit) {
-          const editButtons = document.querySelectorAll(
-            'button[onclick^="openEditModal"], button[onclick^="openImageUploadModal"]'
-          );
-          editButtons.forEach((btn) => (btn.style.display = "none"));
-        }
-
-        let userId = urlId;
-        // If no ID in URL, use logged-in user's ID
-        if (!userId) {
-          userId = loggedInId;
-          if (!userId || userRole !== "sponsor") {
-            alert("Please log in as sponsor first");
-            window.location.href = "../../pages/auth/login.html";
-            return;
-          }
-        }
-
+        const canEdit = urlId ? loggedInId && urlId === loggedInId : loggedInId && userRole === "sponsor";
+        if (!canEdit) { document.querySelectorAll('button[onclick^="openEditModal"], button[onclick^="openImageUploadModal"]').forEach(btn => btn.style.display = "none"); }
+        let userId = urlId || loggedInId;
+        if (!userId) { alert("Please log in first"); window.location.href = "../../pages/auth/login.html"; return; }
         loadSponsorProfile(userId);
-
         const editForm = document.getElementById("editForm");
-        if (editForm) {
-          editForm.addEventListener("submit", function (e) {
-            e.preventDefault();
-            submitEditForm();
-          });
-        }
+        if (editForm) { editForm.addEventListener("submit", function (e) { e.preventDefault(); submitEditForm(); }); }
       });
     </script>
     <script src="../../components/navbar.js"></script>

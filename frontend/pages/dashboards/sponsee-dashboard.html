@@ -5,60 +5,364 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sponsee Dashboard - SponzoBD</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        overflow-x: hidden;
+      }
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #1a1a2e;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, #ec4899, #f97316);
+        border-radius: 10px;
+      }
+      .page-bg {
+        background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #1a1a2e);
+        background-size: 400% 400%;
+        animation: gradientShift 15s ease infinite;
+        min-height: 100vh;
+      }
+      @keyframes gradientShift {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+      .particles {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: 0;
+      }
+      .particle {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        background: rgba(236, 72, 153, 0.4);
+        border-radius: 50%;
+        animation: floatParticle 20s infinite;
+      }
+      .particle:nth-child(1) {
+        left: 15%;
+        animation-delay: 0s;
+        animation-duration: 22s;
+      }
+      .particle:nth-child(2) {
+        left: 35%;
+        animation-delay: 3s;
+        animation-duration: 25s;
+      }
+      .particle:nth-child(3) {
+        left: 55%;
+        animation-delay: 1s;
+        animation-duration: 20s;
+      }
+      .particle:nth-child(4) {
+        left: 75%;
+        animation-delay: 4s;
+        animation-duration: 28s;
+      }
+      .particle:nth-child(5) {
+        left: 90%;
+        animation-delay: 2s;
+        animation-duration: 18s;
+      }
+      @keyframes floatParticle {
+        0% {
+          transform: translateY(100vh) scale(0);
+          opacity: 0;
+        }
+        10% {
+          opacity: 1;
+        }
+        90% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-100vh) scale(1);
+          opacity: 0;
+        }
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        transition: all 0.4s ease;
+      }
+      .glass-card:hover {
+        border-color: rgba(236, 72, 153, 0.3);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      }
+      .gradient-text {
+        background: linear-gradient(
+          135deg,
+          #ec4899 0%,
+          #f97316 50%,
+          #a855f7 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .orb {
+        position: fixed;
+        border-radius: 50%;
+        filter: blur(80px);
+        opacity: 0.3;
+        animation: orbFloat 8s ease-in-out infinite;
+        pointer-events: none;
+        z-index: 0;
+      }
+      .orb-1 {
+        width: 350px;
+        height: 350px;
+        background: linear-gradient(135deg, #ec4899, #f97316);
+        top: -100px;
+        right: -100px;
+      }
+      .orb-2 {
+        width: 280px;
+        height: 280px;
+        background: linear-gradient(135deg, #7c3aed, #a855f7);
+        bottom: -80px;
+        left: -80px;
+        animation-delay: 2s;
+      }
+      @keyframes orbFloat {
+        0%,
+        100% {
+          transform: translate(0, 0) scale(1);
+        }
+        50% {
+          transform: translate(30px, 30px) scale(1.1);
+        }
+      }
+      .stat-card {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 1.5rem;
+        transition: all 0.4s ease;
+      }
+      .stat-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(236, 72, 153, 0.4);
+        box-shadow: 0 15px 30px rgba(236, 72, 153, 0.15);
+      }
+      .stat-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+      }
+    </style>
   </head>
-  <body class="min-h-screen bg-gray-50">
+  <body class="page-bg">
+    <div class="particles">
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+    </div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
     <div id="navbar"></div>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div class="bg-white shadow rounded-lg p-6">
-        <h1 class="text-2xl font-bold text-gray-900 mb-4">
-          Welcome to your Dashboard
-        </h1>
-        <p class="text-gray-600">
-          This is your personal dashboard where you can manage your sponsorships
-          and profile.
-        </p>
-
-        <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          <div class="bg-blue-50 p-4 rounded-lg">
-            <h3 class="text-lg font-medium text-blue-900">
-              Active Sponsorships
-            </h3>
-            <p class="text-3xl font-bold text-purple-600">0</p>
+    <main
+      class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-28"
+    >
+      <!-- Welcome Section -->
+      <div class="glass-card p-8 mb-8" data-aos="fade-up">
+        <div
+          class="flex flex-col md:flex-row md:items-center md:justify-between"
+        >
+          <div>
+            <span
+              class="inline-block px-4 py-2 rounded-full bg-pink-500/10 border border-pink-500/20 text-pink-300 text-sm font-medium mb-4"
+            >
+              <i class="fas fa-home mr-2"></i>Dashboard
+            </span>
+            <h1
+              class="text-3xl md:text-4xl font-bold text-white mb-2 font-space"
+            >
+              Welcome to your <span class="gradient-text">Dashboard</span>
+            </h1>
+            <p class="text-gray-400 text-lg">
+              Manage your sponsorships and profile from here.
+            </p>
           </div>
-
-          <div class="bg-green-50 p-4 rounded-lg">
-            <h3 class="text-lg font-medium text-green-900">Pending Requests</h3>
-            <p class="text-3xl font-bold text-green-600">0</p>
-          </div>
-
-          <div class="bg-purple-50 p-4 rounded-lg">
-            <h3 class="text-lg font-medium text-purple-900">
-              Total Investment
-            </h3>
-            <p class="text-3xl font-bold text-purple-600">৳0</p>
-          </div>
-        </div>
-
-        <div class="mt-8">
-          <h2 class="text-xl font-semibold text-gray-900 mb-4">
-            Recent Activity
-          </h2>
-          <div class="bg-gray-50 rounded-lg p-4">
-            <p class="text-gray-600">No recent activity to display.</p>
+          <div class="mt-6 md:mt-0">
+            <a
+              href="../profiles/sponsee-profile.html"
+              class="inline-flex items-center px-6 py-3 rounded-xl bg-gradient-to-r from-pink-600 to-orange-600 text-white font-semibold hover:shadow-lg hover:shadow-pink-500/25 transition"
+            >
+              <i class="fas fa-user-edit mr-2"></i>Edit Profile
+            </a>
           </div>
         </div>
       </div>
+
+      <!-- Stats Cards -->
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-8">
+        <div class="stat-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="flex items-center gap-4">
+            <div
+              class="stat-icon bg-gradient-to-br from-pink-600 to-pink-700 text-white"
+            >
+              <i class="fas fa-handshake"></i>
+            </div>
+            <div>
+              <p class="text-sm text-gray-400 mb-1">Active Sponsorships</p>
+              <p class="text-3xl font-bold gradient-text font-space">0</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="stat-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="flex items-center gap-4">
+            <div
+              class="stat-icon bg-gradient-to-br from-purple-600 to-purple-700 text-white"
+            >
+              <i class="fas fa-clock"></i>
+            </div>
+            <div>
+              <p class="text-sm text-gray-400 mb-1">Pending Requests</p>
+              <p class="text-3xl font-bold gradient-text font-space">0</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="stat-card" data-aos="fade-up" data-aos-delay="300">
+          <div class="flex items-center gap-4">
+            <div
+              class="stat-icon bg-gradient-to-br from-orange-600 to-orange-700 text-white"
+            >
+              <i class="fas fa-coins"></i>
+            </div>
+            <div>
+              <p class="text-sm text-gray-400 mb-1">Total Investment</p>
+              <p class="text-3xl font-bold gradient-text font-space">৳0</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Activity -->
+      <div class="glass-card p-8" data-aos="fade-up" data-aos-delay="400">
+        <div class="flex items-center gap-3 mb-6">
+          <div
+            class="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-600 to-orange-600 flex items-center justify-center"
+          >
+            <i class="fas fa-history text-white"></i>
+          </div>
+          <h2 class="text-xl font-semibold text-white font-space">
+            Recent Activity
+          </h2>
+        </div>
+        <div class="bg-white/5 rounded-xl p-6 border border-white/10">
+          <div class="flex flex-col items-center justify-center py-8">
+            <i class="fas fa-inbox text-4xl text-gray-600 mb-4"></i>
+            <p class="text-gray-400 text-lg">No recent activity to display.</p>
+            <a
+              href="../events/sponsors.html"
+              class="mt-4 inline-flex items-center text-pink-400 hover:text-pink-300 transition"
+            >
+              <i class="fas fa-search mr-2"></i>Browse Sponsors
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div
+        class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6"
+        data-aos="fade-up"
+        data-aos-delay="500"
+      >
+        <a
+          href="../events/sponsors.html"
+          class="glass-card p-6 flex items-center gap-4 hover:border-pink-500/50 transition group"
+        >
+          <div
+            class="w-14 h-14 rounded-xl bg-gradient-to-br from-pink-600/20 to-orange-600/20 flex items-center justify-center border border-pink-500/30 group-hover:border-pink-500/60 transition"
+          >
+            <i class="fas fa-building text-2xl text-pink-400"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-white mb-1">
+              Browse Sponsors
+            </h3>
+            <p class="text-sm text-gray-400">
+              Find companies to sponsor your events
+            </p>
+          </div>
+          <i
+            class="fas fa-arrow-right ml-auto text-gray-500 group-hover:text-pink-400 transition"
+          ></i>
+        </a>
+        <a
+          href="../profiles/sponsee-profile.html"
+          class="glass-card p-6 flex items-center gap-4 hover:border-purple-500/50 transition group"
+        >
+          <div
+            class="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-600/20 to-pink-600/20 flex items-center justify-center border border-purple-500/30 group-hover:border-purple-500/60 transition"
+          >
+            <i class="fas fa-user-circle text-2xl text-purple-400"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-white mb-1">
+              Complete Profile
+            </h3>
+            <p class="text-sm text-gray-400">
+              Add more details to attract sponsors
+            </p>
+          </div>
+          <i
+            class="fas fa-arrow-right ml-auto text-gray-500 group-hover:text-purple-400 transition"
+          ></i>
+        </a>
+      </div>
     </main>
 
+    <script>
+      AOS.init({ duration: 800, easing: "ease-out-cubic", once: true });
+    </script>
     <script src="../../components/navbar.js"></script>
   </body>
 </html>
