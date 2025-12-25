@@ -1,4 +1,4 @@
-// Dynamic Navbar Loader
+// Dynamic Navbar Loader - Modern Glassmorphism Design
 document.addEventListener("DOMContentLoaded", function () {
   // Determine the correct path to navbar.html based on current location
   const currentPath = window.location.pathname;
@@ -18,10 +18,12 @@ document.addEventListener("DOMContentLoaded", function () {
       // Insert navbar at the beginning of body
       const navContainer = document.createElement("div");
       navContainer.innerHTML = data;
-      document.body.insertBefore(
-        navContainer.firstElementChild,
-        document.body.firstChild
-      );
+
+      // Insert all elements (navbar and mobile menu overlay)
+      const elements = navContainer.querySelectorAll(":scope > *");
+      elements.forEach((el) => {
+        document.body.insertBefore(el, document.body.firstChild);
+      });
 
       // Update navbar based on user role
       updateNavbarForUser();
@@ -31,25 +33,30 @@ document.addEventListener("DOMContentLoaded", function () {
         const style = document.createElement("style");
         style.id = "navbar-styles";
         style.textContent = `
-          /* Navbar styles */
+          /* Modern Glassmorphism Navbar */
           .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 5%;
-            background-color: #ffffff;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            background: rgba(15, 12, 41, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1rem 0;
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
+            transition: all 0.3s ease;
+          }
+
+          .navbar.scrolled {
+            background: rgba(15, 12, 41, 0.98);
+            padding: 0.75rem 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
           }
 
           .nav-container {
-            width: 100%;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -59,45 +66,42 @@ document.addEventListener("DOMContentLoaded", function () {
             display: flex;
             align-items: center;
             text-decoration: none;
-            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-size: 1.5rem;
+            font-family: 'Space Grotesk', 'Inter', sans-serif;
+            font-size: 1.75rem;
             font-weight: 700;
-            cursor: pointer;
+            color: white;
+            gap: 10px;
             transition: opacity 0.3s ease;
           }
 
           .nav-logo:hover {
-            opacity: 0.8;
+            opacity: 0.9;
           }
 
           .nav-logo i {
-            margin-right: 10px;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
           }
 
           .nav-links {
             display: flex;
-            list-style: none;
-            gap: 2rem;
+            gap: 2.5rem;
             align-items: center;
           }
 
           .nav-link {
             text-decoration: none;
-            color: #4a5568;
+            color: rgba(255, 255, 255, 0.7);
             font-weight: 500;
-            transition: color 0.3s ease;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
             position: relative;
           }
 
           .nav-link:hover, .nav-link.active {
-            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: white;
           }
 
           .nav-link::after {
@@ -105,13 +109,15 @@ document.addEventListener("DOMContentLoaded", function () {
             position: absolute;
             width: 0;
             height: 2px;
-            bottom: -5px;
-            left: 0;
-            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(90deg, #a855f7, #ec4899);
             transition: width 0.3s ease;
+            border-radius: 2px;
           }
 
-          .nav-link:hover::after {
+          .nav-link:hover::after, .nav-link.active::after {
             width: 100%;
           }
 
@@ -122,111 +128,203 @@ document.addEventListener("DOMContentLoaded", function () {
           }
 
           .nav-button {
-            padding: 0.5rem 1.5rem;
-            border-radius: 5px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
             text-decoration: none;
+            transition: all 0.3s ease;
             display: inline-block;
           }
 
           .nav-button.login {
-            background: none;
-            border: 2px solid #8b5cf6;
-            color: #8b5cf6;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: transparent;
           }
 
           .nav-button.login:hover {
-            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
-            color: white;
-            border-color: #8b5cf6;
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.4);
           }
 
           .nav-button.signup {
-            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
-            border: none;
+            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
             color: white;
+            border: none;
           }
 
           .nav-button.signup:hover {
-            background: linear-gradient(135deg, #7c3aed 0%, #db2777 100%);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.3);
           }
 
           .mobile-menu {
             display: none;
             font-size: 1.5rem;
-            color: #2d3748;
+            color: white;
             cursor: pointer;
+            background: none;
+            border: none;
+            padding: 8px;
             transition: color 0.3s ease;
           }
 
           .mobile-menu:hover {
-            color: #8b5cf6;
+            color: #a855f7;
           }
 
-          .mobile-menu.active {
+          /* Mobile Menu Overlay */
+          .mobile-menu-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 1050;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+          }
+
+          .mobile-menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+          }
+
+          .mobile-menu-panel {
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            width: 280px;
+            background: linear-gradient(180deg, #1a1a2e 0%, #0f0c29 100%);
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.3);
+            padding: 24px;
+          }
+
+          .mobile-menu-overlay.active .mobile-menu-panel {
+            transform: translateX(0);
+          }
+
+          .mobile-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+          }
+
+          .mobile-menu-title {
+            color: white;
+            font-weight: 700;
+            font-size: 1.25rem;
+          }
+
+          .mobile-menu-close {
+            color: rgba(255, 255, 255, 0.7);
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 8px;
+            transition: color 0.3s ease;
+          }
+
+          .mobile-menu-close:hover {
+            color: white;
+          }
+
+          .mobile-nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+          }
+
+          .mobile-nav-link {
             display: block;
+            padding: 12px 16px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+          }
+
+          .mobile-nav-link:hover, .mobile-nav-link.active {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+          }
+
+          .mobile-nav-buttons {
+            margin-top: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+          }
+
+          .mobile-nav-button {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+          }
+
+          .mobile-nav-button.login {
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: transparent;
+          }
+
+          .mobile-nav-button.login:hover {
+            background: rgba(255, 255, 255, 0.05);
+          }
+
+          .mobile-nav-button.signup {
+            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+            color: white;
+          }
+
+          .mobile-nav-button.signup:hover {
+            opacity: 0.9;
           }
 
           /* Responsive Design */
-          @media (max-width: 768px) {
-            .navbar {
-              padding: 1rem 3%;
-            }
-
-            .nav-container {
-              padding: 0 10px;
-            }
-
+          @media (max-width: 1024px) {
             .nav-links {
               display: none;
-              position: absolute;
-              top: 60px;
-              left: 0;
-              right: 0;
-              flex-direction: column;
-              background-color: white;
-              box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-              padding: 1rem;
-              gap: 0.5rem;
-            }
-
-            .nav-links.active {
-              display: flex;
-            }
-
-            .nav-link {
-              padding: 0.75rem 1rem;
-              border-radius: 5px;
             }
 
             .nav-buttons {
               display: none;
-              position: absolute;
-              top: 200px;
-              right: 1rem;
-              flex-direction: column;
-              gap: 0.5rem;
-            }
-
-            .nav-buttons.active {
-              display: flex;
             }
 
             .mobile-menu {
               display: block;
             }
+          }
+
+          @media (max-width: 768px) {
+            .nav-container {
+              padding: 0 16px;
+            }
 
             .nav-logo {
-              font-size: 1.2rem;
+              font-size: 1.5rem;
             }
 
             .nav-logo i {
-              font-size: 1.5rem;
+              font-size: 1.3rem;
             }
+          }
+
+          /* Add padding to body to account for fixed navbar */
+          body {
+            padding-top: 80px;
           }
         `;
         document.head.appendChild(style);
@@ -235,27 +333,59 @@ document.addEventListener("DOMContentLoaded", function () {
       // Set active nav link based on current page
       setActiveNavLink();
 
+      // Navbar scroll effect
+      window.addEventListener("scroll", function () {
+        const navbar = document.getElementById("navbar");
+        if (navbar) {
+          if (window.scrollY > 50) {
+            navbar.classList.add("scrolled");
+          } else {
+            navbar.classList.remove("scrolled");
+          }
+        }
+      });
+
       // Mobile menu toggle functionality
       const mobileMenu = document.getElementById("mobileMenu");
-      const navLinks = document.getElementById("navLinks");
-      const navButtons = document.querySelector(".nav-buttons");
+      const mobileMenuOverlay = document.getElementById("mobile-menu-overlay");
+      const mobileMenuClose = document.getElementById("mobileMenuClose");
+
+      function openMobileMenu() {
+        if (mobileMenuOverlay) {
+          mobileMenuOverlay.classList.add("active");
+          document.body.style.overflow = "hidden";
+        }
+      }
+
+      function closeMobileMenu() {
+        if (mobileMenuOverlay) {
+          mobileMenuOverlay.classList.remove("active");
+          document.body.style.overflow = "";
+        }
+      }
 
       if (mobileMenu) {
-        mobileMenu.addEventListener("click", function () {
-          navLinks.classList.toggle("active");
-          navButtons.classList.toggle("active");
-          mobileMenu.classList.toggle("active");
-        });
+        mobileMenu.addEventListener("click", openMobileMenu);
+      }
 
-        // Close menu when a link is clicked
-        document.querySelectorAll(".nav-link").forEach((link) => {
-          link.addEventListener("click", function () {
-            navLinks.classList.remove("active");
-            navButtons.classList.remove("active");
-            mobileMenu.classList.remove("active");
-          });
+      if (mobileMenuClose) {
+        mobileMenuClose.addEventListener("click", closeMobileMenu);
+      }
+
+      if (mobileMenuOverlay) {
+        mobileMenuOverlay.addEventListener("click", function (e) {
+          if (e.target === mobileMenuOverlay) {
+            closeMobileMenu();
+          }
         });
       }
+
+      // Close mobile menu when a link is clicked
+      document
+        .querySelectorAll(".mobile-nav-link, .mobile-nav-button")
+        .forEach((link) => {
+          link.addEventListener("click", closeMobileMenu);
+        });
     })
     .catch((error) => console.error("Error loading navbar:", error));
 });
@@ -265,63 +395,92 @@ function updateNavbarForUser() {
   const userRole = localStorage.getItem("userRole"); // 'sponsor', 'sponsee', or null
   const navLinksContainer = document.getElementById("navLinks");
   const navButtonsContainer = document.querySelector(".nav-buttons");
+  const mobileNavLinks = document.querySelector(".mobile-nav-links");
+  const mobileNavButtons = document.querySelector(".mobile-nav-buttons");
 
   if (!navLinksContainer || !navButtonsContainer) return;
 
-  // Determine base path based on current location
-  const currentPath = window.location.pathname;
-  let basePath = "";
-  if (currentPath.includes("/pages/")) {
-    basePath = "../../";
-  }
-
-  // Define navigation links based on role
-  let navLinks = "";
+  // Define navigation links and buttons based on role
+  let navLinksHTML = "";
+  let navButtonsHTML = "";
+  let mobileLinksHTML = "";
+  let mobileButtonsHTML = "";
 
   if (!userRole) {
     // Not logged in - show basic links
-    navLinks = `
-      <a href="${basePath}index.html" class="nav-link">Home</a>
-      <a href="${basePath}about.html" class="nav-link">About</a>
-      <a href="#" class="nav-link">Contact</a>
+    navLinksHTML = `
+      <a href="/index.html" class="nav-link">Home</a>
+      <a href="/pages/events/sponsors.html" class="nav-link">Sponsors</a>
+      <a href="/pages/events/sponsee.html" class="nav-link">Sponsees</a>
+      <a href="/about.html" class="nav-link">About</a>
+      <a href="#contact" class="nav-link">Contact</a>
     `;
-
-    // Show login and signup buttons
-    navButtonsContainer.innerHTML = `
-      <a href="${basePath}pages/auth/login.html" class="nav-button login">Login</a>
-      <a href="${basePath}pages/auth/signup-choice.html" class="nav-button signup sponsor-btn">Sign Up</a>
+    navButtonsHTML = `
+      <a href="/pages/auth/login.html" class="nav-button login">Login</a>
+      <a href="/pages/auth/signup-choice.html" class="nav-button signup">Get Started</a>
+    `;
+    mobileLinksHTML = `
+      <a href="/index.html" class="mobile-nav-link">Home</a>
+      <a href="/pages/events/sponsors.html" class="mobile-nav-link">Sponsors</a>
+      <a href="/pages/events/sponsee.html" class="mobile-nav-link">Sponsees</a>
+      <a href="/about.html" class="mobile-nav-link">About</a>
+      <a href="#contact" class="mobile-nav-link">Contact</a>
+    `;
+    mobileButtonsHTML = `
+      <a href="/pages/auth/login.html" class="mobile-nav-button login">Login</a>
+      <a href="/pages/auth/signup-choice.html" class="mobile-nav-button signup">Get Started</a>
     `;
   } else if (userRole === "sponsor") {
-    // Sponsor logged in - show sponsors page
-    navLinks = `
-      <a href="${basePath}index.html" class="nav-link">Home</a>
-      <a href="${basePath}pages/events/sponsee.html" class="nav-link">Sponsors</a>
-      <a href="${basePath}about.html" class="nav-link">About</a>
-      <a href="#" class="nav-link">Contact</a>
+    // Sponsor logged in
+    navLinksHTML = `
+      <a href="/index.html" class="nav-link">Home</a>
+      <a href="/pages/events/sponsee.html" class="nav-link">Find Sponsees</a>
+      <a href="/about.html" class="nav-link">About</a>
+      <a href="#contact" class="nav-link">Contact</a>
     `;
-
-    // Show profile and logout buttons
-    navButtonsContainer.innerHTML = `
-      <a href="${basePath}pages/profiles/sponsor-profile.html" class="nav-button login">Profile</a>
-      <a href="#" class="nav-button signup sponsor-btn" onclick="logout()">Logout</a>
+    navButtonsHTML = `
+      <a href="/pages/profiles/sponsor-profile.html" class="nav-button login"><i class="fas fa-user mr-2"></i>Profile</a>
+      <a href="#" class="nav-button signup" onclick="logout()"><i class="fas fa-sign-out-alt mr-2"></i>Logout</a>
+    `;
+    mobileLinksHTML = `
+      <a href="/index.html" class="mobile-nav-link">Home</a>
+      <a href="/pages/events/sponsee.html" class="mobile-nav-link">Find Sponsees</a>
+      <a href="/about.html" class="mobile-nav-link">About</a>
+      <a href="#contact" class="mobile-nav-link">Contact</a>
+    `;
+    mobileButtonsHTML = `
+      <a href="/pages/profiles/sponsor-profile.html" class="mobile-nav-button login"><i class="fas fa-user mr-2"></i>Profile</a>
+      <a href="#" class="mobile-nav-button signup" onclick="logout()"><i class="fas fa-sign-out-alt mr-2"></i>Logout</a>
     `;
   } else if (userRole === "sponsee") {
-    // Sponsee logged in - show events page
-    navLinks = `
-      <a href="${basePath}index.html" class="nav-link">Home</a>
-      <a href="${basePath}pages/events/sponsors.html" class="nav-link">Events</a>
-      <a href="${basePath}about.html" class="nav-link">About</a>
-      <a href="#" class="nav-link">Contact</a>
+    // Sponsee logged in
+    navLinksHTML = `
+      <a href="/index.html" class="nav-link">Home</a>
+      <a href="/pages/events/sponsors.html" class="nav-link">Find Sponsors</a>
+      <a href="/about.html" class="nav-link">About</a>
+      <a href="#contact" class="nav-link">Contact</a>
     `;
-
-    // Show profile and logout buttons
-    navButtonsContainer.innerHTML = `
-      <a href="${basePath}pages/profiles/sponsee-profile.html" class="nav-button login">Profile</a>
-      <a href="#" class="nav-button signup sponsor-btn" onclick="logout()">Logout</a>
+    navButtonsHTML = `
+      <a href="/pages/profiles/sponsee-profile.html" class="nav-button login"><i class="fas fa-user mr-2"></i>Profile</a>
+      <a href="#" class="nav-button signup" onclick="logout()"><i class="fas fa-sign-out-alt mr-2"></i>Logout</a>
+    `;
+    mobileLinksHTML = `
+      <a href="/index.html" class="mobile-nav-link">Home</a>
+      <a href="/pages/events/sponsors.html" class="mobile-nav-link">Find Sponsors</a>
+      <a href="/about.html" class="mobile-nav-link">About</a>
+      <a href="#contact" class="mobile-nav-link">Contact</a>
+    `;
+    mobileButtonsHTML = `
+      <a href="/pages/profiles/sponsee-profile.html" class="mobile-nav-button login"><i class="fas fa-user mr-2"></i>Profile</a>
+      <a href="#" class="mobile-nav-button signup" onclick="logout()"><i class="fas fa-sign-out-alt mr-2"></i>Logout</a>
     `;
   }
 
-  navLinksContainer.innerHTML = navLinks;
+  navLinksContainer.innerHTML = navLinksHTML;
+  navButtonsContainer.innerHTML = navButtonsHTML;
+
+  if (mobileNavLinks) mobileNavLinks.innerHTML = mobileLinksHTML;
+  if (mobileNavButtons) mobileNavButtons.innerHTML = mobileButtonsHTML;
 }
 
 // Logout function
