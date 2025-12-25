@@ -33,6 +33,7 @@ app.use(express.static(path.join(__dirname, "../frontend")));
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/messages", require("./routes/messages"));
 app.use("/api/documents", require("./routes/documents"));
+app.use("/api/admin", require("./routes/admin"));
 
 // Health check endpoint
 app.get("/api/health", (req, res) => {

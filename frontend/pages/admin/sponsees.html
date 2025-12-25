@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Sponsees - Admin - SponzoBD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        background: #0f172a;
+        min-height: 100vh;
+      }
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #1e293b;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #475569;
+        border-radius: 10px;
+      }
+      .sidebar {
+        background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .nav-link {
+        transition: all 0.3s ease;
+      }
+      .nav-link:hover,
+      .nav-link.active {
+        background: rgba(245, 158, 11, 0.1);
+        border-left: 3px solid #f59e0b;
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+      }
+      .table-row {
+        transition: all 0.2s ease;
+      }
+      .table-row:hover {
+        background: rgba(255, 255, 255, 0.05);
+      }
+      .badge {
+        padding: 4px 12px;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 500;
+      }
+      .badge-verified {
+        background: rgba(34, 197, 94, 0.2);
+        color: #22c55e;
+        border: 1px solid rgba(34, 197, 94, 0.3);
+      }
+      .badge-unverified {
+        background: rgba(251, 191, 36, 0.2);
+        color: #fbbf24;
+        border: 1px solid rgba(251, 191, 36, 0.3);
+      }
+      .input-field {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: white;
+      }
+      .input-field:focus {
+        outline: none;
+        border-color: #f59e0b;
+      }
+      .btn-action {
+        transition: all 0.2s ease;
+      }
+      .btn-action:hover {
+        transform: scale(1.05);
+      }
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        z-index: 50;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(5px);
+      }
+      .modal-content {
+        background: #1e293b;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        max-width: 500px;
+        width: 90%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="flex min-h-screen">
+      <!-- Sidebar -->
+      <aside class="sidebar w-64 fixed h-full z-20">
+        <div class="p-6 border-b border-white/10">
+          <div class="flex items-center gap-3">
+            <div
+              class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-red-500 flex items-center justify-center"
+            >
+              <i class="fas fa-shield-halved text-white"></i>
+            </div>
+            <div>
+              <h1 class="text-white font-bold">SponzoBD</h1>
+              <p class="text-gray-500 text-xs">Admin Panel</p>
+            </div>
+          </div>
+        </div>
+
+        <nav class="p-4">
+          <p class="text-gray-500 text-xs uppercase tracking-wider mb-4 px-3">
+            Main Menu
+          </p>
+          <a
+            href="dashboard.html"
+            class="nav-link flex items-center gap-3 px-4 py-3 text-gray-300 rounded-lg mb-1"
+          >
+            <i class="fas fa-chart-pie w-5"></i><span>Dashboard</span>
+          </a>
+          <a
+            href="sponsors.html"
+            class="nav-link flex items-center gap-3 px-4 py-3 text-gray-300 rounded-lg mb-1"
+          >
+            <i class="fas fa-building w-5"></i><span>Sponsors</span>
+          </a>
+          <a
+            href="sponsees.html"
+            class="nav-link active flex items-center gap-3 px-4 py-3 text-gray-300 rounded-lg mb-1"
+          >
+            <i class="fas fa-calendar-alt w-5"></i><span>Sponsees</span>
+          </a>
+          <a
+            href="messages.html"
+            class="nav-link flex items-center gap-3 px-4 py-3 text-gray-300 rounded-lg mb-1"
+          >
+            <i class="fas fa-comments w-5"></i><span>Messages</span>
+          </a>
+          <a
+            href="documents.html"
+            class="nav-link flex items-center gap-3 px-4 py-3 text-gray-300 rounded-lg mb-1"
+          >
+            <i class="fas fa-folder w-5"></i><span>Documents</span>
+          </a>
+          <p
+            class="text-gray-500 text-xs uppercase tracking-wider mb-4 mt-8 px-3"
+          >
+            Administration
+          </p>
+          <a
+            href="admins.html"
+            id="adminManagementLink"
+            class="nav-link flex items-center gap-3 px-4 py-3 text-gray-300 rounded-lg mb-1"
+            style="display: none"
+          >
+            <i class="fas fa-user-shield w-5"></i><span>Admin Users</span>
+          </a>
+          <a
+            href="settings.html"
+            class="nav-link flex items-center gap-3 px-4 py-3 text-gray-300 rounded-lg mb-1"
+          >
+            <i class="fas fa-cog w-5"></i><span>Settings</span>
+          </a>
+        </nav>
+
+        <div
+          class="absolute bottom-0 left-0 right-0 p-4 border-t border-white/10"
+        >
+          <button
+            onclick="logout()"
+            class="w-full flex items-center gap-3 px-4 py-3 text-red-400 hover:bg-red-500/10 rounded-lg transition"
+          >
+            <i class="fas fa-sign-out-alt w-5"></i><span>Logout</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="flex-1 ml-64 p-8">
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-8">
+          <div>
+            <h1 class="text-2xl font-bold text-white">Manage Sponsees</h1>
+            <p class="text-gray-400">
+              View and manage all registered sponsees & micro-influencers
+            </p>
+          </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="glass-card p-4 mb-6">
+          <div class="flex flex-wrap gap-4 items-center">
+            <div class="flex-1 min-w-[200px]">
+              <input
+                type="text"
+                id="searchInput"
+                placeholder="Search by event name, email, or organization..."
+                class="input-field w-full px-4 py-2 rounded-lg"
+              />
+            </div>
+            <select
+              id="verifiedFilter"
+              class="input-field px-4 py-2 rounded-lg"
+            >
+              <option value="">All Status</option>
+              <option value="true">Verified</option>
+              <option value="false">Unverified</option>
+            </select>
+            <button
+              onclick="loadSponsees()"
+              class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg transition"
+            >
+              <i class="fas fa-search mr-2"></i>Search
+            </button>
+          </div>
+        </div>
+
+        <!-- Sponsees Table -->
+        <div class="glass-card overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead>
+                <tr class="border-b border-white/10">
+                  <th class="text-left px-6 py-4 text-gray-400 font-medium">
+                    Event/Influencer
+                  </th>
+                  <th class="text-left px-6 py-4 text-gray-400 font-medium">
+                    Email
+                  </th>
+                  <th class="text-left px-6 py-4 text-gray-400 font-medium">
+                    Organization
+                  </th>
+                  <th class="text-left px-6 py-4 text-gray-400 font-medium">
+                    Budget
+                  </th>
+                  <th class="text-left px-6 py-4 text-gray-400 font-medium">
+                    Status
+                  </th>
+                  <th class="text-left px-6 py-4 text-gray-400 font-medium">
+                    Joined
+                  </th>
+                  <th class="text-center px-6 py-4 text-gray-400 font-medium">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="sponseesTable">
+                <tr>
+                  <td colspan="7" class="text-center py-8 text-gray-500">
+                    Loading...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pagination -->
+          <div
+            class="flex items-center justify-between px-6 py-4 border-t border-white/10"
+          >
+            <p class="text-gray-400 text-sm" id="paginationInfo">
+              Showing 0 of 0 sponsees
+            </p>
+            <div class="flex gap-2" id="paginationButtons"></div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- View Sponsee Modal -->
+    <div id="viewModal" class="modal-overlay flex items-center justify-center">
+      <div class="modal-content p-6">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-xl font-bold text-white">Sponsee Details</h3>
+          <button
+            onclick="closeModal('viewModal')"
+            class="text-gray-400 hover:text-white transition"
+          >
+            <i class="fas fa-times text-xl"></i>
+          </button>
+        </div>
+        <div id="sponseeDetails" class="space-y-4"></div>
+      </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div
+      id="deleteModal"
+      class="modal-overlay flex items-center justify-center"
+    >
+      <div class="modal-content p-6 text-center">
+        <div
+          class="w-16 h-16 rounded-full bg-red-500/20 flex items-center justify-center mx-auto mb-4"
+        >
+          <i class="fas fa-exclamation-triangle text-red-400 text-2xl"></i>
+        </div>
+        <h3 class="text-xl font-bold text-white mb-2">Delete Sponsee?</h3>
+        <p class="text-gray-400 mb-6">
+          This action cannot be undone. All related data will be permanently
+          deleted.
+        </p>
+        <div class="flex gap-4 justify-center">
+          <button
+            onclick="closeModal('deleteModal')"
+            class="px-6 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition"
+          >
+            Cancel
+          </button>
+          <button
+            onclick="confirmDelete()"
+            class="px-6 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const API_URL = "https://test-6aiv.onrender.com/api";
+      let currentPage = 1;
+      let deleteTargetId = null;
+      let adminData = null;
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const token = localStorage.getItem("adminToken");
+        adminData = JSON.parse(localStorage.getItem("adminData") || "{}");
+        if (!token) {
+          window.location.href = "login.html";
+          return;
+        }
+        if (
+          adminData.role === "super_admin" ||
+          adminData.permissions?.manageAdmins
+        ) {
+          document.getElementById("adminManagementLink").style.display = "flex";
+        }
+        loadSponsees();
+      });
+
+      async function loadSponsees(page = 1) {
+        const token = localStorage.getItem("adminToken");
+        const search = document.getElementById("searchInput").value;
+        const verified = document.getElementById("verifiedFilter").value;
+
+        currentPage = page;
+
+        try {
+          const params = new URLSearchParams({ page, limit: 10 });
+          if (search) params.append("search", search);
+          if (verified) params.append("verified", verified);
+
+          const response = await fetch(`${API_URL}/admin/sponsees?${params}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            renderSponsees(result.sponsees);
+            renderPagination(result.pagination);
+          }
+        } catch (error) {
+          console.error("Error loading sponsees:", error);
+        }
+      }
+
+      function renderSponsees(sponsees) {
+        const tbody = document.getElementById("sponseesTable");
+
+        if (sponsees.length === 0) {
+          tbody.innerHTML =
+            '<tr><td colspan="7" class="text-center py-8 text-gray-500">No sponsees found</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = sponsees
+          .map(
+            (sponsee) => `
+          <tr class="table-row border-b border-white/5">
+            <td class="px-6 py-4">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-pink-500/20 flex items-center justify-center">
+                  ${
+                    sponsee.logo
+                      ? `<img src="${sponsee.logo}" class="w-10 h-10 rounded-lg object-cover" />`
+                      : '<i class="fas fa-calendar-alt text-pink-400"></i>'
+                  }
+                </div>
+                <span class="text-white font-medium">${sponsee.eventName}</span>
+              </div>
+            </td>
+            <td class="px-6 py-4 text-gray-300">${sponsee.email}</td>
+            <td class="px-6 py-4 text-gray-300">${
+              sponsee.organization || "-"
+            }</td>
+            <td class="px-6 py-4 text-gray-300">৳${(
+              sponsee.budget || 0
+            ).toLocaleString()}</td>
+            <td class="px-6 py-4">
+              <span class="badge ${
+                sponsee.isVerified ? "badge-verified" : "badge-unverified"
+              }">
+                ${sponsee.isVerified ? "Verified" : "Pending"}
+              </span>
+            </td>
+            <td class="px-6 py-4 text-gray-400 text-sm">${new Date(
+              sponsee.createdAt
+            ).toLocaleDateString()}</td>
+            <td class="px-6 py-4">
+              <div class="flex items-center justify-center gap-2">
+                <button onclick="viewSponsee('${
+                  sponsee._id
+                }')" class="btn-action p-2 bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 rounded-lg" title="View">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button onclick="toggleVerify('${
+                  sponsee._id
+                }', ${!sponsee.isVerified})" class="btn-action p-2 ${
+              sponsee.isVerified
+                ? "bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-400"
+                : "bg-green-500/20 hover:bg-green-500/30 text-green-400"
+            } rounded-lg" title="${sponsee.isVerified ? "Unverify" : "Verify"}">
+                  <i class="fas fa-${
+                    sponsee.isVerified ? "times" : "check"
+                  }"></i>
+                </button>
+                <button onclick="deleteSponsee('${
+                  sponsee._id
+                }')" class="btn-action p-2 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-lg" title="Delete">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `
+          )
+          .join("");
+      }
+
+      function renderPagination(pagination) {
+        document.getElementById("paginationInfo").textContent = `Showing ${
+          (pagination.page - 1) * pagination.limit + 1
+        }-${Math.min(
+          pagination.page * pagination.limit,
+          pagination.total
+        )} of ${pagination.total} sponsees`;
+
+        const buttons = document.getElementById("paginationButtons");
+        let html = "";
+
+        if (pagination.page > 1) {
+          html += `<button onclick="loadSponsees(${
+            pagination.page - 1
+          })" class="px-3 py-1 bg-white/10 hover:bg-white/20 text-white rounded transition">Prev</button>`;
+        }
+
+        for (let i = 1; i <= pagination.pages; i++) {
+          if (i === pagination.page) {
+            html += `<button class="px-3 py-1 bg-amber-500 text-white rounded">${i}</button>`;
+          } else if (
+            i === 1 ||
+            i === pagination.pages ||
+            Math.abs(i - pagination.page) <= 1
+          ) {
+            html += `<button onclick="loadSponsees(${i})" class="px-3 py-1 bg-white/10 hover:bg-white/20 text-white rounded transition">${i}</button>`;
+          } else if (Math.abs(i - pagination.page) === 2) {
+            html += `<span class="px-2 text-gray-500">...</span>`;
+          }
+        }
+
+        if (pagination.page < pagination.pages) {
+          html += `<button onclick="loadSponsees(${
+            pagination.page + 1
+          })" class="px-3 py-1 bg-white/10 hover:bg-white/20 text-white rounded transition">Next</button>`;
+        }
+
+        buttons.innerHTML = html;
+      }
+
+      async function viewSponsee(id) {
+        const token = localStorage.getItem("adminToken");
+        try {
+          const response = await fetch(
+            `${API_URL}/admin/sponsees?search=${id}`,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+          const result = await response.json();
+          const sponsee = result.sponsees.find((s) => s._id === id);
+
+          if (sponsee) {
+            document.getElementById("sponseeDetails").innerHTML = `
+              <div class="flex items-center gap-4 pb-4 border-b border-white/10">
+                <div class="w-16 h-16 rounded-xl bg-pink-500/20 flex items-center justify-center">
+                  ${
+                    sponsee.logo
+                      ? `<img src="${sponsee.logo}" class="w-16 h-16 rounded-xl object-cover" />`
+                      : '<i class="fas fa-calendar-alt text-pink-400 text-2xl"></i>'
+                  }
+                </div>
+                <div>
+                  <h4 class="text-white font-bold text-lg">${
+                    sponsee.eventName
+                  }</h4>
+                  <span class="badge ${
+                    sponsee.isVerified ? "badge-verified" : "badge-unverified"
+                  }">${sponsee.isVerified ? "Verified" : "Pending"}</span>
+                </div>
+              </div>
+              <div class="grid grid-cols-2 gap-4">
+                <div><p class="text-gray-500 text-xs">Email</p><p class="text-white">${
+                  sponsee.email
+                }</p></div>
+                <div><p class="text-gray-500 text-xs">Phone</p><p class="text-white">${
+                  sponsee.phone || "-"
+                }</p></div>
+                <div><p class="text-gray-500 text-xs">Organization</p><p class="text-white">${
+                  sponsee.organization || "-"
+                }</p></div>
+                <div><p class="text-gray-500 text-xs">Location</p><p class="text-white">${
+                  sponsee.location || "-"
+                }</p></div>
+                <div><p class="text-gray-500 text-xs">Expected Attendees</p><p class="text-white">${
+                  sponsee.expectedAttendees || "-"
+                }</p></div>
+                <div><p class="text-gray-500 text-xs">Budget</p><p class="text-white">৳${(
+                  sponsee.budget || 0
+                ).toLocaleString()}</p></div>
+                <div><p class="text-gray-500 text-xs">Contact Person</p><p class="text-white">${
+                  sponsee.contactPerson || "-"
+                }</p></div>
+                <div><p class="text-gray-500 text-xs">Joined</p><p class="text-white">${new Date(
+                  sponsee.createdAt
+                ).toLocaleDateString()}</p></div>
+              </div>
+              <div><p class="text-gray-500 text-xs mb-1">Event Types</p><div class="flex flex-wrap gap-2">${
+                (sponsee.eventType || [])
+                  .map(
+                    (t) =>
+                      `<span class="px-2 py-1 bg-pink-500/20 text-pink-300 rounded text-xs">${t}</span>`
+                  )
+                  .join("") || "-"
+              }</div></div>
+              <div><p class="text-gray-500 text-xs mb-1">Categories</p><div class="flex flex-wrap gap-2">${
+                (sponsee.categories || [])
+                  .map(
+                    (c) =>
+                      `<span class="px-2 py-1 bg-blue-500/20 text-blue-300 rounded text-xs">${c}</span>`
+                  )
+                  .join("") || "-"
+              }</div></div>
+              <div><p class="text-gray-500 text-xs mb-1">Description</p><p class="text-gray-300 text-sm">${
+                sponsee.description || "No description provided"
+              }</p></div>
+            `;
+            document.getElementById("viewModal").style.display = "flex";
+          }
+        } catch (error) {
+          console.error("Error viewing sponsee:", error);
+        }
+      }
+
+      async function toggleVerify(id, verify) {
+        const token = localStorage.getItem("adminToken");
+        try {
+          const response = await fetch(
+            `${API_URL}/admin/sponsees/${id}/verify`,
+            {
+              method: "PATCH",
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ isVerified: verify }),
+            }
+          );
+          const result = await response.json();
+          if (result.success) loadSponsees(currentPage);
+        } catch (error) {
+          console.error("Error updating verification:", error);
+        }
+      }
+
+      function deleteSponsee(id) {
+        deleteTargetId = id;
+        document.getElementById("deleteModal").style.display = "flex";
+      }
+
+      async function confirmDelete() {
+        if (!deleteTargetId) return;
+        const token = localStorage.getItem("adminToken");
+        try {
+          const response = await fetch(
+            `${API_URL}/admin/sponsees/${deleteTargetId}`,
+            {
+              method: "DELETE",
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+          const result = await response.json();
+          if (result.success) {
+            closeModal("deleteModal");
+            loadSponsees(currentPage);
+          }
+        } catch (error) {
+          console.error("Error deleting sponsee:", error);
+        }
+        deleteTargetId = null;
+      }
+
+      function closeModal(id) {
+        document.getElementById(id).style.display = "none";
+      }
+
+      function logout() {
+        localStorage.removeItem("adminToken");
+        localStorage.removeItem("adminData");
+        window.location.href = "login.html";
+      }
+
+      // Search on Enter
+      document
+        .getElementById("searchInput")
+        .addEventListener("keypress", function (e) {
+          if (e.key === "Enter") loadSponsees();
+        });
+    </script>
+  </body>
+</html>

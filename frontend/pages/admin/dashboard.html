@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard - SponzoBD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        background: #0f172a;
+        min-height: 100vh;
+      }
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #1e293b;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #475569;
+        border-radius: 10px;
+      }
+      .sidebar {
+        background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .nav-link {
+        transition: all 0.3s ease;
+      }
+      .nav-link:hover,
+      .nav-link.active {
+        background: rgba(245, 158, 11, 0.1);
+        border-left: 3px solid #f59e0b;
+      }
+      .stat-card {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.05) 0%,
+          rgba(255, 255, 255, 0.02) 100%
+        );
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        transition: all 0.3s ease;
+      }
+      .stat-card:hover {
+        transform: translateY(-3px);
+        border-color: rgba(245, 158, 11, 0.3);
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+      }
+      .gradient-text {
+        background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .table-row {
+        transition: all 0.2s ease;
+      }
+      .table-row:hover {
+        background: rgba(255, 255, 255, 0.05);
+      }
+      .badge {
+        padding: 4px 12px;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 500;
+      }
+      .badge-verified {
+        background: rgba(34, 197, 94, 0.2);
+        color: #22c55e;
+        border: 1px solid rgba(34, 197, 94, 0.3);
+      }
+      .badge-unverified {
+        background: rgba(251, 191, 36, 0.2);
+        color: #fbbf24;
+        border: 1px solid rgba(251, 191, 36, 0.3);
+      }
+      .badge-sponsor {
+        background: rgba(124, 58, 237, 0.2);
+        color: #a78bfa;
+        border: 1px solid rgba(124, 58, 237, 0.3);
+      }
+      .badge-sponsee {
+        background: rgba(236, 72, 153, 0.2);
+        color: #f472b6;
+        border: 1px solid rgba(236, 72, 153, 0.3);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="flex min-h-screen">
+      <!-- Sidebar -->
+      <aside class="sidebar w-64 fixed h-full z-20">
+        <div class="p-6 border-b border-white/10">
+          <div class="flex items-center gap-3">
+            <div
+              class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-red-500 flex items-center justify-center"
+            >
+              <i class="fas fa-shield-halved text-white"></i>
+            </div>
+            <div>
+              <h1 class="text-white font-bold">SponzoBD</h1>
+              <p class="text-gray-500 text-xs">Admin Panel</p>
+            </div>
+          </div>
+        </div>
+
+        <nav class="p-4">
+          <p class="text-gray-500 text-xs uppercase tracking-wider mb-4 px-3">
+            Main Menu
+          </p>
+
+          <a
+            href="dashboard.html"
+            class="nav-link active flex items-center gap-3 px-4 py-3 text-gray-300 rounded-lg mb-1"
+          >
+            <i class="fas fa-chart-pie w-5"></i>
+            <span>Dashboard</span>
+          </a>
+
+          <a
+            href="sponsors.html"
+            class="nav-link flex items-center gap-3 px-4 py-3 text-gray-300 rounded-lg mb-1"
+          >
+            <i class="fas fa-building w-5"></i>
+            <span>Sponsors</span>
+          </a>
+
+          <a
+            href="sponsees.html"
+            class="nav-link flex items-center gap-3 px-4 py-3 text-gray-300 rounded-lg mb-1"
+          >
+            <i class="fas fa-calendar-alt w-5"></i>
+            <span>Sponsees</span>
+          </a>
+
+          <a
+            href="messages.html"
+            class="nav-link flex items-center gap-3 px-4 py-3 text-gray-300 rounded-lg mb-1"
+          >
+            <i class="fas fa-comments w-5"></i>
+            <span>Messages</span>
+          </a>
+
+          <a
+            href="documents.html"
+            class="nav-link flex items-center gap-3 px-4 py-3 text-gray-300 rounded-lg mb-1"
+          >
+            <i class="fas fa-folder w-5"></i>
+            <span>Documents</span>
+          </a>
+
+          <p
+            class="text-gray-500 text-xs uppercase tracking-wider mb-4 mt-8 px-3"
+          >
+            Administration
+          </p>
+
+          <a
+            href="admins.html"
+            id="adminManagementLink"
+            class="nav-link flex items-center gap-3 px-4 py-3 text-gray-300 rounded-lg mb-1"
+            style="display: none"
+          >
+            <i class="fas fa-user-shield w-5"></i>
+            <span>Admin Users</span>
+          </a>
+
+          <a
+            href="settings.html"
+            class="nav-link flex items-center gap-3 px-4 py-3 text-gray-300 rounded-lg mb-1"
+          >
+            <i class="fas fa-cog w-5"></i>
+            <span>Settings</span>
+          </a>
+        </nav>
+
+        <div
+          class="absolute bottom-0 left-0 right-0 p-4 border-t border-white/10"
+        >
+          <button
+            onclick="logout()"
+            class="w-full flex items-center gap-3 px-4 py-3 text-red-400 hover:bg-red-500/10 rounded-lg transition"
+          >
+            <i class="fas fa-sign-out-alt w-5"></i>
+            <span>Logout</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="flex-1 ml-64 p-8">
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-8">
+          <div>
+            <h1 class="text-2xl font-bold text-white">Dashboard Overview</h1>
+            <p class="text-gray-400">
+              Welcome back,
+              <span id="adminName" class="text-amber-400">Admin</span>
+            </p>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="text-gray-400 text-sm" id="currentDate"></span>
+            <div
+              class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500 to-red-500 flex items-center justify-center"
+            >
+              <i class="fas fa-user text-white"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div class="stat-card p-6">
+            <div class="flex items-center justify-between mb-4">
+              <div
+                class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center"
+              >
+                <i class="fas fa-building text-purple-400 text-xl"></i>
+              </div>
+              <span class="text-green-400 text-sm"
+                ><i class="fas fa-arrow-up mr-1"></i>12%</span
+              >
+            </div>
+            <h3 class="text-3xl font-bold text-white" id="totalSponsors">0</h3>
+            <p class="text-gray-400 text-sm">Total Sponsors</p>
+          </div>
+
+          <div class="stat-card p-6">
+            <div class="flex items-center justify-between mb-4">
+              <div
+                class="w-12 h-12 rounded-xl bg-pink-500/20 flex items-center justify-center"
+              >
+                <i class="fas fa-calendar-alt text-pink-400 text-xl"></i>
+              </div>
+              <span class="text-green-400 text-sm"
+                ><i class="fas fa-arrow-up mr-1"></i>8%</span
+              >
+            </div>
+            <h3 class="text-3xl font-bold text-white" id="totalSponsees">0</h3>
+            <p class="text-gray-400 text-sm">Total Sponsees</p>
+          </div>
+
+          <div class="stat-card p-6">
+            <div class="flex items-center justify-between mb-4">
+              <div
+                class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center"
+              >
+                <i class="fas fa-comments text-blue-400 text-xl"></i>
+              </div>
+              <span class="text-green-400 text-sm"
+                ><i class="fas fa-arrow-up mr-1"></i>24%</span
+              >
+            </div>
+            <h3 class="text-3xl font-bold text-white" id="totalMessages">0</h3>
+            <p class="text-gray-400 text-sm">Total Messages</p>
+          </div>
+
+          <div class="stat-card p-6">
+            <div class="flex items-center justify-between mb-4">
+              <div
+                class="w-12 h-12 rounded-xl bg-amber-500/20 flex items-center justify-center"
+              >
+                <i class="fas fa-folder text-amber-400 text-xl"></i>
+              </div>
+              <span class="text-green-400 text-sm"
+                ><i class="fas fa-arrow-up mr-1"></i>5%</span
+              >
+            </div>
+            <h3 class="text-3xl font-bold text-white" id="totalDocuments">0</h3>
+            <p class="text-gray-400 text-sm">Total Documents</p>
+          </div>
+        </div>
+
+        <!-- Charts & Tables Row -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <!-- User Growth Chart -->
+          <div class="glass-card p-6">
+            <h3 class="text-lg font-semibold text-white mb-4">
+              <i class="fas fa-chart-line text-amber-400 mr-2"></i>User Growth
+            </h3>
+            <canvas id="userGrowthChart" height="200"></canvas>
+          </div>
+
+          <!-- Verification Stats -->
+          <div class="glass-card p-6">
+            <h3 class="text-lg font-semibold text-white mb-4">
+              <i class="fas fa-check-circle text-green-400 mr-2"></i
+              >Verification Status
+            </h3>
+            <div class="grid grid-cols-2 gap-4">
+              <div class="bg-white/5 rounded-xl p-4 text-center">
+                <div
+                  class="text-3xl font-bold text-purple-400"
+                  id="verifiedSponsors"
+                >
+                  0
+                </div>
+                <p class="text-gray-400 text-sm">Verified Sponsors</p>
+                <div class="mt-2 h-2 bg-white/10 rounded-full overflow-hidden">
+                  <div
+                    id="sponsorVerifyBar"
+                    class="h-full bg-purple-500 rounded-full"
+                    style="width: 0%"
+                  ></div>
+                </div>
+                <p class="text-xs text-gray-500 mt-1">
+                  <span id="sponsorVerifyPercent">0</span>% verified
+                </p>
+              </div>
+              <div class="bg-white/5 rounded-xl p-4 text-center">
+                <div
+                  class="text-3xl font-bold text-pink-400"
+                  id="verifiedSponsees"
+                >
+                  0
+                </div>
+                <p class="text-gray-400 text-sm">Verified Sponsees</p>
+                <div class="mt-2 h-2 bg-white/10 rounded-full overflow-hidden">
+                  <div
+                    id="sponseeVerifyBar"
+                    class="h-full bg-pink-500 rounded-full"
+                    style="width: 0%"
+                  ></div>
+                </div>
+                <p class="text-xs text-gray-500 mt-1">
+                  <span id="sponseeVerifyPercent">0</span>% verified
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Users -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Recent Sponsors -->
+          <div class="glass-card p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold text-white">
+                <i class="fas fa-building text-purple-400 mr-2"></i>Recent
+                Sponsors
+              </h3>
+              <a
+                href="sponsors.html"
+                class="text-amber-400 hover:text-amber-300 text-sm"
+                >View All →</a
+              >
+            </div>
+            <div id="recentSponsors" class="space-y-3">
+              <div class="text-gray-500 text-center py-8">Loading...</div>
+            </div>
+          </div>
+
+          <!-- Recent Sponsees -->
+          <div class="glass-card p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold text-white">
+                <i class="fas fa-calendar-alt text-pink-400 mr-2"></i>Recent
+                Sponsees
+              </h3>
+              <a
+                href="sponsees.html"
+                class="text-amber-400 hover:text-amber-300 text-sm"
+                >View All →</a
+              >
+            </div>
+            <div id="recentSponsees" class="space-y-3">
+              <div class="text-gray-500 text-center py-8">Loading...</div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      const API_URL = "https://test-6aiv.onrender.com/api";
+      let adminData = null;
+
+      // Check authentication
+      document.addEventListener("DOMContentLoaded", function () {
+        const token = localStorage.getItem("adminToken");
+        adminData = JSON.parse(localStorage.getItem("adminData") || "{}");
+
+        if (!token) {
+          window.location.href = "login.html";
+          return;
+        }
+
+        // Update admin name
+        document.getElementById("adminName").textContent =
+          adminData.fullName || "Admin";
+
+        // Show admin management link for super_admin
+        if (
+          adminData.role === "super_admin" ||
+          adminData.permissions?.manageAdmins
+        ) {
+          document.getElementById("adminManagementLink").style.display = "flex";
+        }
+
+        // Set current date
+        document.getElementById("currentDate").textContent =
+          new Date().toLocaleDateString("en-US", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          });
+
+        // Load dashboard data
+        loadDashboardData();
+      });
+
+      async function loadDashboardData() {
+        const token = localStorage.getItem("adminToken");
+
+        try {
+          const response = await fetch(`${API_URL}/admin/stats`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            updateStats(result.stats);
+            updateVerificationStats(result.stats);
+            updateRecentUsers(result.recentUsers);
+            updateChart(result.charts);
+          } else {
+            if (response.status === 401) {
+              logout();
+            }
+          }
+        } catch (error) {
+          console.error("Error loading dashboard:", error);
+        }
+      }
+
+      function updateStats(stats) {
+        document.getElementById("totalSponsors").textContent =
+          stats.totalSponsors;
+        document.getElementById("totalSponsees").textContent =
+          stats.totalSponsees;
+        document.getElementById("totalMessages").textContent =
+          stats.totalMessages;
+        document.getElementById("totalDocuments").textContent =
+          stats.totalDocuments;
+      }
+
+      function updateVerificationStats(stats) {
+        document.getElementById("verifiedSponsors").textContent =
+          stats.verifiedSponsors;
+        document.getElementById("verifiedSponsees").textContent =
+          stats.verifiedSponsees;
+        document.getElementById("sponsorVerifyBar").style.width =
+          stats.verificationRate.sponsors + "%";
+        document.getElementById("sponseeVerifyBar").style.width =
+          stats.verificationRate.sponsees + "%";
+        document.getElementById("sponsorVerifyPercent").textContent =
+          stats.verificationRate.sponsors;
+        document.getElementById("sponseeVerifyPercent").textContent =
+          stats.verificationRate.sponsees;
+      }
+
+      function updateRecentUsers(recentUsers) {
+        // Recent Sponsors
+        const sponsorsContainer = document.getElementById("recentSponsors");
+        if (recentUsers.sponsors.length === 0) {
+          sponsorsContainer.innerHTML =
+            '<div class="text-gray-500 text-center py-8">No sponsors yet</div>';
+        } else {
+          sponsorsContainer.innerHTML = recentUsers.sponsors
+            .map(
+              (sponsor) => `
+            <div class="table-row flex items-center justify-between p-3 rounded-lg">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center">
+                  <i class="fas fa-building text-purple-400"></i>
+                </div>
+                <div>
+                  <p class="text-white font-medium">${sponsor.companyName}</p>
+                  <p class="text-gray-500 text-xs">${sponsor.email}</p>
+                </div>
+              </div>
+              <span class="badge ${
+                sponsor.isVerified ? "badge-verified" : "badge-unverified"
+              }">
+                ${sponsor.isVerified ? "Verified" : "Pending"}
+              </span>
+            </div>
+          `
+            )
+            .join("");
+        }
+
+        // Recent Sponsees
+        const sponseesContainer = document.getElementById("recentSponsees");
+        if (recentUsers.sponsees.length === 0) {
+          sponseesContainer.innerHTML =
+            '<div class="text-gray-500 text-center py-8">No sponsees yet</div>';
+        } else {
+          sponseesContainer.innerHTML = recentUsers.sponsees
+            .map(
+              (sponsee) => `
+            <div class="table-row flex items-center justify-between p-3 rounded-lg">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-pink-500/20 flex items-center justify-center">
+                  <i class="fas fa-calendar-alt text-pink-400"></i>
+                </div>
+                <div>
+                  <p class="text-white font-medium">${sponsee.eventName}</p>
+                  <p class="text-gray-500 text-xs">${sponsee.email}</p>
+                </div>
+              </div>
+              <span class="badge ${
+                sponsee.isVerified ? "badge-verified" : "badge-unverified"
+              }">
+                ${sponsee.isVerified ? "Verified" : "Pending"}
+              </span>
+            </div>
+          `
+            )
+            .join("");
+        }
+      }
+
+      function updateChart(charts) {
+        const ctx = document.getElementById("userGrowthChart").getContext("2d");
+
+        // Prepare labels and data
+        const labels = [];
+        const sponsorData = [];
+        const sponseeData = [];
+
+        // Get last 6 months
+        for (let i = 5; i >= 0; i--) {
+          const date = new Date();
+          date.setMonth(date.getMonth() - i);
+          const monthKey = date.toISOString().slice(0, 7);
+          const monthLabel = date.toLocaleDateString("en-US", {
+            month: "short",
+          });
+
+          labels.push(monthLabel);
+
+          const sponsorMonth = charts.sponsorsByMonth.find(
+            (m) => m._id === monthKey
+          );
+          const sponseeMonth = charts.sponseesByMonth.find(
+            (m) => m._id === monthKey
+          );
+
+          sponsorData.push(sponsorMonth ? sponsorMonth.count : 0);
+          sponseeData.push(sponseeMonth ? sponseeMonth.count : 0);
+        }
+
+        new Chart(ctx, {
+          type: "line",
+          data: {
+            labels,
+            datasets: [
+              {
+                label: "Sponsors",
+                data: sponsorData,
+                borderColor: "#a78bfa",
+                backgroundColor: "rgba(167, 139, 250, 0.1)",
+                fill: true,
+                tension: 0.4,
+              },
+              {
+                label: "Sponsees",
+                data: sponseeData,
+                borderColor: "#f472b6",
+                backgroundColor: "rgba(244, 114, 182, 0.1)",
+                fill: true,
+                tension: 0.4,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                labels: {
+                  color: "#9ca3af",
+                },
+              },
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                grid: {
+                  color: "rgba(255, 255, 255, 0.05)",
+                },
+                ticks: {
+                  color: "#9ca3af",
+                },
+              },
+              x: {
+                grid: {
+                  color: "rgba(255, 255, 255, 0.05)",
+                },
+                ticks: {
+                  color: "#9ca3af",
+                },
+              },
+            },
+          },
+        });
+      }
+
+      function logout() {
+        localStorage.removeItem("adminToken");
+        localStorage.removeItem("adminData");
+        window.location.href = "login.html";
+      }
+    </script>
+  </body>
+</html>
