@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 const generateToken = (id, userType) => {
-  return jwt.sign({ id, userType }, process.env.JWT_SECRET, {
+  return jwt.sign({ id, userType, role: userType }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRE || "7d",
   });
 };
@@ -28,7 +28,12 @@ const authMiddleware = (req, res, next) => {
     return res.status(401).json({ success: false, message: "Invalid token" });
   }
 
-  req.user = decoded;
+  // Set user info including role (use userType as role if role not set)
+  req.user = {
+    id: decoded.id,
+    role: decoded.role || decoded.userType,
+    userType: decoded.userType,
+  };
   next();
 };
 

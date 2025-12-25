@@ -436,7 +436,7 @@ function updateNavbarForUser() {
       <a href="/index.html" class="nav-link">Home</a>
       <a href="/pages/dashboards/sponsor-dashboard.html" class="nav-link">Dashboard</a>
       <a href="/pages/events/sponsee.html" class="nav-link">Find Sponsees</a>
-      <a href="/about.html" class="nav-link">About</a>
+      <a href="/pages/messages.html" class="nav-link">Messages</a>
     `;
     navButtonsHTML = `
       <a href="/pages/profiles/sponsor-profile.html" class="nav-button login"><i class="fas fa-user mr-2"></i>Profile</a>
@@ -446,7 +446,7 @@ function updateNavbarForUser() {
       <a href="/index.html" class="mobile-nav-link">Home</a>
       <a href="/pages/dashboards/sponsor-dashboard.html" class="mobile-nav-link">Dashboard</a>
       <a href="/pages/events/sponsee.html" class="mobile-nav-link">Find Sponsees</a>
-      <a href="/about.html" class="mobile-nav-link">About</a>
+      <a href="/pages/messages.html" class="mobile-nav-link">Messages</a>
     `;
     mobileButtonsHTML = `
       <a href="/pages/profiles/sponsor-profile.html" class="mobile-nav-button login"><i class="fas fa-user mr-2"></i>Profile</a>
@@ -458,7 +458,7 @@ function updateNavbarForUser() {
       <a href="/index.html" class="nav-link">Home</a>
       <a href="/pages/dashboards/sponsee-dashboard.html" class="nav-link">Dashboard</a>
       <a href="/pages/events/sponsors.html" class="nav-link">Find Sponsors</a>
-      <a href="/about.html" class="nav-link">About</a>
+      <a href="/pages/messages.html" class="nav-link">Messages</a>
     `;
     navButtonsHTML = `
       <a href="/pages/profiles/sponsee-profile.html" class="nav-button login"><i class="fas fa-user mr-2"></i>Profile</a>
@@ -468,7 +468,7 @@ function updateNavbarForUser() {
       <a href="/index.html" class="mobile-nav-link">Home</a>
       <a href="/pages/dashboards/sponsee-dashboard.html" class="mobile-nav-link">Dashboard</a>
       <a href="/pages/events/sponsors.html" class="mobile-nav-link">Find Sponsors</a>
-      <a href="/about.html" class="mobile-nav-link">About</a>
+      <a href="/pages/messages.html" class="mobile-nav-link">Messages</a>
     `;
     mobileButtonsHTML = `
       <a href="/pages/profiles/sponsee-profile.html" class="mobile-nav-button login"><i class="fas fa-user mr-2"></i>Profile</a>

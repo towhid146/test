@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Messages - SponzoBD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        overflow-x: hidden;
+      }
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #1a1a2e;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, #7c3aed, #a855f7);
+        border-radius: 10px;
+      }
+      .page-bg {
+        background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #1a1a2e);
+        background-size: 400% 400%;
+        animation: gradientShift 15s ease infinite;
+        min-height: 100vh;
+      }
+      @keyframes gradientShift {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+      }
+      .gradient-text {
+        background: linear-gradient(
+          135deg,
+          #7c3aed 0%,
+          #a855f7 50%,
+          #ec4899 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .font-space {
+        font-family: "Space Grotesk", sans-serif;
+      }
+      .conversation-item {
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+      .conversation-item:hover,
+      .conversation-item.active {
+        background: rgba(124, 58, 237, 0.15);
+        border-color: rgba(124, 58, 237, 0.3);
+      }
+      .message-bubble {
+        max-width: 75%;
+        word-wrap: break-word;
+      }
+      .message-bubble.sent {
+        background: linear-gradient(135deg, #7c3aed, #a855f7);
+        border-radius: 20px 20px 4px 20px;
+      }
+      .message-bubble.received {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px 20px 20px 4px;
+      }
+      .messages-container {
+        height: calc(100vh - 280px);
+        overflow-y: auto;
+      }
+      .conversations-list {
+        height: calc(100vh - 200px);
+        overflow-y: auto;
+      }
+      @media (max-width: 768px) {
+        .messages-container {
+          height: calc(100vh - 320px);
+        }
+        .conversations-list {
+          height: auto;
+          max-height: 300px;
+        }
+      }
+    </style>
+  </head>
+  <body class="page-bg">
+    <div id="navbar"></div>
+
+    <main
+      class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-28"
+    >
+      <!-- Header -->
+      <div class="mb-8" data-aos="fade-up">
+        <span
+          class="inline-block px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300 text-sm font-medium mb-4"
+        >
+          <i class="fas fa-comments mr-2"></i>Messaging
+        </span>
+        <h1 class="text-3xl md:text-4xl font-bold text-white mb-2 font-space">
+          Your <span class="gradient-text">Messages</span>
+        </h1>
+        <p class="text-gray-400">Connect with sponsors and sponsees</p>
+      </div>
+
+      <!-- Messages Container -->
+      <div
+        class="grid grid-cols-1 lg:grid-cols-3 gap-6"
+        data-aos="fade-up"
+        data-aos-delay="100"
+      >
+        <!-- Conversations List -->
+        <div class="lg:col-span-1 glass-card p-4">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-lg font-semibold text-white">Conversations</h2>
+            <span
+              id="unread-badge"
+              class="hidden px-2 py-1 bg-purple-500 text-white text-xs rounded-full"
+              >0</span
+            >
+          </div>
+
+          <div id="conversations-list" class="conversations-list space-y-2">
+            <!-- Loading state -->
+            <div id="conversations-loading" class="text-center py-8">
+              <i
+                class="fas fa-spinner fa-spin text-2xl text-purple-400 mb-2"
+              ></i>
+              <p class="text-gray-400 text-sm">Loading conversations...</p>
+            </div>
+
+            <!-- Empty state -->
+            <div id="no-conversations" class="hidden text-center py-8">
+              <i class="fas fa-inbox text-4xl text-gray-600 mb-4"></i>
+              <p class="text-gray-400 mb-2">No conversations yet</p>
+              <p class="text-gray-500 text-sm">
+                Start by contacting a sponsor or sponsee
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chat Area -->
+        <div class="lg:col-span-2 glass-card flex flex-col">
+          <!-- Chat Header -->
+          <div id="chat-header" class="p-4 border-b border-white/10">
+            <div id="no-chat-selected" class="text-center py-4">
+              <i class="fas fa-comments text-3xl text-gray-600 mb-2"></i>
+              <p class="text-gray-400">
+                Select a conversation to start chatting
+              </p>
+            </div>
+            <div
+              id="chat-header-content"
+              class="hidden flex items-center gap-3"
+            >
+              <div
+                class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold"
+                id="chat-avatar"
+              >
+                ?
+              </div>
+              <div>
+                <h3 class="text-white font-semibold" id="chat-name">
+                  Select a conversation
+                </h3>
+                <p class="text-sm text-gray-400" id="chat-role">-</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Messages -->
+          <div id="messages-area" class="messages-container p-4 hidden">
+            <div id="messages-list" class="space-y-4">
+              <!-- Messages will be inserted here -->
+            </div>
+          </div>
+
+          <!-- Message Input -->
+          <div
+            id="message-input-area"
+            class="p-4 border-t border-white/10 hidden"
+          >
+            <form id="message-form" class="flex gap-3">
+              <input
+                type="text"
+                id="message-input"
+                placeholder="Type your message..."
+                class="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 transition"
+                maxlength="2000"
+              />
+              <button
+                type="submit"
+                class="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl hover:shadow-lg hover:shadow-purple-500/25 transition font-medium"
+              >
+                <i class="fas fa-paper-plane"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      const API_BASE = "https://test-6aiv.onrender.com/api";
+      let currentConversationId = null;
+      let currentOtherUser = null;
+      let pollInterval = null;
+
+      // Check auth
+      document.addEventListener("DOMContentLoaded", function () {
+        const token = localStorage.getItem("authToken");
+        if (!token) {
+          window.location.href = "auth/login.html";
+          return;
+        }
+
+        loadConversations();
+
+        // Check for query params (for starting new conversation)
+        const urlParams = new URLSearchParams(window.location.search);
+        const newChatId = urlParams.get("with");
+        const newChatRole = urlParams.get("role");
+        if (newChatId && newChatRole) {
+          startNewConversation(newChatId, newChatRole);
+        }
+      });
+
+      async function loadConversations() {
+        const token = localStorage.getItem("authToken");
+
+        try {
+          const response = await fetch(`${API_BASE}/messages/conversations`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          const data = await response.json();
+
+          document
+            .getElementById("conversations-loading")
+            .classList.add("hidden");
+
+          if (!data.success || !data.data || data.data.length === 0) {
+            document
+              .getElementById("no-conversations")
+              .classList.remove("hidden");
+            return;
+          }
+
+          renderConversations(data.data);
+          updateUnreadBadge(data.data);
+        } catch (error) {
+          console.error("Error loading conversations:", error);
+          document.getElementById("conversations-loading").innerHTML = `
+            <i class="fas fa-exclamation-circle text-2xl text-red-400 mb-2"></i>
+            <p class="text-gray-400 text-sm">Failed to load conversations</p>
+          `;
+        }
+      }
+
+      function renderConversations(conversations) {
+        const list = document.getElementById("conversations-list");
+
+        list.innerHTML = conversations
+          .map(
+            (conv) => `
+          <div 
+            class="conversation-item p-3 rounded-xl bg-white/5 border border-white/10 ${
+              currentConversationId === conv.conversationId ? "active" : ""
+            }"
+            onclick="selectConversation('${conv.conversationId}', '${
+              conv.otherUser.id
+            }', '${conv.otherUser.name}', '${conv.otherUser.role}')"
+          >
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br ${
+                conv.otherUser.role === "Sponsor"
+                  ? "from-purple-500 to-violet-500"
+                  : "from-pink-500 to-orange-500"
+              } flex items-center justify-center text-white font-bold text-sm">
+                ${conv.otherUser.name.charAt(0).toUpperCase()}
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between">
+                  <h4 class="text-white font-medium truncate">${
+                    conv.otherUser.name
+                  }</h4>
+                  ${
+                    conv.unreadCount > 0
+                      ? `<span class="px-2 py-0.5 bg-purple-500 text-white text-xs rounded-full">${conv.unreadCount}</span>`
+                      : ""
+                  }
+                </div>
+                <p class="text-gray-400 text-sm truncate">
+                  ${conv.lastMessage.isFromMe ? "You: " : ""}${
+              conv.lastMessage.content
+            }
+                </p>
+              </div>
+            </div>
+          </div>
+        `
+          )
+          .join("");
+      }
+
+      function updateUnreadBadge(conversations) {
+        const totalUnread = conversations.reduce(
+          (sum, conv) => sum + conv.unreadCount,
+          0
+        );
+        const badge = document.getElementById("unread-badge");
+
+        if (totalUnread > 0) {
+          badge.textContent = totalUnread;
+          badge.classList.remove("hidden");
+        } else {
+          badge.classList.add("hidden");
+        }
+      }
+
+      async function selectConversation(
+        conversationId,
+        otherId,
+        otherName,
+        otherRole
+      ) {
+        currentConversationId = conversationId;
+        currentOtherUser = { id: otherId, name: otherName, role: otherRole };
+
+        // Update UI
+        document.getElementById("no-chat-selected").classList.add("hidden");
+        document
+          .getElementById("chat-header-content")
+          .classList.remove("hidden");
+        document.getElementById("messages-area").classList.remove("hidden");
+        document
+          .getElementById("message-input-area")
+          .classList.remove("hidden");
+
+        document.getElementById("chat-avatar").textContent = otherName
+          .charAt(0)
+          .toUpperCase();
+        document.getElementById("chat-name").textContent = otherName;
+        document.getElementById("chat-role").textContent = otherRole;
+
+        // Highlight active conversation
+        document
+          .querySelectorAll(".conversation-item")
+          .forEach((item) => item.classList.remove("active"));
+        event.currentTarget.classList.add("active");
+
+        // Load messages
+        await loadMessages(conversationId);
+
+        // Start polling for new messages
+        if (pollInterval) clearInterval(pollInterval);
+        pollInterval = setInterval(() => loadMessages(conversationId), 5000);
+      }
+
+      async function loadMessages(conversationId) {
+        const token = localStorage.getItem("authToken");
+        const userId = localStorage.getItem("userId");
+
+        try {
+          const response = await fetch(
+            `${API_BASE}/messages/conversation/${conversationId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          const data = await response.json();
+
+          if (data.success) {
+            renderMessages(data.data, userId);
+          }
+        } catch (error) {
+          console.error("Error loading messages:", error);
+        }
+      }
+
+      function renderMessages(messages, userId) {
+        const list = document.getElementById("messages-list");
+
+        if (messages.length === 0) {
+          list.innerHTML = `
+            <div class="text-center py-8">
+              <i class="fas fa-comment-dots text-3xl text-gray-600 mb-2"></i>
+              <p class="text-gray-400">No messages yet. Say hello!</p>
+            </div>
+          `;
+          return;
+        }
+
+        list.innerHTML = messages
+          .map((msg) => {
+            const isSent = msg.sender.id === userId;
+            const time = new Date(msg.createdAt).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            });
+
+            return `
+            <div class="flex ${isSent ? "justify-end" : "justify-start"}">
+              <div class="message-bubble ${
+                isSent ? "sent" : "received"
+              } px-4 py-3">
+                <p class="text-white text-sm">${escapeHtml(msg.content)}</p>
+                <p class="text-xs ${
+                  isSent ? "text-purple-200" : "text-gray-500"
+                } mt-1 text-right">${time}</p>
+              </div>
+            </div>
+          `;
+          })
+          .join("");
+
+        // Scroll to bottom
+        const container = document.getElementById("messages-area");
+        container.scrollTop = container.scrollHeight;
+      }
+
+      function escapeHtml(text) {
+        const div = document.createElement("div");
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      // Handle message form submission
+      document
+        .getElementById("message-form")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const input = document.getElementById("message-input");
+          const content = input.value.trim();
+
+          if (!content || !currentOtherUser) return;
+
+          const token = localStorage.getItem("authToken");
+
+          try {
+            const response = await fetch(`${API_BASE}/messages/send`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({
+                receiverId: currentOtherUser.id,
+                receiverRole: currentOtherUser.role.toLowerCase(),
+                content,
+              }),
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+              input.value = "";
+              await loadMessages(currentConversationId);
+            } else {
+              alert(data.message || "Failed to send message");
+            }
+          } catch (error) {
+            console.error("Error sending message:", error);
+            alert("Failed to send message. Please try again.");
+          }
+        });
+
+      // Start new conversation from URL params
+      async function startNewConversation(otherId, otherRole) {
+        const token = localStorage.getItem("authToken");
+        const userId = localStorage.getItem("userId");
+
+        // Create conversation ID
+        const sortedIds = [userId, otherId].sort();
+        const conversationId = sortedIds.join("_");
+
+        // Get other user's info
+        try {
+          const endpoint = otherRole === "sponsor" ? "sponsors" : "sponsees";
+          const response = await fetch(`${API_BASE}/auth/${endpoint}`);
+          const data = await response.json();
+
+          const users = data.data || data;
+          const otherUser = users.find((u) => u._id === otherId);
+
+          if (otherUser) {
+            const name =
+              otherRole === "sponsor"
+                ? otherUser.companyName
+                : otherUser.organizerName || otherUser.eventName;
+
+            currentConversationId = conversationId;
+            currentOtherUser = {
+              id: otherId,
+              name,
+              role: otherRole === "sponsor" ? "Sponsor" : "Sponsee",
+            };
+
+            // Update UI
+            document.getElementById("no-chat-selected").classList.add("hidden");
+            document
+              .getElementById("chat-header-content")
+              .classList.remove("hidden");
+            document.getElementById("messages-area").classList.remove("hidden");
+            document
+              .getElementById("message-input-area")
+              .classList.remove("hidden");
+
+            document.getElementById("chat-avatar").textContent = name
+              .charAt(0)
+              .toUpperCase();
+            document.getElementById("chat-name").textContent = name;
+            document.getElementById("chat-role").textContent =
+              currentOtherUser.role;
+
+            // Load any existing messages
+            await loadMessages(conversationId);
+          }
+        } catch (error) {
+          console.error("Error starting conversation:", error);
+        }
+      }
+
+      AOS.init({ duration: 800, easing: "ease-out-cubic", once: true });
+    </script>
+    <script src="../components/navbar.js"></script>
+  </body>
+</html>
