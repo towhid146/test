@@ -380,7 +380,7 @@
       function createSponsorCard(sponsor) {
         // Check if user is logged in and is a sponsee (only sponsees can contact sponsors)
         const isLoggedIn =
-          localStorage.getItem("userId") && localStorage.getItem("token");
+          localStorage.getItem("userId") && localStorage.getItem("authToken");
         const userRole = localStorage.getItem("userRole");
         const canInteract = isLoggedIn && userRole === "sponsee";
         const logo =
