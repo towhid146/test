@@ -485,6 +485,176 @@ const getAllSponsors = async (req, res) => {
   }
 };
 
+// Store for reset codes (in production, use Redis or database)
+const resetCodes = new Map();
+
+// Forgot Password - Send Reset Code
+const forgotPassword = async (req, res) => {
+  try {
+    const { email, userType } = req.body;
+
+    if (!email || !userType) {
+      return res.status(400).json({
+        success: false,
+        message: "Email and user type are required",
+      });
+    }
+
+    // Find user based on type
+    let user;
+    if (userType === "sponsor") {
+      user = await Sponsor.findOne({ email });
+    } else if (userType === "sponsee") {
+      user = await Sponsee.findOne({ email });
+    }
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "No account found with this email",
+      });
+    }
+
+    // Generate 6-digit code
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+
+    // Store code with expiry (10 minutes)
+    resetCodes.set(email, {
+      code,
+      userType,
+      expiresAt: Date.now() + 10 * 60 * 1000,
+    });
+
+    // In production, send email here
+    // For now, we'll log it (you would integrate with email service like SendGrid, Nodemailer, etc.)
+    console.log(`Password reset code for ${email}: ${code}`);
+
+    res.status(200).json({
+      success: true,
+      message: "Reset code sent to your email",
+      // For development/testing, include the code (remove in production!)
+      devCode: process.env.NODE_ENV !== "production" ? code : undefined,
+    });
+  } catch (error) {
+    console.error("Forgot password error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
+// Verify Reset Code
+const verifyResetCode = async (req, res) => {
+  try {
+    const { email, code, userType } = req.body;
+
+    if (!email || !code || !userType) {
+      return res.status(400).json({
+        success: false,
+        message: "Email, code, and user type are required",
+      });
+    }
+
+    const storedData = resetCodes.get(email);
+
+    if (!storedData) {
+      return res.status(400).json({
+        success: false,
+        message: "No reset code found. Please request a new one.",
+      });
+    }
+
+    if (Date.now() > storedData.expiresAt) {
+      resetCodes.delete(email);
+      return res.status(400).json({
+        success: false,
+        message: "Reset code expired. Please request a new one.",
+      });
+    }
+
+    if (storedData.code !== code) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid reset code",
+      });
+    }
+
+    // Generate a temporary token for password reset
+    const resetToken = require("crypto").randomBytes(32).toString("hex");
+    storedData.resetToken = resetToken;
+    resetCodes.set(email, storedData);
+
+    res.status(200).json({
+      success: true,
+      message: "Code verified successfully",
+      token: resetToken,
+    });
+  } catch (error) {
+    console.error("Verify code error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
+// Reset Password
+const resetPassword = async (req, res) => {
+  try {
+    const { email, token, newPassword, userType } = req.body;
+
+    if (!email || !token || !newPassword || !userType) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required",
+      });
+    }
+
+    const storedData = resetCodes.get(email);
+
+    if (!storedData || storedData.resetToken !== token) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid or expired reset token",
+      });
+    }
+
+    // Find and update user
+    let user;
+    if (userType === "sponsor") {
+      user = await Sponsor.findOne({ email });
+    } else if (userType === "sponsee") {
+      user = await Sponsee.findOne({ email });
+    }
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    // Update password
+    user.password = newPassword;
+    await user.save();
+
+    // Clear reset code
+    resetCodes.delete(email);
+
+    res.status(200).json({
+      success: true,
+      message: "Password reset successfully",
+    });
+  } catch (error) {
+    console.error("Reset password error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
 module.exports = {
   sponsorRegister,
   sponsorLogin,
@@ -496,4 +666,7 @@ module.exports = {
   updateSponsor,
   getAllSponsees,
   getAllSponsors,
+  forgotPassword,
+  verifyResetCode,
+  resetPassword,
 };

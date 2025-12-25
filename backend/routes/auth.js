@@ -11,6 +11,9 @@ const {
   updateSponsor,
   getAllSponsees,
   getAllSponsors,
+  forgotPassword,
+  verifyResetCode,
+  resetPassword,
 } = require("../controllers/authController");
 
 // Sponsor routes
@@ -26,5 +29,10 @@ router.post("/sponsee/login", sponseeLogin);
 router.get("/sponsee/:id", getSponsee);
 router.put("/sponsee/:id", updateSponsee);
 router.get("/sponsees", getAllSponsees);
+
+// Password reset routes
+router.post("/forgot-password", forgotPassword);
+router.post("/verify-reset-code", verifyResetCode);
+router.post("/reset-password", resetPassword);
 
 module.exports = router;
