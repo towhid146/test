@@ -349,10 +349,16 @@
       </div>
 
       <div class="grid grid-cols-2 gap-4 mb-6">
-        <button type="button" id="googleBtn" class="social-btn">
-          <i class="fab fa-google text-lg"></i>
-          Google
-        </button>
+        <div
+          id="googleBtnContainer"
+          class="social-btn flex items-center justify-center cursor-pointer"
+        >
+          <div id="googleBtnInner"></div>
+          <span id="googleBtnFallback" class="flex items-center gap-2">
+            <i class="fab fa-google text-lg"></i>
+            Google
+          </span>
+        </div>
         <button type="button" id="facebookBtn" class="social-btn">
           <i class="fab fa-facebook text-lg"></i>
           Facebook
@@ -546,7 +552,9 @@
       let pendingSocialAuth = null;
       let googleCredential = null;
       const userTypeModal = document.getElementById("userTypeModal");
-      const googleBtn = document.getElementById("googleBtn");
+      const googleBtnContainer = document.getElementById("googleBtnContainer");
+      const googleBtnInner = document.getElementById("googleBtnInner");
+      const googleBtnFallback = document.getElementById("googleBtnFallback");
       const facebookBtn = document.getElementById("facebookBtn");
       const selectSponsor = document.getElementById("selectSponsor");
       const selectSponsee = document.getElementById("selectSponsee");
@@ -555,7 +563,7 @@
       const GOOGLE_CLIENT_ID =
         "859134383388-3imh4tgni23c2tg3t3dp9iqdefaodo6j.apps.googleusercontent.com";
 
-      // Initialize Google Sign-In
+      // Initialize Google Sign-In with rendered button
       function initGoogleSignIn() {
         console.log("Initializing Google Sign-In...");
         if (typeof google !== "undefined" && google.accounts) {
@@ -564,16 +572,31 @@
               client_id: GOOGLE_CLIENT_ID,
               callback: handleGoogleCallback,
               auto_select: false,
-              cancel_on_tap_outside: true,
-              context: "signin",
-              ux_mode: "popup",
             });
-            console.log("Google Sign-In initialized successfully");
+
+            // Render the actual Google button inside our container
+            google.accounts.id.renderButton(googleBtnInner, {
+              type: "standard",
+              theme: "filled_black",
+              size: "large",
+              text: "signin_with",
+              shape: "rectangular",
+              width: "100%",
+            });
+
+            // Hide our fallback text since Google button is rendered
+            googleBtnFallback.style.display = "none";
+            googleBtnInner.style.display = "flex";
+
+            console.log("Google Sign-In button rendered successfully");
           } catch (error) {
             console.error("Google Sign-In initialization error:", error);
+            // Keep fallback visible
+            googleBtnFallback.style.display = "flex";
           }
         } else {
           console.log("Google library not available");
+          googleBtnFallback.style.display = "flex";
         }
       }
 
@@ -589,56 +612,33 @@
         }
       }
 
-      // Google Sign-In button click
-      googleBtn.addEventListener("click", function () {
-        errorMessage.style.display = "none";
+      // Fallback click handler for Google button container (if Google button fails to render)
+      googleBtnContainer.addEventListener("click", function (e) {
+        // Only trigger if clicking on fallback (not the Google button itself)
+        if (
+          e.target === googleBtnContainer ||
+          e.target === googleBtnFallback ||
+          googleBtnFallback.contains(e.target)
+        ) {
+          errorMessage.style.display = "none";
 
-        if (typeof google !== "undefined" && google.accounts) {
-          console.log("Google Sign-In: Attempting to show prompt...");
-          google.accounts.id.prompt((notification) => {
-            console.log("Google notification:", notification);
-            if (notification.isNotDisplayed()) {
-              const reason = notification.getNotDisplayedReason();
-              console.log("Not displayed reason:", reason);
-
-              // Handle common issues
-              if (reason === "browser_not_supported") {
+          if (typeof google !== "undefined" && google.accounts) {
+            // Try One Tap as fallback
+            google.accounts.id.prompt((notification) => {
+              if (
+                notification.isNotDisplayed() ||
+                notification.isSkippedMoment()
+              ) {
                 errorMessage.textContent =
-                  "Your browser doesn't support Google Sign-In. Please use a modern browser.";
-              } else if (reason === "invalid_client") {
-                errorMessage.textContent =
-                  "Google Sign-In configuration error. Please contact support.";
-              } else if (reason === "opt_out_or_no_session") {
-                errorMessage.textContent =
-                  "Please sign into your Google account first, or enable third-party cookies.";
-              } else if (reason === "suppressed_by_user") {
-                errorMessage.textContent =
-                  "Google Sign-In was blocked. Please check your browser settings.";
-              } else {
-                errorMessage.textContent =
-                  "Google Sign-In unavailable (" +
-                  reason +
-                  "). Please use email/password login.";
-              }
-              errorMessage.style.display = "block";
-            } else if (notification.isSkippedMoment()) {
-              const reason = notification.getSkippedReason();
-              console.log("Skipped reason:", reason);
-
-              if (reason === "user_cancel") {
-                // User cancelled, no error needed
-              } else {
-                errorMessage.textContent =
-                  "Google Sign-In was skipped. Please try again.";
+                  "Google Sign-In is unavailable. This may be due to browser settings blocking third-party cookies. Please try using a different browser or enable cookies.";
                 errorMessage.style.display = "block";
               }
-            }
-          });
-        } else {
-          console.log("Google library not loaded yet");
-          errorMessage.textContent =
-            "Google Sign-In is loading. Please wait a moment and try again.";
-          errorMessage.style.display = "block";
+            });
+          } else {
+            errorMessage.textContent =
+              "Google Sign-In is loading. Please refresh the page and try again.";
+            errorMessage.style.display = "block";
+          }
         }
       });
 
