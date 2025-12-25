@@ -323,6 +323,7 @@
           <label class="flex items-center gap-2 cursor-pointer text-gray-400">
             <input
               type="checkbox"
+              id="rememberMe"
               name="remember"
               class="rounded border-gray-600 bg-transparent"
             />
@@ -382,12 +383,30 @@
       const form = document.getElementById("loginForm");
       const errorMessage = document.getElementById("errorMessage");
       const successMessage = document.getElementById("successMessage");
+      const rememberMe = document.getElementById("rememberMe");
+      const emailInput = document.getElementById("email");
+      const passwordInput = document.getElementById("password");
+
+      // Check for saved credentials on page load
+      document.addEventListener("DOMContentLoaded", function () {
+        const savedEmail = localStorage.getItem("rememberedEmail");
+        const savedPassword = localStorage.getItem("rememberedPassword");
+        const wasRemembered = localStorage.getItem("rememberMe") === "true";
+
+        if (wasRemembered && savedEmail) {
+          emailInput.value = savedEmail;
+          if (savedPassword) {
+            passwordInput.value = atob(savedPassword); // Decode from base64
+          }
+          rememberMe.checked = true;
+        }
+      });
 
       form.addEventListener("submit", async function (e) {
         e.preventDefault();
 
-        const email = document.getElementById("email").value.trim();
-        const password = document.getElementById("password").value.trim();
+        const email = emailInput.value.trim();
+        const password = passwordInput.value.trim();
 
         // Clear previous messages
         errorMessage.style.display = "none";
@@ -455,6 +474,17 @@
               data.user.email
           );
           localStorage.setItem("userId", data.user.id);
+
+          // Handle Remember Me
+          if (rememberMe.checked) {
+            localStorage.setItem("rememberedEmail", email);
+            localStorage.setItem("rememberedPassword", btoa(password)); // Encode to base64
+            localStorage.setItem("rememberMe", "true");
+          } else {
+            localStorage.removeItem("rememberedEmail");
+            localStorage.removeItem("rememberedPassword");
+            localStorage.removeItem("rememberMe");
+          }
 
           // Show success message
           successMessage.textContent = "Login successful! Redirecting...";
