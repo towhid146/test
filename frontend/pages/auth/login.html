@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login - SponzoBD</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
       rel="stylesheet"
@@ -543,6 +544,7 @@
 
       // Social Auth Variables
       let pendingSocialAuth = null;
+      let googleCredential = null;
       const userTypeModal = document.getElementById("userTypeModal");
       const googleBtn = document.getElementById("googleBtn");
       const facebookBtn = document.getElementById("facebookBtn");
@@ -550,22 +552,103 @@
       const selectSponsee = document.getElementById("selectSponsee");
       const cancelTypeSelect = document.getElementById("cancelTypeSelect");
 
-      // Google Sign-In
-      googleBtn.addEventListener("click", function () {
-        // Initialize Google Sign-In
-        const clientId =
-          "859134383388-3imh4tgni23c2tg3t3dp9iqdefaodo6j.apps.googleusercontent.com"; // Google Client ID
+      const GOOGLE_CLIENT_ID =
+        "859134383388-3imh4tgni23c2tg3t3dp9iqdefaodo6j.apps.googleusercontent.com";
 
-        // For demo purposes, we'll simulate Google auth
-        // In production, you would use the Google Identity Services library
-        pendingSocialAuth = { provider: "google" };
-        userTypeModal.style.display = "flex";
+      // Initialize Google Sign-In
+      function initGoogleSignIn() {
+        console.log("Initializing Google Sign-In...");
+        if (typeof google !== "undefined" && google.accounts) {
+          try {
+            google.accounts.id.initialize({
+              client_id: GOOGLE_CLIENT_ID,
+              callback: handleGoogleCallback,
+              auto_select: false,
+              cancel_on_tap_outside: true,
+              context: "signin",
+              ux_mode: "popup",
+            });
+            console.log("Google Sign-In initialized successfully");
+          } catch (error) {
+            console.error("Google Sign-In initialization error:", error);
+          }
+        } else {
+          console.log("Google library not available");
+        }
+      }
+
+      // Handle Google callback
+      function handleGoogleCallback(response) {
+        if (response.credential) {
+          googleCredential = response.credential;
+          pendingSocialAuth = {
+            provider: "google",
+            credential: response.credential,
+          };
+          userTypeModal.style.display = "flex";
+        }
+      }
+
+      // Google Sign-In button click
+      googleBtn.addEventListener("click", function () {
+        errorMessage.style.display = "none";
+
+        if (typeof google !== "undefined" && google.accounts) {
+          console.log("Google Sign-In: Attempting to show prompt...");
+          google.accounts.id.prompt((notification) => {
+            console.log("Google notification:", notification);
+            if (notification.isNotDisplayed()) {
+              const reason = notification.getNotDisplayedReason();
+              console.log("Not displayed reason:", reason);
+
+              // Handle common issues
+              if (reason === "browser_not_supported") {
+                errorMessage.textContent =
+                  "Your browser doesn't support Google Sign-In. Please use a modern browser.";
+              } else if (reason === "invalid_client") {
+                errorMessage.textContent =
+                  "Google Sign-In configuration error. Please contact support.";
+              } else if (reason === "opt_out_or_no_session") {
+                errorMessage.textContent =
+                  "Please sign into your Google account first, or enable third-party cookies.";
+              } else if (reason === "suppressed_by_user") {
+                errorMessage.textContent =
+                  "Google Sign-In was blocked. Please check your browser settings.";
+              } else {
+                errorMessage.textContent =
+                  "Google Sign-In unavailable (" +
+                  reason +
+                  "). Please use email/password login.";
+              }
+              errorMessage.style.display = "block";
+            } else if (notification.isSkippedMoment()) {
+              const reason = notification.getSkippedReason();
+              console.log("Skipped reason:", reason);
+
+              if (reason === "user_cancel") {
+                // User cancelled, no error needed
+              } else {
+                errorMessage.textContent =
+                  "Google Sign-In was skipped. Please try again.";
+                errorMessage.style.display = "block";
+              }
+            }
+          });
+        } else {
+          console.log("Google library not loaded yet");
+          errorMessage.textContent =
+            "Google Sign-In is loading. Please wait a moment and try again.";
+          errorMessage.style.display = "block";
+        }
       });
 
       // Facebook Sign-In
       facebookBtn.addEventListener("click", function () {
-        pendingSocialAuth = { provider: "facebook" };
-        userTypeModal.style.display = "flex";
+        // Facebook SDK would need to be loaded for real FB auth
+        // For now, show message that it's coming soon
+        errorMessage.textContent =
+          "Facebook login coming soon. Please use Google or email/password.";
+        errorMessage.style.display = "block";
       });
 
       // Cancel type selection
@@ -590,27 +673,10 @@
         userTypeModal.style.display = "none";
 
         try {
-          // For demo/testing, create a simulated social auth response
-          // In production, this would be real OAuth data from Google/Facebook
-          const mockSocialData = {
-            provider: pendingSocialAuth.provider,
-            userType: userType,
-            // Simulated user data - in production this comes from OAuth provider
-            credential: btoa(
-              JSON.stringify({
-                sub: `${pendingSocialAuth.provider}_${Date.now()}`,
-                email: `demo_${Date.now()}@example.com`,
-                name: "Demo User",
-                picture:
-                  "https://ui-avatars.com/api/?name=Demo+User&background=7c3aed&color=fff",
-              })
-            ),
-          };
-
           if (pendingSocialAuth.provider === "google") {
-            await handleGoogleAuth(mockSocialData, userType);
+            await handleGoogleAuth(pendingSocialAuth.credential, userType);
           } else if (pendingSocialAuth.provider === "facebook") {
-            await handleFacebookAuth(mockSocialData, userType);
+            await handleFacebookAuth(pendingSocialAuth, userType);
           }
         } catch (error) {
           console.error("Social auth error:", error);
@@ -620,78 +686,28 @@
         }
 
         pendingSocialAuth = null;
+        googleCredential = null;
       }
 
-      async function handleGoogleAuth(data, userType) {
+      async function handleGoogleAuth(credential, userType) {
         try {
+          console.log("Sending Google credential to backend...");
+          console.log("User type:", userType);
+
           const response = await fetch(`${API_URL}/auth/google`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              credential: data.credential,
+              credential: credential,
               userType: userType,
             }),
           });
 
+          console.log("Backend response status:", response.status);
           const result = await response.json();
-
-          if (result.success) {
-            // Store auth data
-            localStorage.setItem("authToken", result.token);
-            localStorage.setItem("userRole", userType);
-            localStorage.setItem("userId", result.user.id);
-            localStorage.setItem(
-              "userName",
-              result.user.companyName ||
-                result.user.eventName ||
-                result.user.email
-            );
-
-            successMessage.textContent = result.message + " Redirecting...";
-            successMessage.style.display = "block";
-
-            setTimeout(() => {
-              if (userType === "sponsor") {
-                window.location.href = result.isNewUser
-                  ? "../profiles/sponsor-profile.html"
-                  : "../profiles/sponsor-profile.html";
-              } else {
-                window.location.href = result.isNewUser
-                  ? "../profiles/sponsee-profile.html"
-                  : "../profiles/sponsee-profile.html";
-              }
-            }, 1500);
-          } else {
-            throw new Error(result.message);
-          }
-        } catch (error) {
-          throw error;
-        }
-      }
-
-      async function handleFacebookAuth(data, userType) {
-        try {
-          // Parse the mock credential
-          const userData = JSON.parse(atob(data.credential));
-
-          const response = await fetch(`${API_URL}/auth/facebook`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              accessToken: "mock_token",
-              userID: userData.sub,
-              name: userData.name,
-              email: userData.email,
-              picture: userData.picture,
-              userType: userType,
-            }),
-          });
-
-          const result = await response.json();
+          console.log("Backend result:", result);
 
           if (result.success) {
             // Store auth data
@@ -716,12 +732,33 @@
               }
             }, 1500);
           } else {
-            throw new Error(result.message);
+            throw new Error(result.message || "Authentication failed");
           }
         } catch (error) {
+          console.error("Google auth error:", error);
           throw error;
         }
       }
+
+      async function handleFacebookAuth(data, userType) {
+        // Facebook auth placeholder
+        errorMessage.textContent = "Facebook login coming soon.";
+        errorMessage.style.display = "block";
+      }
+
+      // Initialize Google Sign-In when page loads
+      document.addEventListener("DOMContentLoaded", function () {
+        // Wait for Google Identity Services to load
+        const checkGoogle = setInterval(() => {
+          if (typeof google !== "undefined" && google.accounts) {
+            clearInterval(checkGoogle);
+            initGoogleSignIn();
+          }
+        }, 100);
+
+        // Stop checking after 5 seconds
+        setTimeout(() => clearInterval(checkGoogle), 5000);
+      });
     </script>
   </body>
 </html>
