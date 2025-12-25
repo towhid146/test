@@ -350,13 +350,12 @@
       const API_BASE = "https://test-6aiv.onrender.com/api";
       let allSponsors = [];
 
-      // Check if user is logged in and is a sponsee (only sponsees can contact sponsors)
-      const isLoggedIn =
-        localStorage.getItem("userId") && localStorage.getItem("token");
-      const userRole = localStorage.getItem("userRole");
-      const canInteract = isLoggedIn && userRole === "sponsee";
-
       function createSponsorCard(sponsor) {
+        // Check if user is logged in and is a sponsee (only sponsees can contact sponsors)
+        const isLoggedIn =
+          localStorage.getItem("userId") && localStorage.getItem("token");
+        const userRole = localStorage.getItem("userRole");
+        const canInteract = isLoggedIn && userRole === "sponsee";
         const logo =
           sponsor.logo ||
           `https://ui-avatars.com/api/?name=${encodeURIComponent(
