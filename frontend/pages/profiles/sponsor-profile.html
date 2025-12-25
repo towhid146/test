@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -7,14 +7,34 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
     <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { font-family: "Inter", sans-serif; overflow-x: hidden; }
-      ::-webkit-scrollbar { width: 8px; }
-      ::-webkit-scrollbar-track { background: #1a1a2e; }
-      ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #7c3aed, #a855f7); border-radius: 10px; }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        overflow-x: hidden;
+      }
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #1a1a2e;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, #7c3aed, #a855f7);
+        border-radius: 10px;
+      }
       .page-bg {
         background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #1a1a2e);
         background-size: 400% 400%;
@@ -22,22 +42,69 @@
         min-height: 100vh;
       }
       @keyframes gradientShift {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
       }
-      .particles { position: fixed; width: 100%; height: 100%; overflow: hidden; top: 0; left: 0; pointer-events: none; z-index: 0; }
-      .particle { position: absolute; width: 6px; height: 6px; background: rgba(124, 58, 237, 0.4); border-radius: 50%; animation: floatParticle 20s infinite; }
-      .particle:nth-child(1) { left: 10%; animation-delay: 0s; }
-      .particle:nth-child(2) { left: 30%; animation-delay: 2s; }
-      .particle:nth-child(3) { left: 50%; animation-delay: 4s; }
-      .particle:nth-child(4) { left: 70%; animation-delay: 1s; }
-      .particle:nth-child(5) { left: 90%; animation-delay: 3s; }
+      .particles {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: 0;
+      }
+      .particle {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        background: rgba(124, 58, 237, 0.4);
+        border-radius: 50%;
+        animation: floatParticle 20s infinite;
+      }
+      .particle:nth-child(1) {
+        left: 10%;
+        animation-delay: 0s;
+      }
+      .particle:nth-child(2) {
+        left: 30%;
+        animation-delay: 2s;
+      }
+      .particle:nth-child(3) {
+        left: 50%;
+        animation-delay: 4s;
+      }
+      .particle:nth-child(4) {
+        left: 70%;
+        animation-delay: 1s;
+      }
+      .particle:nth-child(5) {
+        left: 90%;
+        animation-delay: 3s;
+      }
       @keyframes floatParticle {
-        0% { transform: translateY(100vh) scale(0); opacity: 0; }
-        10% { opacity: 1; }
-        90% { opacity: 1; }
-        100% { transform: translateY(-100vh) scale(1); opacity: 0; }
+        0% {
+          transform: translateY(100vh) scale(0);
+          opacity: 0;
+        }
+        10% {
+          opacity: 1;
+        }
+        90% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-100vh) scale(1);
+          opacity: 0;
+        }
       }
       .glass-card {
         background: rgba(255, 255, 255, 0.05);
@@ -52,15 +119,49 @@
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
       }
       .gradient-text {
-        background: linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #ec4899 100%);
+        background: linear-gradient(
+          135deg,
+          #7c3aed 0%,
+          #a855f7 50%,
+          #ec4899 100%
+        );
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
       }
-      .orb { position: fixed; border-radius: 50%; filter: blur(80px); opacity: 0.3; animation: orbFloat 8s ease-in-out infinite; pointer-events: none; z-index: 0; }
-      .orb-1 { width: 350px; height: 350px; background: linear-gradient(135deg, #7c3aed, #a855f7); top: -100px; right: -100px; }
-      .orb-2 { width: 280px; height: 280px; background: linear-gradient(135deg, #ec4899, #f97316); bottom: -80px; left: -80px; animation-delay: 2s; }
-      @keyframes orbFloat { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(30px, 30px) scale(1.1); } }
+      .orb {
+        position: fixed;
+        border-radius: 50%;
+        filter: blur(80px);
+        opacity: 0.3;
+        animation: orbFloat 8s ease-in-out infinite;
+        pointer-events: none;
+        z-index: 0;
+      }
+      .orb-1 {
+        width: 350px;
+        height: 350px;
+        background: linear-gradient(135deg, #7c3aed, #a855f7);
+        top: -100px;
+        right: -100px;
+      }
+      .orb-2 {
+        width: 280px;
+        height: 280px;
+        background: linear-gradient(135deg, #ec4899, #f97316);
+        bottom: -80px;
+        left: -80px;
+        animation-delay: 2s;
+      }
+      @keyframes orbFloat {
+        0%,
+        100% {
+          transform: translate(0, 0) scale(1);
+        }
+        50% {
+          transform: translate(30px, 30px) scale(1.1);
+        }
+      }
       .profile-section {
         background: rgba(255, 255, 255, 0.03);
         backdrop-filter: blur(10px);
@@ -107,7 +208,9 @@
         border-color: rgba(124, 58, 237, 0.5);
         box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
       }
-      .modal-input::placeholder { color: rgba(255, 255, 255, 0.4); }
+      .modal-input::placeholder {
+        color: rgba(255, 255, 255, 0.4);
+      }
       .modal-label {
         display: block;
         font-size: 0.875rem;
@@ -134,8 +237,11 @@
   </head>
   <body class="page-bg">
     <div class="particles">
-      <div class="particle"></div><div class="particle"></div><div class="particle"></div>
-      <div class="particle"></div><div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
     </div>
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
@@ -143,10 +249,14 @@
     <div id="navbar"></div>
 
     <!-- Main Content -->
-    <main class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-28">
+    <main
+      class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-28"
+    >
       <!-- Profile Header -->
       <div class="glass-card overflow-hidden mb-6" data-aos="fade-up">
-        <div class="relative h-48 bg-gradient-to-br from-purple-900/50 to-pink-900/50">
+        <div
+          class="relative h-48 bg-gradient-to-br from-purple-900/50 to-pink-900/50"
+        >
           <img
             id="coverPhoto"
             src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&h=400&q=80"
@@ -158,8 +268,15 @@
             onclick="openImageUploadModal('cover')"
             class="absolute bottom-4 right-4 bg-white/10 backdrop-blur-md p-2 rounded-full border border-white/20 hover:bg-white/20 transition"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
-              <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5 text-white"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"
+              />
             </svg>
           </button>
         </div>
@@ -182,7 +299,12 @@
             </div>
           </div>
           <div class="mt-16">
-            <h1 id="companyName" class="text-2xl font-bold text-white font-space">Loading...</h1>
+            <h1
+              id="companyName"
+              class="text-2xl font-bold text-white font-space"
+            >
+              Loading...
+            </h1>
             <p id="industry" class="text-purple-400">Loading...</p>
           </div>
         </div>
@@ -195,30 +317,46 @@
           <!-- Contact Information -->
           <div class="profile-section" data-aos="fade-up" data-aos-delay="100">
             <div class="flex justify-between items-center mb-4">
-              <h2 class="text-lg font-semibold text-white">Contact Information</h2>
-              <button type="button" onclick="openEditModal('contact')" class="text-purple-400 hover:text-purple-300 transition">
+              <h2 class="text-lg font-semibold text-white">
+                Contact Information
+              </h2>
+              <button
+                type="button"
+                onclick="openEditModal('contact')"
+                class="text-purple-400 hover:text-purple-300 transition"
+              >
                 <i class="fas fa-edit"></i>
               </button>
             </div>
             <div class="space-y-4">
               <div>
-                <label class="block text-sm font-medium text-gray-500">Email</label>
+                <label class="block text-sm font-medium text-gray-500"
+                  >Email</label
+                >
                 <p id="email" class="mt-1 text-gray-200">Loading...</p>
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-500">Phone</label>
+                <label class="block text-sm font-medium text-gray-500"
+                  >Phone</label
+                >
                 <p id="phone" class="mt-1 text-gray-200">Loading...</p>
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-500">Contact Person</label>
+                <label class="block text-sm font-medium text-gray-500"
+                  >Contact Person</label
+                >
                 <p id="contactPerson" class="mt-1 text-gray-200">Loading...</p>
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-500">Location</label>
+                <label class="block text-sm font-medium text-gray-500"
+                  >Location</label
+                >
                 <p id="location" class="mt-1 text-gray-200">Loading...</p>
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-500">Website</label>
+                <label class="block text-sm font-medium text-gray-500"
+                  >Website</label
+                >
                 <p id="website" class="mt-1 text-purple-400">Loading...</p>
               </div>
             </div>
@@ -226,17 +364,37 @@
 
           <!-- Professional Links -->
           <div class="profile-section" data-aos="fade-up" data-aos-delay="200">
-            <h2 class="text-lg font-semibold text-white mb-4">Professional Links</h2>
+            <h2 class="text-lg font-semibold text-white mb-4">
+              Professional Links
+            </h2>
             <div class="space-y-4">
-              <a href="#" class="flex items-center text-purple-400 hover:text-purple-300 transition">
-                <svg class="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+              <a
+                href="#"
+                class="flex items-center text-purple-400 hover:text-purple-300 transition"
+              >
+                <svg
+                  class="h-5 w-5 mr-2"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"
+                  />
                 </svg>
                 LinkedIn Profile
               </a>
-              <a href="#" class="flex items-center text-purple-400 hover:text-purple-300 transition">
-                <svg class="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+              <a
+                href="#"
+                class="flex items-center text-purple-400 hover:text-purple-300 transition"
+              >
+                <svg
+                  class="h-5 w-5 mr-2"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+                  />
                 </svg>
                 Company Website
               </a>
@@ -250,7 +408,11 @@
           <div class="profile-section" data-aos="fade-up" data-aos-delay="100">
             <div class="flex justify-between items-center mb-4">
               <h2 class="text-lg font-semibold text-white">About</h2>
-              <button type="button" onclick="openEditModal('about')" class="text-purple-400 hover:text-purple-300 transition">
+              <button
+                type="button"
+                onclick="openEditModal('about')"
+                class="text-purple-400 hover:text-purple-300 transition"
+              >
                 <i class="fas fa-edit"></i>
               </button>
             </div>
@@ -260,8 +422,14 @@
           <!-- Sponsorship Preferences -->
           <div class="profile-section" data-aos="fade-up" data-aos-delay="200">
             <div class="flex justify-between items-center mb-4">
-              <h2 class="text-lg font-semibold text-white">Sponsorship Preferences</h2>
-              <button type="button" onclick="openEditModal('preferences')" class="text-purple-400 hover:text-purple-300 transition">
+              <h2 class="text-lg font-semibold text-white">
+                Sponsorship Preferences
+              </h2>
+              <button
+                type="button"
+                onclick="openEditModal('preferences')"
+                class="text-purple-400 hover:text-purple-300 transition"
+              >
                 <i class="fas fa-edit"></i>
               </button>
             </div>
@@ -269,31 +437,47 @@
               <div>
                 <h3 class="text-sm font-medium text-gray-500">Focus Areas</h3>
                 <div id="focusAreasContainer" class="mt-2 flex flex-wrap gap-2">
-                  <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-500/20 text-purple-300 border border-purple-500/30">Loading...</span>
+                  <span
+                    class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-500/20 text-purple-300 border border-purple-500/30"
+                    >Loading...</span
+                  >
                 </div>
               </div>
               <div>
                 <h3 class="text-sm font-medium text-gray-500">Budget</h3>
-                <p id="budget" class="mt-1 text-2xl font-bold gradient-text font-space">Loading...</p>
+                <p
+                  id="budget"
+                  class="mt-1 text-2xl font-bold gradient-text font-space"
+                >
+                  Loading...
+                </p>
               </div>
             </div>
           </div>
 
           <!-- Sponsorship History -->
           <div class="profile-section" data-aos="fade-up" data-aos-delay="300">
-            <h2 class="text-lg font-semibold text-white mb-4">Sponsorship History</h2>
+            <h2 class="text-lg font-semibold text-white mb-4">
+              Sponsorship History
+            </h2>
             <div class="space-y-4">
-              <div class="border-l-4 border-purple-500 pl-4 py-2 bg-white/5 rounded-r-lg">
+              <div
+                class="border-l-4 border-purple-500 pl-4 py-2 bg-white/5 rounded-r-lg"
+              >
                 <h3 class="font-medium text-white">Tech Summit 2024</h3>
                 <p class="text-sm text-purple-400">Budget: ৳200,000</p>
                 <p class="text-sm text-gray-500">March 15, 2024</p>
               </div>
-              <div class="border-l-4 border-purple-500 pl-4 py-2 bg-white/5 rounded-r-lg">
+              <div
+                class="border-l-4 border-purple-500 pl-4 py-2 bg-white/5 rounded-r-lg"
+              >
                 <h3 class="font-medium text-white">Innovation Awards 2023</h3>
                 <p class="text-sm text-purple-400">Budget: ৳150,000</p>
                 <p class="text-sm text-gray-500">December 10, 2023</p>
               </div>
-              <div class="border-l-4 border-purple-500 pl-4 py-2 bg-white/5 rounded-r-lg">
+              <div
+                class="border-l-4 border-purple-500 pl-4 py-2 bg-white/5 rounded-r-lg"
+              >
                 <h3 class="font-medium text-white">Startup Weekend</h3>
                 <p class="text-sm text-purple-400">Budget: ৳100,000</p>
                 <p class="text-sm text-gray-500">October 5, 2023</p>
@@ -307,29 +491,66 @@
     <!-- Image Upload Modal -->
     <div id="imageUploadModal" class="modal-overlay">
       <div class="modal-content">
-        <span class="close-btn absolute right-5 top-5 text-2xl font-bold cursor-pointer text-gray-400 hover:text-white transition" onclick="closeImageUploadModal()">&times;</span>
-        <h2 id="imageModalTitle" class="text-xl font-bold text-white mb-6 font-space">Update Image</h2>
+        <span
+          class="close-btn absolute right-5 top-5 text-2xl font-bold cursor-pointer text-gray-400 hover:text-white transition"
+          onclick="closeImageUploadModal()"
+          >&times;</span
+        >
+        <h2
+          id="imageModalTitle"
+          class="text-xl font-bold text-white mb-6 font-space"
+        >
+          Update Image
+        </h2>
 
         <div class="mb-4">
           <label class="modal-label">Choose Image</label>
-          <input type="file" id="imageFileInput" accept="image/*" class="modal-input" style="padding: 10px;" />
+          <input
+            type="file"
+            id="imageFileInput"
+            accept="image/*"
+            class="modal-input"
+            style="padding: 10px"
+          />
         </div>
 
         <div class="mb-4">
           <label class="modal-label">Or paste image URL</label>
-          <input type="text" id="imageUrlInput" placeholder="https://example.com/image.jpg" class="modal-input" />
+          <input
+            type="text"
+            id="imageUrlInput"
+            placeholder="https://example.com/image.jpg"
+            class="modal-input"
+          />
         </div>
 
-        <div id="imagePreviewContainer" style="display: none;" class="mb-4 text-center">
-          <img id="imagePreview" class="max-w-full max-h-48 rounded-lg border border-white/20 mx-auto" />
+        <div
+          id="imagePreviewContainer"
+          style="display: none"
+          class="mb-4 text-center"
+        >
+          <img
+            id="imagePreview"
+            class="max-w-full max-h-48 rounded-lg border border-white/20 mx-auto"
+          />
         </div>
 
-        <button onclick="saveImage()" type="button" class="btn-gradient">Save Image</button>
+        <button onclick="saveImage()" type="button" class="btn-gradient">
+          Save Image
+        </button>
 
-        <div id="imageModalSuccess" style="display: none;" class="mt-4 bg-green-500/20 border border-green-500/30 text-green-300 p-4 rounded-xl">
+        <div
+          id="imageModalSuccess"
+          style="display: none"
+          class="mt-4 bg-green-500/20 border border-green-500/30 text-green-300 p-4 rounded-xl"
+        >
           Image updated successfully!
         </div>
-        <div id="imageModalError" style="display: none;" class="mt-4 bg-red-500/20 border border-red-500/30 text-red-300 p-4 rounded-xl">
+        <div
+          id="imageModalError"
+          style="display: none"
+          class="mt-4 bg-red-500/20 border border-red-500/30 text-red-300 p-4 rounded-xl"
+        >
           <span id="imageModalErrorMessage">Error updating image</span>
         </div>
       </div>
@@ -337,13 +558,25 @@
 
     <!-- Edit Modal -->
     <div id="editModal" class="modal-overlay">
-      <div class="modal-content" style="max-width: 600px; max-height: 90vh; overflow-y: auto;">
-        <span class="close-btn absolute right-5 top-5 text-2xl font-bold cursor-pointer text-gray-400 hover:text-white transition" onclick="closeEditModal()">&times;</span>
-        <h2 id="modalTitle" class="text-xl font-bold text-white mb-6 font-space">Edit Profile</h2>
+      <div
+        class="modal-content"
+        style="max-width: 600px; max-height: 90vh; overflow-y: auto"
+      >
+        <span
+          class="close-btn absolute right-5 top-5 text-2xl font-bold cursor-pointer text-gray-400 hover:text-white transition"
+          onclick="closeEditModal()"
+          >&times;</span
+        >
+        <h2
+          id="modalTitle"
+          class="text-xl font-bold text-white mb-6 font-space"
+        >
+          Edit Profile
+        </h2>
 
         <form id="editForm">
           <!-- Contact Fields -->
-          <div id="contactFields" style="display: none;" class="space-y-4">
+          <div id="contactFields" style="display: none" class="space-y-4">
             <div>
               <label class="modal-label">Contact Person</label>
               <input type="text" id="editContactPerson" class="modal-input" />
@@ -363,7 +596,7 @@
           </div>
 
           <!-- About Fields -->
-          <div id="aboutFields" style="display: none;" class="space-y-4">
+          <div id="aboutFields" style="display: none" class="space-y-4">
             <div>
               <label class="modal-label">Company Name</label>
               <input type="text" id="editCompanyName" class="modal-input" />
@@ -374,15 +607,24 @@
             </div>
             <div>
               <label class="modal-label">Description</label>
-              <textarea id="editDescription" rows="5" class="modal-input"></textarea>
+              <textarea
+                id="editDescription"
+                rows="5"
+                class="modal-input"
+              ></textarea>
             </div>
           </div>
 
           <!-- Preferences Fields -->
-          <div id="preferencesFields" style="display: none;" class="space-y-4">
+          <div id="preferencesFields" style="display: none" class="space-y-4">
             <div>
               <label class="modal-label">Focus Areas (comma-separated)</label>
-              <input type="text" id="editFocusAreas" placeholder="e.g., Technology, Education" class="modal-input" />
+              <input
+                type="text"
+                id="editFocusAreas"
+                placeholder="e.g., Technology, Education"
+                class="modal-input"
+              />
             </div>
             <div>
               <label class="modal-label">Budget (BDT)</label>
@@ -393,277 +635,17 @@
           <button type="submit" class="btn-gradient mt-6">Save Changes</button>
         </form>
 
-        <div id="modalSuccess" style="display: none;" class="mt-4 bg-green-500/20 border border-green-500/30 text-green-300 p-4 rounded-xl">
-          Profile updated successfully!
-        </div>
-        <div id="modalError" style="display: none;" class="mt-4 bg-red-500/20 border border-red-500/30 text-red-300 p-4 rounded-xl">
-          <span id="modalErrorMessage">Error updating profile</span>
-        </div>
-      </div>
-    </div>
-                  font-weight: 500;
-                  color: #374151;
-                  margin-bottom: 0.5rem;
-                "
-                >Contact Person</label
-              >
-              <input
-                type="text"
-                id="editContactPerson"
-                style="
-                  width: 100%;
-                  padding: 0.5rem;
-                  border: 1px solid #d1d5db;
-                  border-radius: 0.375rem;
-                "
-              />
-            </div>
-            <div>
-              <label
-                style="
-                  display: block;
-                  font-size: 0.875rem;
-                  font-weight: 500;
-                  color: #374151;
-                  margin-bottom: 0.5rem;
-                "
-                >Phone</label
-              >
-              <input
-                type="tel"
-                id="editPhone"
-                style="
-                  width: 100%;
-                  padding: 0.5rem;
-                  border: 1px solid #d1d5db;
-                  border-radius: 0.375rem;
-                "
-              />
-            </div>
-            <div>
-              <label
-                style="
-                  display: block;
-                  font-size: 0.875rem;
-                  font-weight: 500;
-                  color: #374151;
-                  margin-bottom: 0.5rem;
-                "
-                >Location</label
-              >
-              <input
-                type="text"
-                id="editLocation"
-                style="
-                  width: 100%;
-                  padding: 0.5rem;
-                  border: 1px solid #d1d5db;
-                  border-radius: 0.375rem;
-                "
-              />
-            </div>
-            <div>
-              <label
-                style="
-                  display: block;
-                  font-size: 0.875rem;
-                  font-weight: 500;
-                  color: #374151;
-                  margin-bottom: 0.5rem;
-                "
-                >Website</label
-              >
-              <input
-                type="text"
-                id="editWebsite"
-                style="
-                  width: 100%;
-                  padding: 0.5rem;
-                  border: 1px solid #d1d5db;
-                  border-radius: 0.375rem;
-                "
-              />
-            </div>
-          </div>
-
-          <!-- About Fields -->
-          <div
-            id="aboutFields"
-            style="
-              display: none;
-              gap: 1rem;
-              display: flex;
-              flex-direction: column;
-            "
-          >
-            <div>
-              <label
-                style="
-                  display: block;
-                  font-size: 0.875rem;
-                  font-weight: 500;
-                  color: #374151;
-                  margin-bottom: 0.5rem;
-                "
-                >Company Name</label
-              >
-              <input
-                type="text"
-                id="editCompanyName"
-                style="
-                  width: 100%;
-                  padding: 0.5rem;
-                  border: 1px solid #d1d5db;
-                  border-radius: 0.375rem;
-                "
-              />
-            </div>
-            <div>
-              <label
-                style="
-                  display: block;
-                  font-size: 0.875rem;
-                  font-weight: 500;
-                  color: #374151;
-                  margin-bottom: 0.5rem;
-                "
-                >Industry</label
-              >
-              <input
-                type="text"
-                id="editIndustry"
-                style="
-                  width: 100%;
-                  padding: 0.5rem;
-                  border: 1px solid #d1d5db;
-                  border-radius: 0.375rem;
-                "
-              />
-            </div>
-            <div>
-              <label
-                style="
-                  display: block;
-                  font-size: 0.875rem;
-                  font-weight: 500;
-                  color: #374151;
-                  margin-bottom: 0.5rem;
-                "
-                >Description</label
-              >
-              <textarea
-                id="editDescription"
-                rows="5"
-                style="
-                  width: 100%;
-                  padding: 0.5rem;
-                  border: 1px solid #d1d5db;
-                  border-radius: 0.375rem;
-                "
-              ></textarea>
-            </div>
-          </div>
-
-          <!-- Preferences Fields -->
-          <div
-            id="preferencesFields"
-            style="
-              display: none;
-              gap: 1rem;
-              display: flex;
-              flex-direction: column;
-            "
-          >
-            <div>
-              <label
-                style="
-                  display: block;
-                  font-size: 0.875rem;
-                  font-weight: 500;
-                  color: #374151;
-                  margin-bottom: 0.5rem;
-                "
-                >Focus Areas (comma-separated)</label
-              >
-              <input
-                type="text"
-                id="editFocusAreas"
-                placeholder="e.g., Technology, Education"
-                style="
-                  width: 100%;
-                  padding: 0.5rem;
-                  border: 1px solid #d1d5db;
-                  border-radius: 0.375rem;
-                "
-              />
-            </div>
-            <div>
-              <label
-                style="
-                  display: block;
-                  font-size: 0.875rem;
-                  font-weight: 500;
-                  color: #374151;
-                  margin-bottom: 0.5rem;
-                "
-                >Budget (BDT)</label
-              >
-              <input
-                type="number"
-                id="editBudget"
-                style="
-                  width: 100%;
-                  padding: 0.5rem;
-                  border: 1px solid #d1d5db;
-                  border-radius: 0.375rem;
-                "
-              />
-            </div>
-          </div>
-
-          <button
-            type="submit"
-            style="
-              width: 100%;
-              background: #a855f7;
-              color: white;
-              padding: 0.5rem 1rem;
-              border-radius: 0.375rem;
-              font-weight: 600;
-              margin-top: 1.5rem;
-              border: none;
-              cursor: pointer;
-            "
-          >
-            Save Changes
-          </button>
-        </form>
-
         <div
           id="modalSuccess"
-          style="
-            display: none;
-            margin-top: 1rem;
-            background-color: #dcfce7;
-            border: 1px solid #86efac;
-            color: #166534;
-            padding: 1rem;
-            border-radius: 0.375rem;
-          "
+          style="display: none"
+          class="mt-4 bg-green-500/20 border border-green-500/30 text-green-300 p-4 rounded-xl"
         >
           Profile updated successfully!
         </div>
         <div
           id="modalError"
-          style="
-            display: none;
-            margin-top: 1rem;
-            background-color: #fee2e2;
-            border: 1px solid #fca5a5;
-            color: #991b1b;
-            padding: 1rem;
-            border-radius: 0.375rem;
-          "
+          style="display: none"
+          class="mt-4 bg-red-500/20 border border-red-500/30 text-red-300 p-4 rounded-xl"
         >
           <span id="modalErrorMessage">Error updating profile</span>
         </div>
@@ -680,7 +662,8 @@
 
       function openImageUploadModal(type) {
         currentImageType = type;
-        document.getElementById("imageModalTitle").textContent = type === "profile" ? "Update Profile Picture" : "Update Cover Photo";
+        document.getElementById("imageModalTitle").textContent =
+          type === "profile" ? "Update Profile Picture" : "Update Cover Photo";
         document.getElementById("imageFileInput").value = "";
         document.getElementById("imageUrlInput").value = "";
         document.getElementById("imagePreviewContainer").style.display = "none";
@@ -703,10 +686,21 @@
             const ctx = canvas.getContext("2d");
             const maxWidth = currentImageType === "cover" ? 1200 : 400;
             const maxHeight = currentImageType === "cover" ? 400 : 400;
-            let width = img.width, height = img.height;
-            if (width > height) { if (width > maxWidth) { height = height * (maxWidth / width); width = maxWidth; } }
-            else { if (height > maxHeight) { width = width * (maxHeight / height); height = maxHeight; } }
-            canvas.width = width; canvas.height = height;
+            let width = img.width,
+              height = img.height;
+            if (width > height) {
+              if (width > maxWidth) {
+                height = height * (maxWidth / width);
+                width = maxWidth;
+              }
+            } else {
+              if (height > maxHeight) {
+                width = width * (maxHeight / height);
+                height = maxHeight;
+              }
+            }
+            canvas.width = width;
+            canvas.height = height;
             ctx.drawImage(img, 0, 0, width, height);
             callback(canvas.toDataURL("image/jpeg", 0.7));
           };
@@ -724,23 +718,36 @@
           const file = fileInput.files[0];
           if (file.size > 5 * 1024 * 1024) {
             document.getElementById("imageModalError").style.display = "block";
-            document.getElementById("imageModalErrorMessage").textContent = "File size must be less than 5MB";
+            document.getElementById("imageModalErrorMessage").textContent =
+              "File size must be less than 5MB";
             return;
           }
-          compressImage(file, async function (compressedBase64) { await updateImageOnServer(userId, compressedBase64); });
-        } else if (imageUrl) { await updateImageOnServer(userId, imageUrl); }
-        else {
+          compressImage(file, async function (compressedBase64) {
+            await updateImageOnServer(userId, compressedBase64);
+          });
+        } else if (imageUrl) {
+          await updateImageOnServer(userId, imageUrl);
+        } else {
           document.getElementById("imageModalError").style.display = "block";
-          document.getElementById("imageModalErrorMessage").textContent = "Please select a file or enter an image URL";
+          document.getElementById("imageModalErrorMessage").textContent =
+            "Please select a file or enter an image URL";
         }
       }
 
       async function updateImageOnServer(userId, imageUrl) {
-        const payload = currentImageType === "profile" ? { logo: imageUrl } : { coverPhoto: imageUrl };
+        const payload =
+          currentImageType === "profile"
+            ? { logo: imageUrl }
+            : { coverPhoto: imageUrl };
         try {
-          const response = await fetch(`${API_BASE}/auth/sponsor/${userId}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+          const response = await fetch(`${API_BASE}/auth/sponsor/${userId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
           const data = await response.json();
-          if (!response.ok) throw new Error(data.message || "Failed to update image");
+          if (!response.ok)
+            throw new Error(data.message || "Failed to update image");
           currentSponsorData = data.data;
           displayProfile();
           document.getElementById("imageModalSuccess").style.display = "block";
@@ -748,17 +755,27 @@
           setTimeout(() => closeImageUploadModal(), 2000);
         } catch (error) {
           document.getElementById("imageModalError").style.display = "block";
-          document.getElementById("imageModalErrorMessage").textContent = error.message;
+          document.getElementById("imageModalErrorMessage").textContent =
+            error.message;
         }
       }
 
       async function loadSponsorProfile(userId) {
         try {
-          if (!userId) throw new Error("No userId provided. Please log in first.");
+          if (!userId)
+            throw new Error("No userId provided. Please log in first.");
           const response = await fetch(`${API_BASE}/auth/sponsor/${userId}`);
-          if (!response.ok) { const errorData = await response.json().catch(() => ({})); throw new Error(`Failed to load profile: ${response.status} - ${errorData.message || "Unknown error"}`); }
+          if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(
+              `Failed to load profile: ${response.status} - ${
+                errorData.message || "Unknown error"
+              }`
+            );
+          }
           const data = await response.json();
-          if (!data.success || !data.data) throw new Error("Invalid response format from server");
+          if (!data.success || !data.data)
+            throw new Error("Invalid response format from server");
           currentSponsorData = data.data;
           displayProfile();
         } catch (error) {
@@ -772,7 +789,10 @@
 
       function displayProfile() {
         const data = currentSponsorData;
-        const safeSet = (id, value) => { const el = document.getElementById(id); if (el) el.textContent = value; };
+        const safeSet = (id, value) => {
+          const el = document.getElementById(id);
+          if (el) el.textContent = value;
+        };
         safeSet("companyName", data.companyName || "N/A");
         safeSet("industry", data.industry || "N/A");
         safeSet("description", data.description || "No description provided");
@@ -783,7 +803,15 @@
         safeSet("website", data.website || "N/A");
         safeSet("budget", `৳${(data.budget || 0).toLocaleString()}`);
         const focusContainer = document.getElementById("focusAreasContainer");
-        if (focusContainer) { focusContainer.innerHTML = (data.focusAreas || []).map(f => `<span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-500/20 text-purple-300 border border-purple-500/30">${f}</span>`).join("") || '<span class="text-gray-500">N/A</span>'; }
+        if (focusContainer) {
+          focusContainer.innerHTML =
+            (data.focusAreas || [])
+              .map(
+                (f) =>
+                  `<span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-500/20 text-purple-300 border border-purple-500/30">${f}</span>`
+              )
+              .join("") || '<span class="text-gray-500">N/A</span>';
+        }
         const profilePicture = document.getElementById("profilePicture");
         if (profilePicture && data.logo) profilePicture.src = data.logo;
         const coverPhoto = document.getElementById("coverPhoto");
@@ -798,39 +826,86 @@
         document.getElementById("modalSuccess").style.display = "none";
         document.getElementById("modalError").style.display = "none";
         if (section === "contact") {
-          document.getElementById("modalTitle").textContent = "Edit Contact Information";
+          document.getElementById("modalTitle").textContent =
+            "Edit Contact Information";
           document.getElementById("contactFields").style.display = "block";
-          document.getElementById("editContactPerson").value = currentSponsorData.contactPerson || "";
-          document.getElementById("editPhone").value = currentSponsorData.phone || "";
-          document.getElementById("editLocation").value = currentSponsorData.location || "";
-          document.getElementById("editWebsite").value = currentSponsorData.website || "";
+          document.getElementById("editContactPerson").value =
+            currentSponsorData.contactPerson || "";
+          document.getElementById("editPhone").value =
+            currentSponsorData.phone || "";
+          document.getElementById("editLocation").value =
+            currentSponsorData.location || "";
+          document.getElementById("editWebsite").value =
+            currentSponsorData.website || "";
         } else if (section === "about") {
-          document.getElementById("modalTitle").textContent = "Edit About Information";
+          document.getElementById("modalTitle").textContent =
+            "Edit About Information";
           document.getElementById("aboutFields").style.display = "block";
-          document.getElementById("editCompanyName").value = currentSponsorData.companyName || "";
-          document.getElementById("editIndustry").value = currentSponsorData.industry || "";
-          document.getElementById("editDescription").value = currentSponsorData.description || "";
+          document.getElementById("editCompanyName").value =
+            currentSponsorData.companyName || "";
+          document.getElementById("editIndustry").value =
+            currentSponsorData.industry || "";
+          document.getElementById("editDescription").value =
+            currentSponsorData.description || "";
         } else if (section === "preferences") {
-          document.getElementById("modalTitle").textContent = "Edit Preferences";
+          document.getElementById("modalTitle").textContent =
+            "Edit Preferences";
           document.getElementById("preferencesFields").style.display = "block";
-          document.getElementById("editFocusAreas").value = (currentSponsorData.focusAreas || []).join(", ");
-          document.getElementById("editBudget").value = currentSponsorData.budget || "";
+          document.getElementById("editFocusAreas").value = (
+            currentSponsorData.focusAreas || []
+          ).join(", ");
+          document.getElementById("editBudget").value =
+            currentSponsorData.budget || "";
         }
         document.getElementById("editModal").style.display = "flex";
       }
 
-      function closeEditModal() { document.getElementById("editModal").style.display = "none"; currentEditSection = null; }
+      function closeEditModal() {
+        document.getElementById("editModal").style.display = "none";
+        currentEditSection = null;
+      }
 
       async function submitEditForm() {
         const userId = localStorage.getItem("userId");
         let payload = {};
-        if (currentEditSection === "contact") { payload = { contactPerson: document.getElementById("editContactPerson").value.trim(), phone: document.getElementById("editPhone").value.trim(), location: document.getElementById("editLocation").value.trim(), website: document.getElementById("editWebsite").value.trim() }; }
-        else if (currentEditSection === "about") { payload = { companyName: document.getElementById("editCompanyName").value.trim(), industry: document.getElementById("editIndustry").value.trim(), description: document.getElementById("editDescription").value.trim() }; }
-        else if (currentEditSection === "preferences") { payload = { focusAreas: document.getElementById("editFocusAreas").value.split(",").map(x => x.trim()).filter(Boolean), budget: parseInt(document.getElementById("editBudget").value, 10) }; }
+        if (currentEditSection === "contact") {
+          payload = {
+            contactPerson: document
+              .getElementById("editContactPerson")
+              .value.trim(),
+            phone: document.getElementById("editPhone").value.trim(),
+            location: document.getElementById("editLocation").value.trim(),
+            website: document.getElementById("editWebsite").value.trim(),
+          };
+        } else if (currentEditSection === "about") {
+          payload = {
+            companyName: document
+              .getElementById("editCompanyName")
+              .value.trim(),
+            industry: document.getElementById("editIndustry").value.trim(),
+            description: document
+              .getElementById("editDescription")
+              .value.trim(),
+          };
+        } else if (currentEditSection === "preferences") {
+          payload = {
+            focusAreas: document
+              .getElementById("editFocusAreas")
+              .value.split(",")
+              .map((x) => x.trim())
+              .filter(Boolean),
+            budget: parseInt(document.getElementById("editBudget").value, 10),
+          };
+        }
         try {
-          const response = await fetch(`${API_BASE}/auth/sponsor/${userId}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+          const response = await fetch(`${API_BASE}/auth/sponsor/${userId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
           const data = await response.json();
-          if (!response.ok) throw new Error(data.message || "Failed to update profile");
+          if (!response.ok)
+            throw new Error(data.message || "Failed to update profile");
           currentSponsorData = data.data;
           displayProfile();
           document.getElementById("modalSuccess").style.display = "block";
@@ -838,32 +913,77 @@
           setTimeout(() => closeEditModal(), 2000);
         } catch (error) {
           document.getElementById("modalError").style.display = "block";
-          document.getElementById("modalErrorMessage").textContent = error.message;
+          document.getElementById("modalErrorMessage").textContent =
+            error.message;
         }
       }
 
       window.onclick = function (event) {
-        if (event.target === document.getElementById("editModal")) closeEditModal();
-        if (event.target === document.getElementById("imageUploadModal")) closeImageUploadModal();
+        if (event.target === document.getElementById("editModal"))
+          closeEditModal();
+        if (event.target === document.getElementById("imageUploadModal"))
+          closeImageUploadModal();
       };
 
       document.addEventListener("DOMContentLoaded", function () {
         const fileInput = document.getElementById("imageFileInput");
         const urlInput = document.getElementById("imageUrlInput");
-        const previewContainer = document.getElementById("imagePreviewContainer");
+        const previewContainer = document.getElementById(
+          "imagePreviewContainer"
+        );
         const previewImg = document.getElementById("imagePreview");
-        if (fileInput) { fileInput.addEventListener("change", function (e) { if (e.target.files && e.target.files[0]) { const reader = new FileReader(); reader.onload = function (event) { previewImg.src = event.target.result; previewContainer.style.display = "block"; }; reader.readAsDataURL(e.target.files[0]); urlInput.value = ""; } }); }
-        if (urlInput) { urlInput.addEventListener("input", function (e) { const url = e.target.value.trim(); if (url) { previewImg.src = url; previewContainer.style.display = "block"; fileInput.value = ""; } else { previewContainer.style.display = "none"; } }); }
+        if (fileInput) {
+          fileInput.addEventListener("change", function (e) {
+            if (e.target.files && e.target.files[0]) {
+              const reader = new FileReader();
+              reader.onload = function (event) {
+                previewImg.src = event.target.result;
+                previewContainer.style.display = "block";
+              };
+              reader.readAsDataURL(e.target.files[0]);
+              urlInput.value = "";
+            }
+          });
+        }
+        if (urlInput) {
+          urlInput.addEventListener("input", function (e) {
+            const url = e.target.value.trim();
+            if (url) {
+              previewImg.src = url;
+              previewContainer.style.display = "block";
+              fileInput.value = "";
+            } else {
+              previewContainer.style.display = "none";
+            }
+          });
+        }
         const urlId = new URLSearchParams(window.location.search).get("id");
         const loggedInId = localStorage.getItem("userId");
         const userRole = localStorage.getItem("userRole");
-        const canEdit = urlId ? loggedInId && urlId === loggedInId : loggedInId && userRole === "sponsor";
-        if (!canEdit) { document.querySelectorAll('button[onclick^="openEditModal"], button[onclick^="openImageUploadModal"]').forEach(btn => btn.style.display = "none"); }
+        const canEdit = urlId
+          ? loggedInId && urlId === loggedInId
+          : loggedInId && userRole === "sponsor";
+        if (!canEdit) {
+          document
+            .querySelectorAll(
+              'button[onclick^="openEditModal"], button[onclick^="openImageUploadModal"]'
+            )
+            .forEach((btn) => (btn.style.display = "none"));
+        }
         let userId = urlId || loggedInId;
-        if (!userId) { alert("Please log in first"); window.location.href = "../../pages/auth/login.html"; return; }
+        if (!userId) {
+          alert("Please log in first");
+          window.location.href = "../../pages/auth/login.html";
+          return;
+        }
         loadSponsorProfile(userId);
         const editForm = document.getElementById("editForm");
-        if (editForm) { editForm.addEventListener("submit", function (e) { e.preventDefault(); submitEditForm(); }); }
+        if (editForm) {
+          editForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+            submitEditForm();
+          });
+        }
       });
     </script>
     <script src="../../components/navbar.js"></script>
