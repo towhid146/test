@@ -9,8 +9,23 @@ const app = express();
 // Connect to MongoDB
 connectDB();
 
+// CORS configuration - allow all origins for now
+const corsOptions = {
+  origin: [
+    "http://localhost:3000",
+    "http://localhost:5000",
+    "http://127.0.0.1:5500",
+    "https://sponzobd.vercel.app",
+    "https://sponzobd-towhid146.vercel.app",
+    /\.vercel\.app$/,
+  ],
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
