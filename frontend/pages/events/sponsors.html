@@ -350,6 +350,12 @@
       const API_BASE = "https://test-6aiv.onrender.com/api";
       let allSponsors = [];
 
+      // Check if user is logged in and is a sponsee (only sponsees can contact sponsors)
+      const isLoggedIn =
+        localStorage.getItem("userId") && localStorage.getItem("token");
+      const userRole = localStorage.getItem("userRole");
+      const canInteract = isLoggedIn && userRole === "sponsee";
+
       function createSponsorCard(sponsor) {
         const logo =
           sponsor.logo ||
@@ -416,16 +422,21 @@
               }
 
               <div class="flex gap-3">
-                <a href="mailto:${
-                  sponsor.email
-                }" class="flex-1 px-4 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white text-center hover:shadow-lg hover:shadow-purple-500/25 transition font-medium text-sm">
+                \${canInteract ? \`
+                <a href="mailto:\${sponsor.email}" class="flex-1 px-4 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white text-center hover:shadow-lg hover:shadow-purple-500/25 transition font-medium text-sm">
                   <i class="fas fa-envelope mr-2"></i>Contact
                 </a>
-                <a href="../profiles/sponsor-profile.html?id=${
-                  sponsor._id
-                }" class="flex-1 px-4 py-2.5 rounded-xl border border-white/20 text-gray-300 text-center hover:bg-white/10 transition font-medium text-sm">
+                <a href="../profiles/sponsor-profile.html?id=\${sponsor._id}" class="flex-1 px-4 py-2.5 rounded-xl border border-white/20 text-gray-300 text-center hover:bg-white/10 transition font-medium text-sm">
                   <i class="fas fa-eye mr-2"></i>View
                 </a>
+                \` : \`
+                <button onclick="showLoginPrompt('sponsee')" class="flex-1 px-4 py-2.5 rounded-xl bg-gray-600/50 text-gray-400 text-center cursor-not-allowed font-medium text-sm" title="Login as sponsee to contact">
+                  <i class="fas fa-lock mr-2"></i>Contact
+                </button>
+                <button onclick="showLoginPrompt('sponsee')" class="flex-1 px-4 py-2.5 rounded-xl border border-white/10 text-gray-500 text-center cursor-not-allowed font-medium text-sm" title="Login as sponsee to view details">
+                  <i class="fas fa-lock mr-2"></i>View
+                </button>
+                \`}
               </div>
             </div>
           </div>
@@ -535,6 +546,20 @@
             .join("");
           grid.classList.remove("hidden");
           noResults.classList.add("hidden");
+        }
+      }
+
+      function showLoginPrompt(requiredRole) {
+        const roleText =
+          requiredRole === "sponsee"
+            ? "a Sponsee/Event Organizer"
+            : "a Sponsor";
+        if (
+          confirm(
+            `Please login as ${roleText} to access this feature.\n\nWould you like to login now?`
+          )
+        ) {
+          window.location.href = "../auth/login.html";
         }
       }
 
