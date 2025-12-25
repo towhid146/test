@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: sponsobd-backend
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        sync: false # You'll set this manually in Render dashboard
+      - key: JWT_SECRET
+        sync: false # You'll set this manually in Render dashboard
+      - key: JWT_EXPIRE
+        value: 7d

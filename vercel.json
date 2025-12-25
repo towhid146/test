@@ -3,10 +3,40 @@
   "outputDirectory": "frontend",
   "cleanUrls": true,
   "trailingSlash": false,
-  "rewrites": [
+  "headers": [
     {
       "source": "/(.*)",
-      "destination": "/$1"
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "DENY" }
+      ]
+    }
+  ],
+  "rewrites": [
+    { "source": "/about", "destination": "/about.html" },
+    { "source": "/login", "destination": "/pages/auth/login.html" },
+    { "source": "/signup", "destination": "/pages/auth/signup-choice.html" },
+    {
+      "source": "/sponsor-signup",
+      "destination": "/pages/auth/sponsor-signup.html"
+    },
+    {
+      "source": "/sponsee-signup",
+      "destination": "/pages/auth/sponsee-signup.html"
+    },
+    {
+      "source": "/sponsor-profile",
+      "destination": "/pages/profiles/sponsor-profile.html"
+    },
+    {
+      "source": "/sponsee-profile",
+      "destination": "/pages/profiles/sponsee-profile.html"
+    },
+    { "source": "/sponsors", "destination": "/pages/events/sponsors.html" },
+    { "source": "/sponsees", "destination": "/pages/events/sponsee.html" },
+    {
+      "source": "/sponsee-dashboard",
+      "destination": "/pages/dashboards/sponsee-dashboard.html"
     }
   ]
 }
