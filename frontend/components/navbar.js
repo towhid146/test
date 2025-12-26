@@ -437,6 +437,7 @@ function updateNavbarForUser() {
       <a href="/pages/dashboards/sponsor-dashboard.html" class="nav-link">Dashboard</a>
       <a href="/pages/events/sponsee.html" class="nav-link">Find Sponsees</a>
       <a href="/pages/messages.html" class="nav-link">Messages</a>
+      <a href="/pages/documents.html" class="nav-link">Documents</a>
       <a href="/about.html" class="nav-link">About</a>
     `;
     navButtonsHTML = `
@@ -448,6 +449,7 @@ function updateNavbarForUser() {
       <a href="/pages/dashboards/sponsor-dashboard.html" class="mobile-nav-link">Dashboard</a>
       <a href="/pages/events/sponsee.html" class="mobile-nav-link">Find Sponsees</a>
       <a href="/pages/messages.html" class="mobile-nav-link">Messages</a>
+      <a href="/pages/documents.html" class="mobile-nav-link">Documents</a>
       <a href="/about.html" class="mobile-nav-link">About</a>
     `;
     mobileButtonsHTML = `
@@ -461,6 +463,7 @@ function updateNavbarForUser() {
       <a href="/pages/dashboards/sponsee-dashboard.html" class="nav-link">Dashboard</a>
       <a href="/pages/events/sponsors.html" class="nav-link">Find Sponsors</a>
       <a href="/pages/messages.html" class="nav-link">Messages</a>
+      <a href="/pages/documents.html" class="nav-link">Documents</a>
       <a href="/about.html" class="nav-link">About</a>
     `;
     navButtonsHTML = `
@@ -472,6 +475,7 @@ function updateNavbarForUser() {
       <a href="/pages/dashboards/sponsee-dashboard.html" class="mobile-nav-link">Dashboard</a>
       <a href="/pages/events/sponsors.html" class="mobile-nav-link">Find Sponsors</a>
       <a href="/pages/messages.html" class="mobile-nav-link">Messages</a>
+      <a href="/pages/documents.html" class="mobile-nav-link">Documents</a>
       <a href="/about.html" class="mobile-nav-link">About</a>
     `;
     mobileButtonsHTML = `
