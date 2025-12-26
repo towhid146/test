@@ -244,6 +244,18 @@
         background: rgba(168, 85, 247, 0.1);
         transform: translateY(-2px);
       }
+      /* Hide Google button iframe styling to use our custom button */
+      #googleBtnInner iframe {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        opacity: 0 !important;
+      }
+      #googleBtnContainer.google-loaded {
+        padding: 0;
+      }
       .error-message {
         display: none;
         background: rgba(239, 68, 68, 0.1);
@@ -351,9 +363,18 @@
       <div class="grid grid-cols-2 gap-4 mb-6">
         <div
           id="googleBtnContainer"
-          class="social-btn flex items-center justify-center cursor-pointer"
+          class="social-btn flex items-center justify-center cursor-pointer relative overflow-hidden"
         >
-          <div id="googleBtnInner"></div>
+          <div
+            id="googleBtnInner"
+            style="
+              display: none;
+              position: absolute;
+              inset: 0;
+              width: 100%;
+              height: 100%;
+            "
+          ></div>
           <span id="googleBtnFallback" class="flex items-center gap-2">
             <i class="fab fa-google text-lg"></i>
             Google
@@ -574,29 +595,29 @@
               auto_select: false,
             });
 
-            // Render the actual Google button inside our container
+            // Render the actual Google button inside our container (invisible, just for click capture)
             google.accounts.id.renderButton(googleBtnInner, {
-              type: "standard",
+              type: "icon",
               theme: "filled_black",
               size: "large",
-              text: "signin_with",
               shape: "rectangular",
-              width: "100%",
             });
 
-            // Hide our fallback text since Google button is rendered
-            googleBtnFallback.style.display = "none";
-            googleBtnInner.style.display = "flex";
+            // Keep our custom styled button visible, make Google button clickable but invisible
+            googleBtnInner.style.display = "block";
+            googleBtnContainer.classList.add("google-loaded");
 
             console.log("Google Sign-In button rendered successfully");
           } catch (error) {
             console.error("Google Sign-In initialization error:", error);
             // Keep fallback visible
             googleBtnFallback.style.display = "flex";
+            googleBtnInner.style.display = "none";
           }
         } else {
           console.log("Google library not available");
           googleBtnFallback.style.display = "flex";
+          googleBtnInner.style.display = "none";
         }
       }
 
