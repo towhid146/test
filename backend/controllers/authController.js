@@ -720,10 +720,10 @@ const googleAuth = async (req, res) => {
           companyName: name,
           email: email,
           password: require("crypto").randomBytes(32).toString("hex"), // Random password for social auth
-          phone: "Not provided",
-          industry: "Not specified",
-          location: "Not specified",
-          budget: 0,
+          phone: "000-000-0000",
+          industry: "To be updated",
+          location: "To be updated",
+          budget: 1,
           focusAreas: ["General"],
           logo: picture,
           socialAuth: {
@@ -778,13 +778,13 @@ const googleAuth = async (req, res) => {
           email: email,
           password: require("crypto").randomBytes(32).toString("hex"),
           contactPerson: name,
-          phone: "Not provided",
-          organization: "Not specified",
-          location: "Not specified",
-          expectedAttendees: 0,
+          phone: "000-000-0000",
+          organization: "To be updated",
+          location: "To be updated",
+          expectedAttendees: 1,
           eventType: ["General"],
           categories: ["General"],
-          budget: 0,
+          budget: 1,
           logo: picture,
           socialAuth: {
             google: {
@@ -830,7 +830,8 @@ const googleAuth = async (req, res) => {
     console.error("Google auth error:", error);
     res.status(500).json({
       success: false,
-      message: "Social authentication failed",
+      message: error.message || "Social authentication failed",
+      error: process.env.NODE_ENV === "development" ? error.stack : undefined,
     });
   }
 };
